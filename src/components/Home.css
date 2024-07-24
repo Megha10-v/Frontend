@@ -1,0 +1,52 @@
+/* Starting Nav bg color */
+.nav-bg {
+    background-color: #4FBBB4; 
+  }
+
+  /* Search button */
+.search-style {
+      border-radius: 53px 53px 53px 53px;
+  }
+.search-btn {
+      border-radius: 53px 53px 53px 53px;
+      cursor:pointer;
+  }
+
+.download-btn {
+    border-radius: 14px;
+    background-color: #4FBBB4;
+}
+
+.custom-tab {
+  margin-right: 20px; /* Adjust the spacing as needed */
+}
+
+.description {
+  font-size: 15px;
+  margin-bottom: 30px;
+  margin-top: 30px;
+}
+
+.word-description {
+  word-wrap: break-word;
+}
+
+.no-gutters {
+  margin-right: 0;
+  margin-left: 0;
+}
+
+.line {
+  border-top: 1px solid #ccc;
+  margin-top: 20px;
+  margin-left: 80px;
+  margin-right: 80px;
+}
+
+
+
+
+
+
+
+
