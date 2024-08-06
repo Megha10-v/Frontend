@@ -33,7 +33,7 @@ function Header() {
       <Navbar expand="lg" >
       <Container style={{ height: '100px'}}>
         <Navbar.Brand href="#logo" className="d-flex flex-column align-items-center">
-          <Image src={logonew} thumbnail style={{ width: '208px', height: '64px', border: 'none' }} />
+          <Image src={logonew} thumbnail style={{ width: '208px', height: '80px', border: 'none' }} />
           {/* <p className="text-center mb-0">BUISNESS HUB</p> */}
         </Navbar.Brand>
         
