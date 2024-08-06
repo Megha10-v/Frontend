@@ -5,16 +5,18 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import layer1 from '../images/layer1.png'
 import layer2 from '../images/layer2.png'
 import logo from '../images/LogoImage.jpg'
-import logonew from '../images/logonew.jpg'
+import logonew from '../images/footerlogo.png'
 import './Home.css'
 const Footer = () => {
   return (
     <Container fluid style={{ backgroundColor: '#E5E5E5' }} id='contacts' >
       <Row className="text-center">
         <Col md={4}>
-          <Image src={logonew} thumbnail alt="Company Logo"  style={{width: '208px', height: '62px',marginTop:'87px',marginLeft:'150px',backgroundColor: 'transparent'}} />
+        <a href="/" style={{ display: 'inline-block' }}>
+          <Image src={logonew} thumbnail alt="Company Logo"  style={{width: '400px', height: '250px',marginTop:'50px',marginLeft:'100px',backgroundColor: 'transparent'}} />
+        </a>
           {/* <p style={{marginLeft:'150px'}}>COMPANY</p> */}
-          <p style={{ marginTop: '10px', fontWeight: 'bold',marginLeft:'150px' }}>TURN YOUR STUFF AND SERVICES<br/> INTO CASH MACHINES</p>
+          {/* <p style={{ marginTop: '10px', fontWeight: 'bold',marginLeft:'150px' }}>TURN YOUR STUFF AND SERVICES<br/> INTO CASH MACHINES</p> */}
         </Col>
         <Col md={2}>
         <Button variant="primary" className="download-btn text-white" style={{ width: '152px', height: '42px', marginTop:'75px',borderColor:'#4FBBB4'}}>

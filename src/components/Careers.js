@@ -7,8 +7,9 @@ import {Image} from 'react-bootstrap'
 const Careers = () => {
   return (
     <div>
-      <Image src={logonew} thumbnail style={{ marginTop:'30px',marginLeft:'50px',marginBottom:'30px',width: '208px', height: '70px', border: 'none' }} />
-      
+      <a href="/" style={{ display: 'inline-block' }}>
+      <Image src={logonew} thumbnail style={{ marginTop:'30px',marginLeft:'50px',marginBottom:'30px',width: '208px', height: '80px', border: 'none' }} />
+      </a>
       <div style={{ 
       display: 'flex', 
       justifyContent: 'center', 

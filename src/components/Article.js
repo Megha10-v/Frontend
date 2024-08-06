@@ -152,7 +152,7 @@ function Article() {
       <Row style={{marginTop:'20px',marginBottom:'20px'}}>
         <Col xs={7} >
           <Form.Control value={email}
-            onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" style={{marginLeft:'400px',width:'600px',height:'40px',backgroundColor: '#FDD77F',borderRadius:'21px',borderColor:'#FDD77F'}} />
+            onChange={(e) => setEmail(e.target.value)} placeholder="Enter your email" style={{marginLeft:'450px',width:'600px',height:'40px',backgroundColor: '#FDD77F',borderRadius:'21px',borderColor:'#FDD77F'}} />
         </Col>
         <Col>
         <Button type='submit' style={{ backgroundColor: '#4FBBB4',borderRadius:'21px',borderColor:'#4FBBB4',width:'200px',height:'40px'}}>Subscribe</Button>
