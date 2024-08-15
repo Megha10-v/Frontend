@@ -29,6 +29,7 @@ import Terms from './components/Terms'
 const App = () => {
   return (
     <Router>
+  
       
       <Routes>
         <Route path="/" element={<Home />} />
@@ -38,6 +39,7 @@ const App = () => {
         {/* Add other routes as needed */}
 
       </Routes>
+      <Footer />
      
     </Router>
   );

@@ -43,6 +43,82 @@
   margin-right: 80px;
 }
 
+.form{
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+.form .articleinput{
+  background-color: #FDD77F;
+  border-color: #FDD77F;
+  border-radius: 21px;
+  width: 500px;
+  height: 40px;
+}
+.form .articlebutton{
+  background-color: #4FBBB4;
+  border-color: #4FBBB4;
+  border-radius: 21px;
+  height: 40px;
+  width: 200px;
+}
+.form .space{
+  width: 10px;
+}
+/* @media (max-width: 800px) and (min-width: 400px){
+  .form{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .form .articleinput{
+    margin-top: 20px;
+    width: 400px;
+  }
+  .form .articlebutton{
+    margin-top: 10px;
+    width: 200px;
+  }
+  .form .space{
+    width: 0;
+  }
+} */
+
+@media only screen and (max-width: 600px){
+  .form{
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  .form .articleinput{
+    width: 300px;
+  }
+  .form .articlebutton{
+    margin-top: 10px;
+    width: 200px;
+  }
+  .form .space{
+    width: 0;
+  }
+}
+
+#home
+{
+  background-image: url(../images/overjoyed_webp.webp);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scaleX(-1);
+  z-index: -1;
+}
+
+@media only screen and (max-width: 600px){
+
+  #home{
+  background-position: 20% 0%;
+  }
+}
+
 
 
 

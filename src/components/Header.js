@@ -31,15 +31,15 @@ function Header() {
         </Container>
       </Navbar> */}
       <Navbar expand="lg" >
-      <Container style={{ height: '100px'}}>
+      <Container className='pt-2 pb-2'>
         <Navbar.Brand href="#logo" className="d-flex flex-column align-items-center">
           <Image src={logonew} thumbnail style={{ width: '208px', height: '80px', border: 'none' }} />
           {/* <p className="text-center mb-0">BUISNESS HUB</p> */}
         </Navbar.Brand>
         
         <Navbar.Toggle aria-controls="navbar-nav" />
-        <Navbar.Collapse id="navbar-nav">
-          <Nav className="ms-auto">
+        <Navbar.Collapse id="navbar-nav" style={{zIndex:'1000'}}>
+          <Nav className="ms-auto" >
             <Nav.Link href="#home" className='ms-5 '>Home</Nav.Link>
             {/* <Nav.Link href="#rentals&services" className='ms-5 fw-bold '>Rental & Services</Nav.Link> */}
             <Nav.Link href="#aboutus" className='ms-5 '>About Us</Nav.Link>

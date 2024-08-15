@@ -218,7 +218,7 @@ function Terms() {
 
             
        
-          <Footer />
+          {/* <Footer /> */}
         
         </div>
     )
