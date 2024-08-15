@@ -24,7 +24,7 @@ const Careers = () => {
         but there are no job openings available at this time. <br/>
         Please check back at another time."</h2>
     </div>
-      <Footer />
+      {/* <Footer /> */}
     </div>
   );
 };
