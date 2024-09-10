@@ -115,7 +115,9 @@
 @media only screen and (max-width: 600px){
 
   #home{
-  background-position: 20% 0%;
+    background-position: 20% 0%;
+    background-size: 400%;
+  
   }
 }
 
