@@ -105,15 +105,15 @@ function Home() {
       </Container>
     </Navbar>
       
-    <Container fluid className="position-relative " style={{ maxWidth: "100%", height: "858px" }} >
+    <Container fluid className="position-relative " style={{ maxWidth: "100%", height: "100%" }} >
   <div className="position-absolute top-0 start-0 end-0 bottom-0 " id='home' >
   </div>
-  <Container className="pt-5">
-  <h1 className="mt-5 text-white">
+  <Container className="pt-md-5">
+  <h1 className=" pt-4 mt-md-5  text-white">
     TURN YOUR STUFF AND SERVICES <span className="d-none d-md-inline"><br /></span> INTO CASH MACHINES
 </h1>
 
-    <Row className="text-center mt-5 d-block d-md-none">
+    <Row className="text-center pb-5 mt-md-5 d-block d-md-none">
       <Carousel indicators={false} controls={true}>
         <Carousel.Item>
             <Image src={app1} className="img rounded" alt="app1" style={{ width: '189px', height: '336px'}} /><br/>
@@ -130,12 +130,12 @@ function Home() {
       </Carousel>
     </Row>
 
-    <Row className="justify-content-start mt-5 d-none d-md-flex">
+    <Row className="justify-content-start mt-md-5 d-none d-md-flex ">
         <Image src={app1} className="img rounded" alt="app1" style={{ width: '189px', height: '336px'}} />
         <Image src={app2} className="img rounded" alt="app2" style={{ width: '189px', height: '336px', marginLeft:'20px' }} />
         <Image src={app3} className="img rounded" alt="app3" style={{ width: '189px', height: '336px', marginLeft:'20px' }} />
     </Row>
-    <Row className="justify-content-start d-none d-md-flex">
+    <Row className="justify-content-start d-none d-md-flex pb-5">
         <Button variant="primary" className="download-btn text-white" style={{ width: '189px', height: '57px', marginTop:'42px'}}>Download App <FiDownload/></Button>
         <Image src={layer1} className="img rounded" alt="layer1" style={{ width: '189px', height: '57px', marginTop:'42px', marginLeft:'20px' }} />
         <Image src={layer2} className="img rounded" alt="layer2" style={{ width: '189px', height: '57px', marginTop:'42px', marginLeft:'20px'  }} />
