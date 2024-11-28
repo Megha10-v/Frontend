@@ -13,7 +13,6 @@ function CustomNav() {
         activeKey={key}
         onSelect={(k) => setKey(k)}
         className="custom-tabs"
-        style={{ marginLeft: '450px', marginTop: '40px' }}
       >
         <Tab eventKey="all" title="All">
           <div className='container-fluid'>
