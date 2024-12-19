@@ -65,24 +65,7 @@
 .form .space{
   width: 10px;
 }
-/* @media (max-width: 800px) and (min-width: 400px){
-  .form{
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-  .form .articleinput{
-    margin-top: 20px;
-    width: 400px;
-  }
-  .form .articlebutton{
-    margin-top: 10px;
-    width: 200px;
-  }
-  .form .space{
-    width: 0;
-  }
-} */
+
 
 @media only screen and (max-width: 600px){
   .form{
