@@ -1,6 +1,4 @@
 import React from 'react';
-import Header from './Header';  // Adjust the import paths as necessary
-import Footer from './Footer'; 
 import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
 import {Image} from 'react-bootstrap'
 
@@ -24,7 +22,6 @@ const Careers = () => {
         but there are no job openings available at this time. <br/>
         Please check back at another time."</h2>
     </div>
-      {/* <Footer /> */}
     </div>
   );
 };

@@ -1,7 +1,4 @@
 import React from 'react'
-
-import Header from './Header';  // Adjust the import paths as necessary
-import Footer from './Footer'; 
 import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
 import {Image} from 'react-bootstrap'
 
@@ -12,17 +9,6 @@ function Terms() {
           <a href="/" style={{ display: 'inline-block' }}>
           <Image src={logonew} thumbnail style={{ marginTop:'30px',marginLeft:'50px',marginBottom:'30px',width: '208px', height: '80px', border: 'none' }} />
           </a>
-          {/* <div style={{ 
-          display: 'flex', 
-          justifyContent: 'center', 
-          alignItems: 'center', 
-          height: '100vh',
-          textAlign: 'center',
-          background: 'linear-gradient(180deg, #F5CC40 0%, #4FBBB4 100%)',
-          
-    
-
-        }}> */}
         <div style={{background:'linear-gradient(180deg, #F5CC40 0%, #4FBBB4 100%)'}}>
         <div style={{ margin: '0 auto', maxWidth: '800px', padding: '20px', fontFamily: 'Arial, sans-serif', lineHeight: '1.6' ,background: 'linear-gradient(180deg, #F5CC40 0%, #4FBBB4 100%)',}}>
       
@@ -213,12 +199,6 @@ function Terms() {
       <p style={{color:'white'}}>Advertiser shall procure and keep valid all necessary licenses, permissions, authorizations, consents, approvals, and registrations with/from any government department, agency, or authority required for it to perform the Services in accordance with this Agreement and bear sole and exclusive responsibility for all compliances with such licenses, permissions, authorizations, consents, approvals, and registrations.</p>
     </div>
     </div>
-
-
-
-            
-       
-          {/* <Footer /> */}
         
         </div>
     )
