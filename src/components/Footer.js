@@ -52,7 +52,8 @@ const Footer = () => {
           <h6 className=" font-weight-bold">Get Social</h6>
           <p style={{fontSize:'15px'}}><a href="https://www.instagram.com/elkcompany2024?igsh=a2s4dTVpbmQ0amNm" className="text-dark">Instagram</a></p>
         <p style={{fontSize:'15px'}}><a href="https://www.linkedin.com/company/elkcompany/" className="text-dark">LinkedIn</a></p>
-          
+        {/* <p style={{fontSize:'15px'}}><a href="https://www.linkedin.com/company/elkcompany/" className="text-dark">Facebook</a></p>
+           */}
       <p style={{fontSize:'15px'}}><a href="https://x.com/elkcompanyin?t=pOgye8kJHalI7o-00wpJJA&s=09" className="text-dark">X</a></p>
         </Col>
         <Col md={2} sm={12}  className='text-center mt-md-5'>
