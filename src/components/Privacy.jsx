@@ -113,6 +113,7 @@ function Privacy() {
         <h2>Contact Us</h2>
         <p>If you have any questions or concerns about this Privacy Policy, please contact us at:</p>
         <p><strong>Email:</strong> elkcompanyin@gmail.com</p>
+        <p><strong>Contact No: +91-7012931047</strong></p>
         <p>Thank you for trusting ELK with your personal information. We are committed to protecting
           your privacy and ensuring a safe and secure experience on our platform.</p>
       </section>
