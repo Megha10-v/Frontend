@@ -99,13 +99,55 @@
 
   #home{
     background-position: 20% 0%;
-    background-size: 400%;
+    background-size: 600%;
   
   }
 }
 
 
+.adbutton{
+  background-color: #4FBBB4;
+  border-color: #4FBBB4;
+  border-radius: 21px;
+  height: 40px;
+  width: 400px;
+  color: white;
+}
 
+@media only screen and (max-width: 600px){
+  .adbutton{
+    margin-top: 10px;
+    width: 200px;
+  }
+}
+
+.rentbutton{
+  background-color: #4FBBB4;
+  border-color: #4FBBB4;
+  border-radius: 21px;
+  height: 40px;
+  width: 300px;
+  color: white;
+}
+
+@media only screen and (max-width: 600px){
+  .rentbutton{
+    margin-top: 10px;
+    width: 200px;
+  }
+}
+
+.swiper-slide {
+  transform: scale(0.85);
+  filter: brightness(0.7);
+  transition: all 0.4s ease;
+}
+
+.swiper-slide-active {
+  transform: scale(1);
+  filter: brightness(1);
+  z-index: 10;
+}
 
 
 
