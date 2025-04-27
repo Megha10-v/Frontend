@@ -22,7 +22,7 @@ function AdminAllUsers() {
 
     const fetchusers = async () => {     
         try {
-            const response = await axios.get(`http://localhost:3000/api/get-users`);            
+            const response = await axios.get(`https://api.elkcompany.online/api/get-users`);            
             setusers(response.data.users);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -33,7 +33,7 @@ function AdminAllUsers() {
         const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
         if (!confirmDelete) return;
         try {
-          const response = await fetch(`http://localhost:3000/api/block_user?id=${userId}`, {
+          const response = await fetch(`https://api.elkcompany.online/api/block_user?id=${userId}`, {
             method: 'PUT',
             headers: {
               'Content-Type': 'application/json',

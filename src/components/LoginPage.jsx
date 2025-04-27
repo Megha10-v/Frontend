@@ -29,7 +29,7 @@ const LoginPage = () => {
             const name = user.displayName;
             const email = user.email;
             const uuid = user.uid;
-            const response = await axios.post('http://localhost:3000/api/create_user', {
+            const response = await axios.post('https://api.elkcompany.online/api/create_user', {
                 name,
                 uuid,
                 email,
@@ -62,7 +62,7 @@ const LoginPage = () => {
         setError('');
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3000/api/send_otp', { mobile: `+91 ${phoneNumber}` });
+            const response = await axios.post('https://api.elkcompany.online/api/send_otp', { mobile: `+91 ${phoneNumber}` });
             console.log('OTP Sent:', response.data);
             setStep('otp'); 
             setVerificationId(response.data.verificationId)
@@ -85,7 +85,7 @@ const LoginPage = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post('http://localhost:3000/api/verify_otp', { verificationId: verificationId, otp: otp });
+            const response = await axios.post('https://api.elkcompany.online/api/verify_otp', { verificationId: verificationId, otp: otp });
             console.log('OTP Verified:', response.data);
             // setCookie('elk_authorization_token',response.data.data.token,{path:'/',maxAge: 7 * 24 * 60 * 60, })
             localStorage.setItem('elk_authorization_token', response.data.data.token);

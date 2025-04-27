@@ -24,7 +24,7 @@ function AdminHome() {
 
     const fetchAdLocations = async () => {
         try {
-            const response = await axios.get(`http://localhost:3000/api/get-ad-locations`);            
+            const response = await axios.get(`https://api.elkcompany.online/api/get-ad-locations`);            
             setAdLocations(["Select","New Delhi", ...response.data.list]);
         } catch (error) {
             console.error("Error fetching ads:", error);
@@ -36,7 +36,7 @@ function AdminHome() {
             let query = [];            
             if (selectedDate) query.push(`date=${selectedDate}`);
             if (selectedLocation) query.push(`location=${selectedLocation}`);
-            const response = await axios.get(`http://localhost:3000/api/get-admin-ads?${query.join("&")}`);            
+            const response = await axios.get(`https://api.elkcompany.online/api/get-admin-ads?${query.join("&")}`);            
             setAds(response.data.ads);
         } catch (error) {
             console.error("Error fetching ads:", error);

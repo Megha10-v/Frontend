@@ -51,7 +51,7 @@ const ChatScreen = () => {
       setChatLoading(true)
       try {
         const response = await fetch(
-          `http://localhost:3000/api/get_chat?authUserId=${user.user_id}&otherUserId=${selectedChatRoom.otherUser.user_id}`, 
+          `https://api.elkcompany.online/api/get_chat?authUserId=${user.user_id}&otherUserId=${selectedChatRoom.otherUser.user_id}`, 
           {
             method: 'GET',
             headers: {

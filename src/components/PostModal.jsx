@@ -28,7 +28,7 @@ const PostModal = ({ show, onHide, post }) => {
       setLoading(true)
       setError(false);
       const response = await axios.post(
-        'http://localhost:3000/api/get_ad_details',
+        'https://api.elkcompany.online/api/get_ad_details',
         body,
         {
           headers: {
@@ -64,8 +64,8 @@ const PostModal = ({ show, onHide, post }) => {
     if (!adDetails || !token) return;
   
     const url = adDetails.wishListed
-      ? 'http://localhost:3000/api/remove_wishlist'
-      : 'http://localhost:3000/api/add_to_wishlist';
+      ? 'https://api.elkcompany.online/api/remove_wishlist'
+      : 'https://api.elkcompany.online/api/add_to_wishlist';
   
     try {
       await axios.post(

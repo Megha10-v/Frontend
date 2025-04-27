@@ -53,7 +53,7 @@ const Service = () => {
   useEffect(() => {
     const fetchBestProviders = async () => {
       try {
-        const response = await axios.post('http://localhost:3000/api/best_service_providers', 
+        const response = await axios.post('https://api.elkcompany.online/api/best_service_providers', 
           body,
           {
             headers: {

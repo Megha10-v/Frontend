@@ -31,7 +31,7 @@ const AdCategory = ({category,type}) => {
     useEffect(() => {
         const fetchWishlist = async () => {
           try {
-              const res = await axios.post("http://localhost:3000/api/rent_category_posts", 
+              const res = await axios.post("https://api.elkcompany.online/api/rent_category_posts", 
                 {
                   ad_type: type,
                   category: category.title

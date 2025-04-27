@@ -53,7 +53,7 @@ const Rental = () => {
   }
   const fetchRecommendedPosts = async (token) => {    
     try {
-      const response = await axios.post(`http://localhost:3000/api/recomented_posts`,
+      const response = await axios.post(`https://api.elkcompany.online/api/recomented_posts`,
         body,
         {
           headers: {

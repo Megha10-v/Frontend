@@ -17,7 +17,7 @@ const UserProfilePage = () => {
     useEffect(() => {
         const fetchUserData = async () => {
           try {
-            const res = await axios.post("http://localhost:3000/api/user_with_ads", 
+            const res = await axios.post("https://api.elkcompany.online/api/user_with_ads", 
               {
                 user_id: id
               },
@@ -36,7 +36,7 @@ const UserProfilePage = () => {
         };
         const fetchContact = async () => {
           try {
-            const res = await axios.post("http://localhost:3000/api/view_contact", 
+            const res = await axios.post("https://api.elkcompany.online/api/view_contact", 
               {
                 userId: id
               },

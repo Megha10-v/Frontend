@@ -71,7 +71,7 @@ function App() {
                 try {
                     const { id: userId } = jwtDecode(token);
                     const response = await axios.post(
-                        `http://localhost:3000/api/get_user?id=${userId}`,
+                        `https://api.elkcompany.online/api/get_user?id=${userId}`,
                         {},
                         {
                             headers: { authorization: `Bearer ${token}` }

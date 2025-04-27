@@ -61,7 +61,7 @@ export default function AdTabs() {
 
   const handleFormSubmit = async (formData) => {
     try {
-        const response = await axios.post('http://localhost:3000/api/create_post', formData, {
+        const response = await axios.post('https://api.elkcompany.online/api/create_post', formData, {
             headers: {
                 'authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json'
