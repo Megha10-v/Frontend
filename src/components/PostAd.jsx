@@ -1,0 +1,252 @@
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
+import car from '../assets/car.png';
+import bike from '../assets/bike.png';
+import tools from '../assets/tools.png';
+import cloth from '../assets/cloth.png';
+import furniture from '../assets/furniture.png';
+import helicopter from '../assets/helicopter.png';
+import electronics from '../assets/electronics.png';
+import property from '../assets/property.png';
+import others from '../assets/others.png';
+import cleaning from '../assets/cleaning.png';
+import carpentry from '../assets/carpentry.png';
+import plumbing from '../assets/plumbing.png';
+import painting from '../assets/painting.png';
+import repair from '../assets/repair.png';
+import haircut from '../assets/haircut.png';
+import laundry from '../assets/laundry.png';
+import electrician from '../assets/electrician.png';
+import AppHeader from './AppHeader';
+import Footer from './AppFooter';
+import OfferForm from './OfferForm';
+import { useSelector } from 'react-redux';
+import './AdTabs.css'
+import ImageUploadForm from './ImageUploadForm';
+import AdLOcation from './AdLocation';
+import Loader from './Loader';
+const PostAdForm = () => {
+    const navigate = useNavigate();
+    const [loading, setLoading] = useState(false);
+    const categories = {
+      rent: [
+        { name: 'Car', image: car },
+        { name: 'Property', image: property },
+        { name: 'Electronics', image: electronics },
+        { name: 'Furniture', image: furniture },
+        { name: 'Bike', image: bike },
+        { name: 'Cloth', image: cloth },
+        { name: 'Tools', image: tools },
+        { name: 'Helicopter', image: helicopter },
+        { name: 'Other', image: others },
+      ],
+      service: [
+        { name: 'Cleaning', image: cleaning },
+        { name: 'Repairing', image: repair },
+        { name: 'Painting', image: painting },
+        { name: 'Electrician', image: electrician },
+        { name: 'Carpentry', image: carpentry },
+        { name: 'Laundry', image: laundry },
+        { name: 'Plumbing', image: plumbing },
+        { name: 'Salon', image: haircut },
+        { name: 'Other', image: others },
+      ],
+    };
+    const [step, setStep] = useState();
+    const [adId, setAdId] = useState(null);
+    const [showSelectCategory, setShowSelectCategory] = useState(true);
+    const [activeTab, setActiveTab] = useState('rent');
+    
+    const [formData, setFormData] = useState({
+        title: '',
+        description: '',
+        ad_type: '',
+        category: '',
+        ad_prices: {
+            daily: '',
+            weekly: '',
+            monthly: ''
+        }
+    });
+    
+    const handleCategoryClick = (itemName) => {
+        setFormData((prevData) => ({
+            ...prevData,
+            category: itemName
+        }));
+        setShowSelectCategory(false)
+    };
+    const handleBack = () =>{
+        setShowSelectCategory(true);
+        setFormData({
+            title: '',
+            description: '',
+            ad_type: '',
+            category: '',
+            ad_prices: {
+                daily: '',
+                weekly: '',
+                monthly: ''
+            }
+        });
+    }
+    const token = localStorage.getItem('elk_authorization_token');
+    useEffect(() => {
+        if (!token) return;
+        const fetchAd = async () => {      
+            try {
+                const response = await axios.get('http://localhost:3000/api/get_recent_unsaved_ad', { 
+                    headers: {
+                        'authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                const ad = response.data;
+                setStep(ad && Object.keys(ad).length !== 0 ? ad.ad_stage + 1 : 1);
+                setAdId(ad && Object.keys(ad).length !==0? ad.ad_id:null)
+            } catch (error) {
+                console.log(error);     
+            }
+        };
+        fetchAd();
+    }, [token]);    
+
+    const headers = {
+        Authorization: `Bearer ${token}`,
+
+    };
+
+    const handleAdCreate = async (data) => {
+        setLoading(true);
+        try {
+            const response = await axios.post('http://localhost:3000/api/create_post', 
+                data, 
+                { 
+                    headers: {
+                        'authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                 });
+            setAdId(response.data.ad_id);
+            setStep(2);
+        } catch (err) {
+            alert('Failed to create ad');
+        } finally{
+            setLoading(false);
+        }
+    };
+
+    const handleImageUpload = async (data) => {
+        setLoading(true);
+        try {
+            const formDataImg = new FormData();
+            for (const file of data) {
+                formDataImg.append('files', file);
+            }            
+            await axios.post(`http://localhost:3000/api/upload_ad_image?ad_id=${adId}&ad_stage=2&ad_status=offline`, data, {
+                headers: {
+                    'authorization': `Bearer ${token}`,
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+            setStep(3);
+        } catch (err) {
+            alert('Image upload failed');
+        } finally{
+            setLoading(false);
+        }
+    };
+
+    const handleAddressSubmit = async (data) => {
+        setLoading(true);
+        try {
+            const payload = {
+                ad_id: adId,
+                country: data.country,
+                latitude: data.latitude,
+                longitude: data.longitude,
+                state: data.state,
+                district: data.district,
+                locality: data.locality,
+                place: data.place,
+                ad_stage: 3,
+                ad_status: 'online'
+            };
+            await axios.post('http://localhost:3000/api/update_ad_address', payload, { headers });
+            navigate('/home');
+        } catch (err) {
+            alert('Address update failed');
+        } finally{
+            setLoading(false);
+        }
+    };
+
+    return (
+        <>
+            <AppHeader/>
+            <div className="container" style={{minHeight:'70vh'}}>
+                {loading??<Loader/>}
+                {step === 1 && (
+                    <div>
+                        {showSelectCategory?(
+                            <>
+                                <h2 className="offering-title" style={{textAlign:'center', marginTop:'100px'}}>What are you offering?</h2>
+                                <div className="tabs">
+                                    <span className={`tab ${activeTab === 'rent' ? 'active' : ''}`} onClick={() => setActiveTab('rent')}>
+                                    Renting
+                                    </span>
+                                    <span className={`tab ${activeTab === 'service' ? 'active' : ''}`} onClick={() => setActiveTab('service')}>
+                                    Service
+                                    </span>
+                                </div>
+                                <div className="categories-grid">
+                                    {categories[activeTab].map((item) => (
+                                    <button
+                                        key={item.name}
+                                        className="category-button"
+                                        onClick={() => handleCategoryClick(item.name)}
+                                    >
+                                        <img src={item.image} alt={item.name} className="category-icon" />
+                                        <div className="label">{item.name}</div>
+                                    </button>
+                                    ))}
+                                </div>
+                            </>
+                        )
+                        :
+                        (
+                            <OfferForm
+                                selectedItem={{ type: activeTab, name: formData.category }}
+                                onBack={handleBack}
+                                onSubmit={handleAdCreate}
+                            />
+                        )}
+                    </div>
+                )}
+
+                {step === 2 && (
+                    <div>
+                        <ImageUploadForm postId={adId}  onClose={handleBack} onSubmit={handleImageUpload}/>
+                    </div>
+                )}
+
+                {step === 3 && (
+                    <div>
+                        <AdLOcation onSubmit={handleAddressSubmit} onClose={handleBack}/>
+                        {/* <input type="text" placeholder="Country" onChange={e => setAddress({ ...address, country: e.target.value })} />
+                        <input type="text" placeholder="State" onChange={e => setAddress({ ...address, state: e.target.value })} />
+                        <input type="text" placeholder="District" onChange={e => setAddress({ ...address, district: e.target.value })} />
+                        <input type="text" placeholder="Locality" onChange={e => setAddress({ ...address, locality: e.target.value })} />
+                        <input type="number" placeholder="Latitude" onChange={e => setAddress({ ...address, latitude: e.target.value })} />
+                        <input type="number" placeholder="Longitude" onChange={e => setAddress({ ...address, longitude: e.target.value })} />
+                        <button onClick={handleAddressSubmit}>Finish & Go Home</button> */}
+                    </div>
+                )}
+            </div>
+            <Footer/>
+        </>
+    );
+};
+
+export default PostAdForm;

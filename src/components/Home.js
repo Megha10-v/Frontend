@@ -1,6 +1,6 @@
 import React from "react";
 import { useState, useRef, useEffect} from "react";
-import { motion, useInView, AnimatePresence} from "framer-motion";
+import { motion, useInView, AnimatePresence, color} from "framer-motion";
 
 import 'swiper/css';
 import 'swiper/css/effect-coverflow';
@@ -23,27 +23,11 @@ import app5 from '../images/app5.jpg'
 import app6 from '../images/app6.jpg'
 import layer1 from '../images/layer1.png'
 import layer2 from '../images/layer2.png'
-// import car from '../images/car.png'
-// import carpentry from '../images/carpentry.png'
-// import cleaning from '../images/cleaning.png'
-// import cloth from '../images/cloth.png'
-// import electrician from '../images/electrician.png'
-// import ic_plumbing_service from '../images/ic_plumbing_service.png'
-// import ic_repairing_service from '../images/ic_repairing_service.png'
-// import ic_saloon_service from '../images/ic_saloon_service.png';
-// import ic_carpentry_service from '../images/ic_carpentry_service.png'
-// import ic_electrician_service from '../images/ic_electrician_service.png';
-// import laundry from '../images/laundry.png'
-// import furniture from '../images/furniture.png'
-
 import './Home.css';
 import astronaut from '../images/astronaut.jpg'
-
-
 import Article from "./Article";
 import Header from "./Header";
-
-
+import Footer from "./Footer";
 
 function Home() {
   const [expandedServiceJobs, setExpandedServiceJobs] = useState(false);
@@ -100,7 +84,7 @@ function Home() {
       <Container fluid>
         <Nav className="w-100 d-flex justify-content-end align-items-center">
           <Nav className="  d-flex align-items-center " >
-          <Nav.Link   as={Link} to="/careers" className="text-white mx-3">
+          <Nav.Link   as={Link} to="/home" className="text-white mx-3">
               Start Your Business
             </Nav.Link>
           </Nav>
@@ -125,7 +109,7 @@ function Home() {
           transition={{ duration: 0.5 }}
           className="absolute left-0 right-0 top-1/2 -translate-y-1/2"
         >
-          {texts[index]}
+          <Link to='/home' style={{textDecoration:'none',color:'white'}}>{texts[index]}</Link>
         </motion.span>
       </AnimatePresence>
     </button>
@@ -405,7 +389,7 @@ function Home() {
       </Row>
       <Row className="justify-content-center mb-5">
         <Col xs="auto">
-        <button className="adbutton">Post Your Ad for free</button>
+        <button className="adbutton"><Link to='/home' style={{textDecoration:'none',color:'white'}}>Post Your Ad for free</Link></button>
         </Col>
       </Row>
     </Container>
@@ -434,13 +418,13 @@ function Home() {
         style={{ display: "inline-block", marginRight: "0.5rem" }}
       >
         🚀
-      </motion.span> Ready to get started? <button className="adbutton">Start Your Free Account</button>
+      </motion.span> Ready to get started?<button  className="adbutton"> <Link to='/home' style={{textDecoration:'none',color:'white'}}>Start Your Free Account</Link></button>
 </div>
 
  
     <Article/>
     {/* <Customer/> */}
-    {/* <Footer/> */}
+    <Footer/>
 
  
 

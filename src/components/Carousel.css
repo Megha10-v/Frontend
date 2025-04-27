@@ -1,0 +1,50 @@
+.carousel-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  .carousel {
+    overflow: hidden;
+    width: 100%;
+  }
+  
+  .carousel-track {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .carousel-button {
+    background-color: #ffffff;
+    border: none;
+    font-size: 2rem;
+    cursor: pointer;
+    padding: 10px;
+    user-select: none;
+  }
+  
+  .image-container {
+    flex: 1 0 23%;
+    text-align: center;
+  }
+  
+  .circle-image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #ddd;
+    transition: transform 0.3s ease;
+  }
+  
+  .circle-image:hover {
+    transform: scale(1.1);
+  }
+  
+
+  

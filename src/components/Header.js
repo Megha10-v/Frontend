@@ -45,7 +45,7 @@ function Header() {
             <Nav.Link   as={Link} to="/careers" className="ms-5">
               Careers
             </Nav.Link>
-            <Nav.Link href="#blog" className='ms-5 fw-bold'>Sign Up</Nav.Link>
+            <Nav.Link as={Link} to="/login" className='ms-5 fw-bold'>Sign Up</Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

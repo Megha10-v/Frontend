@@ -1,0 +1,68 @@
+.notification-form {
+    max-width: 500px;
+    margin: 20px auto;
+    padding: 20px;
+    background: white;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.notification-form .label {
+    font-size: 12px;
+    margin-left: 10px;
+    color: #4FBBB4;
+    margin-top: 20px;
+}
+
+.notification-form .textarea {
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border: 1px solid rgba(0, 0, 0, 0.336);
+    border-left: 3px solid #4FBBB4;
+    border-radius: 10px;
+    cursor: pointer;
+}
+.notification-form .textarea textarea{
+    display: flex;
+    height: 100%;
+    background:transparent;
+    width: 100%;
+    border: none;  
+    outline: none;  
+    border-radius: 10px;
+    font-size: 18px;
+}
+
+.notification-form button {
+    width: 90%;
+    margin-left: 5%;
+    height: 40px;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    background-color: #4FBBB4;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    margin-top: 20px;
+    cursor: pointer;
+    /* width: 100%;
+    padding: 10px;
+    background-color: #FFDA3F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px; */
+}
+
+.notification-form button:hover {
+    background-color: #FFDA3F;
+}
+/* .notification-form .label:hover {
+    color: #FFDA3F;
+}
+.notification-form .textarea:hover{
+    border-left: 3px solid #FFDA3F;
+} */

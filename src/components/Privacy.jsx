@@ -1,6 +1,7 @@
 import React from 'react'
 import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
 import {Image} from 'react-bootstrap'
+import Footer from './Footer'
 
 
 function Privacy() {
@@ -119,7 +120,7 @@ function Privacy() {
       </section>
     </div>
     </div>
-
+<Footer/>
         
         </div>
     )

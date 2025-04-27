@@ -1,0 +1,68 @@
+.adminnavbar{
+  width: calc(100% - 250px) !important;
+  display: flex;
+  margin-left: 250px;
+  z-index: 1;
+  background-color: #ffffff;
+  height: 4rem;
+  color: rgb(0, 0, 0);
+  box-shadow: 0 1px 10px 0px rgba(0, 0, 0, 0.3);
+  justify-content: space-between;
+  align-items: center;
+}
+.adminnavbar .date{
+  /* width: calc(100% - 100px) !important; */
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.adminnavbar .account{
+  width: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  position: relative;
+  cursor: pointer;
+}
+.account-menu {
+  position: absolute;
+  top: 100%;
+  right: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
+  overflow: hidden;
+  z-index: 1;
+  background-color: #39151b;
+}
+  
+.account-menu button {
+  color: white;
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+}
+  
+.account-menu button:hover {
+  background-color: #166736;
+}
+@media only screen and (max-width: 600px) {
+  .adminnavbar{
+    width: 100% !important;
+    margin-left: 0;
+    background-color: #ffffff;
+    box-shadow: none;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 30px;
+  }
+  .adminnavbar .date{
+    text-align: center;
+  }
+}

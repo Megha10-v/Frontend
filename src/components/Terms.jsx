@@ -1,6 +1,7 @@
 import React from 'react'
 import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
 import {Image} from 'react-bootstrap'
+import Footer from './Footer'
 
 
 function Terms() {
@@ -199,7 +200,7 @@ function Terms() {
       <p style={{color:'white'}}>Advertiser shall procure and keep valid all necessary licenses, permissions, authorizations, consents, approvals, and registrations with/from any government department, agency, or authority required for it to perform the Services in accordance with this Agreement and bear sole and exclusive responsibility for all compliances with such licenses, permissions, authorizations, consents, approvals, and registrations.</p>
     </div>
     </div>
-        
+        <Footer/>
         </div>
     )
 

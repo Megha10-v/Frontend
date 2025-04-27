@@ -1,0 +1,122 @@
+.sidebar {
+    position: fixed;
+    width: 250px;
+    min-height: 100vh;
+    background-color: #ffffff;
+    color: rgb(0, 0, 0);
+    box-shadow: 0 1px 10px 0px rgba(0, 0, 0, 0.3);
+}
+.togglebtn{
+    display: none;
+}
+.sidebar .logo {
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.sidebar .logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+}
+
+.sidebar .links {
+    width: 80%;
+    margin-left: 15%;
+    margin-top: 30px;
+}
+
+.sidebar .links .listitem {
+    margin-bottom: 5px;
+    text-decoration: none;
+    color: black;
+}
+.sidebar .links .nolistitems{
+    text-decoration: none;
+    color: black;
+}
+.sidebar .links .listitem .listitemhead {
+    display: flex;
+    padding: 5px 0;
+    cursor: pointer;
+}
+
+.sidebar .links .listitem .listitemhead .icon {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+}
+
+.sidebar .links .listitem .listitemhead .title {
+    height: 100%;
+    width: 60%;
+    display: flex;
+    justify-content: flex-start;
+    align-items: flex-end;
+    padding-top: 5px;
+}
+.sidebar .links .listitem .listitemhead .arrow {
+    height: 100%;
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.3rem;
+}
+
+.children {
+    overflow: hidden;
+    max-height: 0;
+    transition: max-height 0.3s ease-out;
+}
+
+.children.open {
+    max-height: 1000px;
+}
+
+@media only screen and (max-width: 600px) {
+    .sidebar {
+        height: 100%;
+        display: none;
+        box-shadow: none;
+        padding-top: 30px;
+    }
+    .sidebar.open{
+        display: block;
+    }
+    .togglebtn{
+        display: flex;
+        width: 100%;
+        background-color: white;
+        height: 30px;
+        position: fixed;
+        z-index: 100000000;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .togglebtn .btn{
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    .togglebtn .logo{
+        width: 80%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .togglebtn .logo img {
+        width: 80%;
+        height: 80%;
+        object-fit: contain;
+    }
+}

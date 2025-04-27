@@ -1,6 +1,7 @@
 import React from 'react';
 import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
 import {Image} from 'react-bootstrap'
+import Footer from './Footer';
 
 const Careers = () => {
   return (
@@ -22,6 +23,7 @@ const Careers = () => {
         but there are no job openings available at this time. <br/>
         Please check back at another time."</h2>
     </div>
+    <Footer/>
     </div>
   );
 };
