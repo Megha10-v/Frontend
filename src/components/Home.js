@@ -1,21 +1,44 @@
 import React from "react";
-import { useState } from "react";
+import { useState, useRef, useEffect} from "react";
+import { motion, useInView, AnimatePresence} from "framer-motion";
+
+import 'swiper/css';
+import 'swiper/css/effect-coverflow';
+import 'swiper/css/autoplay';
+
+import { Swiper, SwiperSlide } from 'swiper/react';
+import { EffectCoverflow, Autoplay } from 'swiper/modules';
 
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-import Image from 'react-bootstrap/Image'
-import { Carousel } from "react-bootstrap";
 import Container from 'react-bootstrap/Container';
-import { Row, Col, Button } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import { FiDownload } from "react-icons/fi";
 import { Link } from 'react-router-dom';
 import app1 from '../images/app1.jpg'
 import app2 from '../images/app2.jpg'
 import app3 from '../images/app3.jpg'
+import app4 from '../images/app4.jpg'
+import app5 from '../images/app5.jpg'
+import app6 from '../images/app6.jpg'
 import layer1 from '../images/layer1.png'
 import layer2 from '../images/layer2.png'
+// import car from '../images/car.png'
+// import carpentry from '../images/carpentry.png'
+// import cleaning from '../images/cleaning.png'
+// import cloth from '../images/cloth.png'
+// import electrician from '../images/electrician.png'
+// import ic_plumbing_service from '../images/ic_plumbing_service.png'
+// import ic_repairing_service from '../images/ic_repairing_service.png'
+// import ic_saloon_service from '../images/ic_saloon_service.png';
+// import ic_carpentry_service from '../images/ic_carpentry_service.png'
+// import ic_electrician_service from '../images/ic_electrician_service.png';
+// import laundry from '../images/laundry.png'
+// import furniture from '../images/furniture.png'
+
 import './Home.css';
 import astronaut from '../images/astronaut.jpg'
+
 
 import Article from "./Article";
 import Header from "./Header";
@@ -23,13 +46,53 @@ import Header from "./Header";
 
 
 function Home() {
-
   const [expandedServiceJobs, setExpandedServiceJobs] = useState(false);
   const [expandedRentingOpportunities, setExpandedRentingOpportunities] = useState(false);
   const [expandedGettingStarted, setExpandedGettingStarted] = useState(false);
   const [expandedMaximizingEarnings, setExpandedMaximizingEarnings] = useState(false);
 
-  
+  const texts = ["Service Now", "Rent Now"];
+  const [index, setIndex] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setIndex((prev) => (prev + 1) % texts.length);
+    }, 2000); // change every 2 seconds
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const images = [app1,app2,app3, app4, app5, app6]
+
+  const letters = 'WHO WE ARE?'.split('');
+  const founderMessage =  'MESSAGE FROM FOUNDER'.split('')
+  const variants = {
+    hidden: { opacity: 0 },
+    show: (i) => ({
+      y: 0,
+      opacity: 1,
+      transition: { delay: i * 0.07 },
+    }),
+  };
+ 
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: false });
+
+
+  const swiperRef = useRef(null);
+
+  const handleImageClick = () => {
+    if (swiperRef.current?.autoplay) {
+      swiperRef.current.autoplay.stop();
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (swiperRef.current?.autoplay) {
+      swiperRef.current.autoplay.start();
+    }
+  };
+
   return (
     <div>
       <Header />
@@ -37,54 +100,8 @@ function Home() {
       <Container fluid>
         <Nav className="w-100 d-flex justify-content-end align-items-center">
           <Nav className="  d-flex align-items-center " >
-            {/* <Nav.Link href="#search" className="text-white mx-3">
-              <IoSearch /> My Searches
-            </Nav.Link>
-            <Nav.Link href="#favorites" className="text-white mx-3">
-              <MdFavoriteBorder /> Favourites
-            </Nav.Link>
-            <Nav.Link href="#searchbar" className="mx-3">
-              <InputGroup>
-                <InputGroup.Text id="search-addon" style={{ borderRadius: '53px 0px 0px 53px', backgroundColor: 'rgba(255, 255, 255, 0.62)' }}>
-                  <IoSearch />
-                </InputGroup.Text>
-                <FormControl
-                  placeholder="Search"
-                  aria-label="Search"
-                  aria-describedby="search-addon"
-                  style={{ borderRadius: '0px 53px 53px 0px', backgroundColor: 'rgba(255, 255, 255, 0.62)', width: '300px' }}
-                />
-              </InputGroup>
-            </Nav.Link>
-            <Nav.Link href="#elk" className="mx-3">
-              <InputGroup>
-                <InputGroup.Text id="ad-addon" style={{ borderRadius: '53px 0px 0px 53px', backgroundColor: 'rgba(255, 255, 255, 0.62)' }}>
-                  <IoMdAddCircleOutline />
-                </InputGroup.Text>
-                <FormControl
-                  placeholder="Place your Ad"
-                  aria-label="Ad"
-                  aria-describedby="ad-addon"
-                  style={{ borderRadius: '0px 53px 53px 0px', backgroundColor: 'rgba(255, 255, 255, 0.62)' }}
-                />
-              </InputGroup>
-            </Nav.Link> */}
-            {/* <Nav.Link href="#faq" className="text-white mx-3" >
-              FAQ
-            </Nav.Link> */}
-            
-            <Nav.Link as={Link} to="/privacy" className="text-white mx-3" onClick={() => {
-          // Scroll to the 'aboutus' section on home page
-          setTimeout(() => {
-            const element = document.getElementById('contactsinprivacy');
-            if (element) {
-              element.scrollIntoView({ behavior: 'smooth' });
-            }
-          }, 0);
-        }}>Contacts</Nav.Link>
-             
-            <Nav.Link   as={Link} to="/careers" className="text-white mx-3">
-              Careers
+          <Nav.Link   as={Link} to="/careers" className="text-white mx-3">
+              Start Your Business
             </Nav.Link>
           </Nav>
         </Nav>
@@ -94,69 +111,162 @@ function Home() {
     <Container fluid className="position-relative " style={{ maxWidth: "100%", height: "100%" }} >
   <div className="position-absolute top-0 start-0 end-0 bottom-0 " id='home' >
   </div>
+  
+
   <Container className="pt-md-5">
-  <h1 className=" pt-4 mt-md-5  text-white">
-    TURN YOUR STUFF AND SERVICES <span className="d-none d-md-inline"><br /></span> INTO CASH MACHINES
-</h1>
+<div className="d-flex justify-content-center">
+<button className="rentbutton position-relative px-4 py-2">
+      <AnimatePresence mode="wait">
+        <motion.span
+          key={texts[index]}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -10 }}
+          transition={{ duration: 0.5 }}
+          className="absolute left-0 right-0 top-1/2 -translate-y-1/2"
+        >
+          {texts[index]}
+        </motion.span>
+      </AnimatePresence>
+    </button>
+</div>
 
-    <Row className="text-center pb-5 mt-md-5 d-block d-md-none">
-      <Carousel indicators={false} controls={true}>
-        <Carousel.Item>
-            <Image src={app1} className="img rounded" alt="app1" style={{ width: '189px', height: '336px'}} /><br/>
-            <Button variant="primary" className="download-btn text-white" style={{ width: '189px', height: '57px', marginTop:'42px'}}>Download App <FiDownload/></Button>
-        </Carousel.Item>
-        <Carousel.Item>
-            <Image src={app2} className="img rounded" alt="app2" style={{ width: '189px', height: '336px'}} /><br/>
-            <Image src={layer1} className="img rounded" alt="layer1" style={{ width: '189px', height: '57px', marginTop:'42px'}} />
-        </Carousel.Item>
-        <Carousel.Item>
-            <Image src={app3} className="img rounded" alt="app3" style={{ width: '189px', height: '336px'}} /><br/>
-            <Image src={layer2} className="img rounded" alt="layer2" style={{ width: '189px', height: '57px', marginTop:'42px'}} />
-        </Carousel.Item>
-      </Carousel>
-    </Row>
 
-    <Row className="justify-content-start mt-md-5 d-none d-md-flex ">
-        <Image src={app1} className="img rounded" alt="app1" style={{ width: '189px', height: '336px'}} />
-        <Image src={app2} className="img rounded" alt="app2" style={{ width: '189px', height: '336px', marginLeft:'20px' }} />
-        <Image src={app3} className="img rounded" alt="app3" style={{ width: '189px', height: '336px', marginLeft:'20px' }} />
+
+
+<motion.h1
+  className=" mt-md-5 text-white"
+  animate={{ scale:[0.5,1] ,}}
+  transition={{ duration: 5}}
+
+>
+  TURN YOUR STUFF AND SERVICES <br /> INTO CASH MACHINES
+</motion.h1>
+    <Row className="justify-content-start mt-4 ">
+    <div style={{ maxWidth: '620px' }}>
+      <Swiper
+        modules={[EffectCoverflow, Autoplay]}
+        effect="coverflow"
+        grabCursor={true}
+        centeredSlides={true}
+        slidesPerView={1.2}
+        breakpoints={{
+          576: {
+            slidesPerView: 2,
+          },
+          768: {
+            slidesPerView: 3,
+          },
+        }}
+        loop={true}
+        autoplay={{
+          delay: 2000,
+          disableOnInteraction: false,
+        }}
+        navigation
+        coverflowEffect={{
+          rotate: 0,
+          stretch: 0,
+          depth: 150,
+          modifier: 2,
+          slideShadows: true,
+        }}
+        onSwiper={(swiper) => {
+          swiperRef.current = swiper;
+        }}
+        style={{ padding: '10px 0' }}
+      >
+        {images.map((src, i) => (
+          <SwiperSlide key={i}>
+            <img
+              src={src}
+              alt={`app${i}`}
+              onClick={handleImageClick}
+              onMouseLeave={handleMouseLeave}
+              className="img rounded"
+              style={{
+                width: '189px',
+                height: '336px',
+                cursor: 'pointer',
+              }}
+            />
+          </SwiperSlide>
+        ))}
+      </Swiper>
+    </div>
+         
     </Row>
-    <Row className="justify-content-start d-none d-md-flex pb-5">
-        <Button variant="primary" className="download-btn text-white" style={{ width: '189px', height: '57px', marginTop:'42px'}}>Download App <FiDownload/></Button>
-        <Image src={layer1} className="img rounded" alt="layer1" style={{ width: '189px', height: '57px', marginTop:'42px', marginLeft:'20px' }} />
-        <Image src={layer2} className="img rounded" alt="layer2" style={{ width: '189px', height: '57px', marginTop:'42px', marginLeft:'20px'  }} />
-    </Row>    
+    <Row className="justify-content-start pb-5 flex-wrap mt-4">
+  <Col xs="12" md="auto" className="mb-3 mb-md-0 text-center">
+
+<motion.a
+  whileHover={{ scale: 1.1 }}
+  href="https://play.google.com/store/apps/details?id=com.elkbusinesshub.elk&hl=en-US" 
+  target="_blank"
+  rel="noopener noreferrer"
+  className="download-btn text-white d-inline-block"
+  style={{
+    width: '189px',
+    height: '57px',
+    textAlign: 'center',
+    lineHeight: '57px',
+    textDecoration: 'none',
+  }}
+>
+  Download App <FiDownload />
+</motion.a>
+
+  </Col>
+  <Col xs="12" md="auto" className="mb-3 mb-md-0 text-center">
+  <motion.a
+    whileHover={{ scale: 1.1 }}
+    href="https://play.google.com/store/apps/details?id=com.elkbusinesshub.elk&hl=en-US"
+    target="_blank"
+    rel="noopener noreferrer"
+    style={{ display: 'inline-block' }}
+  >
+    <img
+      whileHover={{ scale: 1.1 }}
+      src={layer1}
+      alt="layer1"
+      className="img rounded"
+      style={{
+        width: '189px',
+        height: '57px',
+      }}
+    />
+    </motion.a>
+  </Col>
+  <Col xs="12" md="auto" className="text-center">
+    <motion.img
+      whileHover={{ scale: 1.1 }}
+      src={layer2}
+      alt="layer2"
+      className="img rounded"
+      style={{
+        width: '189px',
+        height: '57px',
+      }}
+    />
+  </Col>
+  </Row>
 </Container>
 </Container>
 
 
-
-
-
-{/* <Container>
-  <h6  className="text-center fw-bold " style={{ marginLeft: '100px', marginTop: '70px' }}>EXPLORE RENTING AND <br /> SERVICES JOBS OPPORTUNITIES THROUGH ELK PLATFORM</h6>
-  <Container>
-
-    <CustomNav/>
-  </Container>
-
-
-
-</Container> */}
-
-<Container fluid style={{ 
+<div fluid style={{ 
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
   backgroundImage: `url(${astronaut})`,
   backgroundSize: 'cover',
-  backgroundPosition: '20%',
   backgroundRepeat: 'no-repeat',
   minHeight: '100vh',
   padding: '0',
   margin: '0',
-  zIndex: "-1"
-}} id='aboutus'>
+  zIndex: "-1",
+}}
+ id='aboutus'>
       <Row className="align-items-center" >
         <Col md={6} style={{ paddingLeft: '0' }}>
           
@@ -164,14 +274,33 @@ function Home() {
         </Col>
         <Col md={6} style={{ padding: '40px', color: '#fff' }}>
           <div style={{ padding: '20px' }}>
-            <h4>WHO WE ARE?</h4>
-            <p>
+          <motion.h3
+            ref={ref}
+            initial="hidden"
+            animate={isInView ? 'show' : 'hidden'}
+            variants={variants}>
+              {letters.map((word, i) => (
+                <motion.span key={`${word}-${i}`} variants={variants} custom={i}>
+                  {word}
+                </motion.span>
+                ))}
+            </motion.h3>
+            
+        <motion.p >
             ELK is an online platform for renting and services, making it simple to get what you need with a single click.
              We give you the tools to easily turn your assets and services into money-making opportunities. 
              ELK helps you modernize your rental business with ease. Our user-friendly platform makes everything simple, from managing inventory to handling service tasks, all in one place. 
             With ELK, property owners can grow their business without any hassle, while customers benefit from a seamless rental experience and quick access to services.
-            </p>
-            <h4 style={{marginTop:'70px'}}>MESSAGE FROM FOUNDER</h4>
+            </motion.p>
+            <motion.h4 style={{marginTop:'70px'}} ref={ref}
+            initial="hidden"
+            animate={isInView ? 'show' : 'hidden'}
+            variants={variants}>
+              {founderMessage.map((word, i) => (
+                <motion.span key={`${word}-${i}`} variants={variants} custom={i}>
+                  {word}
+                </motion.span>
+                ))}</motion.h4>
             <p>
             The future of business is out of this world.
               <br />
@@ -180,15 +309,15 @@ function Home() {
           </div>
         </Col>
       </Row>
-    </Container>
+    </div>
     <Container fluid style={{ overflowX: 'hidden' ,padding:0, backgroundColor:'#FDD77F'}} id='elk'>
       <Row style={{width:'90%',marginLeft:'5%'}} className="justify-content-center no-gutters">
         <Col md={10} className="mt-5">
           <h3 className="text-center mt-4">WHAT IS ELK PLATFORM?</h3>
-          <p className="text-center description">
+          <motion.p  className="text-center description">
             ELK Platform is a dynamic online marketplace that connects service providers with consumers seeking various services and rental options. It serves as a hub for individuals to offer their skills, expertise, and resources to a wide audience.
             Overview of its Service Jobs and Renting Opportunities. ELK Platform provides two primary avenues for earning money: service jobs and renting opportunities. Service jobs encompass a wide range of tasks and services that individuals can offer, while renting opportunities involve renting out personal belongings or spaces for temporary use.
-          </p>
+          </motion.p>
         </Col>
       </Row>
       <Row style={{width:'90%',marginLeft:'5%'}} className="justify-content-center no-gutters">
@@ -196,13 +325,6 @@ function Home() {
           <h5>1- UNDERSTANDING SERVICE JOBS</h5>
           <p className="mt-3 word-description">
             Explanation of Service Jobs on ELK Platform<br/>
-            {/* Service jobs on ELK Platform span diverse categories, including but not limited to: Home
-             services such as cleaning, gardening, and repairs. Freelance work such as writing, graphic
-             design, and programming. Personal services like tutoring, fitness coaching, and event planning.
-            Types of Service Jobs Available Users can browse through an array of service
-             job listings and select opportunities that align with their skills and interests. 
-             Whether you're {expandedServiceJobs && ( <>a professional looking to offer your expertise or a homeowner
-              needing assistance with household tasks, ELK Platform has options for you.</>)} */}
               The ELK BUSINESS HUB is an online platform which acts as a meeting point
               between people who want to perform some services and people who need them.
               Whether you are a professional who wants to offer his services or a client in
@@ -281,7 +403,40 @@ function Home() {
           </span>
         </Col>
       </Row>
+      <Row className="justify-content-center mb-5">
+        <Col xs="auto">
+        <button className="adbutton">Post Your Ad for free</button>
+        </Col>
+      </Row>
     </Container>
+    
+
+    <div
+  style={{
+    position: 'fixed',
+    bottom: 0,
+    width: '100%',
+    backgroundColor: 'white',
+    color: 'black',
+    textAlign: 'center',
+    padding: '1rem',
+    zIndex: 1000,
+    fontSize: '15px'
+  }}
+>
+<motion.span
+        animate={{ x: [0, -30, 0] }}
+        transition={{
+          duration: 2,
+          repeat: Infinity,
+          ease: "easeInOut"
+        }}
+        style={{ display: "inline-block", marginRight: "0.5rem" }}
+      >
+        🚀
+      </motion.span> Ready to get started? <button className="adbutton">Start Your Free Account</button>
+</div>
+
  
     <Article/>
     {/* <Customer/> */}
