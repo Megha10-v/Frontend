@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Form, Button, Container, Card, Alert, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 // import { useCookies } from 'react-cookie';
-import { auth, provider, signInWithPopup } from '../firebaseAuth';
+import { auth, provider, signInWithPopup } from '../firebase';
 
 const LoginPage = () => {
     const [phoneNumber, setPhoneNumber] = useState('');

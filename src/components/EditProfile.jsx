@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import { auth, provider, signInWithPopup } from '../firebaseAuth';
+import { auth, provider, signInWithPopup } from '../firebase';
 import { Button, Modal } from 'react-bootstrap';
 
 const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {

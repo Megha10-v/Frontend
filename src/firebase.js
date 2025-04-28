@@ -1,21 +1,24 @@
-// import { initializeApp } from 'firebase/app';
-// import { getFirestore } from 'firebase/firestore';
+import { getAuth, GoogleAuthProvider, signInWithPopup } from "firebase/auth";
+import { initializeApp } from "firebase/app";
+import { getFirestore } from 'firebase/firestore';
 
-// const firebaseConfig = {
-//     apiKey: "AIzaSyBneDiy9YGCUohFJwMf3n3MdaUt1Dufe3s",
-//     authDomain: "mainwebsite---email.firebaseapp.com",
-//     projectId: "mainwebsite---email",
-//     storageBucket: "mainwebsite---email.appspot.com",
-//     messagingSenderId: "314312525925",
-//     appId: "1:314312525925:web:451c0487cc64a3ed0b9e8c",
-//     measurementId: "G-T20YEZ19GZ"
-//   };
 
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
+const firebaseConfig = {
+  apiKey: "AIzaSyDOZ1RZ6o6fR8xQfeMZscV-yDpJ3ACdwJI",
+  authDomain: "elkbusinesshub.firebaseapp.com",
+  databaseURL: "https://elkbusinesshub-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "elkbusinesshub",
+  storageBucket: "elkbusinesshub.appspot.com",
+  messagingSenderId: "244262150078",
+  appId: "1:244262150078:web:b0a07bb9fa42efd96923ef",
+  measurementId: "G-PSPDTDY8N7"
+};
 
-// // Initialize Firestore
-// const db = getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const provider = new GoogleAuthProvider();
 
-// export { db };
+// Initialize Firestore
+const db = getFirestore(app);
 
+export { db, auth, provider, signInWithPopup };
