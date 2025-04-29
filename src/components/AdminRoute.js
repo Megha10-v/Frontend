@@ -3,12 +3,12 @@ import Error from './Error';
 
 const AdminRoute = ({ children }) => {
     const token = localStorage.getItem('elk_authorization_token');
-    const isAdmin = localStorage.getItem('elk_is_admin');
-    if(token){
-        if(isAdmin){
-            return children;
-        }
+    const isAdmin = localStorage.getItem('elk_is_admin') === 'true';
+
+    if (token && isAdmin) {
+        return children;
     }
+
     return <Error />;
 };
 

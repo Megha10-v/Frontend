@@ -48,9 +48,9 @@ function AppHeader() {
 
 
   const handleLogout = () => {
-
-    // removeCookie('elk_authorization_token');
     localStorage.removeItem('elk_authorization_token');
+    localStorage.removeItem('elk_is_admin');
+    localStorage.removeItem('elk_user_id');
     navigate('/home');
     window.location.reload();
   };

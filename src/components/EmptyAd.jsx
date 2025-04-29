@@ -1,12 +1,10 @@
 import React from "react";
 import img from '../assets/empty.png'
 
-const EmptyState = ({ title = "No Posts", message = "There are no posts to display." }) => {
+const EmptyState = () => {
   return (
     <div className="empty-state-container" style={styles.container}>
       <img src={img} alt="Empty" style={styles.image} />
-      <h2 style={styles.title}>{title}</h2>
-      <p style={styles.message}>{message}</p>
     </div>
   );
 };

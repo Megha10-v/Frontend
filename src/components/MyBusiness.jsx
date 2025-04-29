@@ -54,7 +54,7 @@ const MyBusiness = () =>{
             <NotLoggedIn />
           </div>
         ) : wishlist.length === 0 ? (
-            <EmptyState title="No Posts Found" message="You don't have posted yet." />
+            <EmptyState />
         ) : (
           <div className="row">
             {wishlist.map((ad) => (

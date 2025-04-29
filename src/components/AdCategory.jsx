@@ -65,7 +65,7 @@ const AdCategory = ({category,type}) => {
         {loading ? (
           <Loader/>
         ) : wishlist.length === 0 ? (
-          <EmptyState title="No Posts Found" message="There are currently no posts available." />
+          <EmptyState/>
         ) : (
           <div className="row">
             {wishlist.map((ad) => (

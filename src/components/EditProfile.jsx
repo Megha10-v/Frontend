@@ -5,7 +5,6 @@ import { Button, Modal } from 'react-bootstrap';
 
 const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
     const [activeTab, setActiveTab] = useState('profilePic');
-    // const [, setCookie] = useCookies(['elk_authorization_token']);
 
     const [loading, setLoading] = useState(false);
     const [formData, setFormData] = useState({
@@ -109,10 +108,6 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                 uuid,
                 email,
             });
-            // setCookie('elk_authorization_token', response.data.data.token, {
-            //     path: '/',
-            //     maxAge: 7 * 24 * 60 * 60,
-            // });
             localStorage.setItem('elk_authorization_token', response.data.data.token);
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);

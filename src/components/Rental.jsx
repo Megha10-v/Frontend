@@ -32,8 +32,6 @@ const Rental = () => {
   const [selectedPost, setSelectedPost] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [ads, setAds] = useState([]);
-  // const [cookies] = useCookies(["elk_authorization_token"]);
-  // const token = cookies.elk_authorization_token;
   const token = localStorage.getItem('elk_authorization_token');
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -97,7 +95,7 @@ const Rental = () => {
             <PostCard key={post.id} post={post} onClick={handleCardClick} />
           ))
         ) : (
-          <EmptyState title="No Recommended Posts Found" message="There are currently no recommended posts available." />
+          <EmptyState />
           // <p>No recommended posts available.</p>
         )}
       </div>

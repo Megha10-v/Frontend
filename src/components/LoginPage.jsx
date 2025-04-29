@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { Form, Button, Container, Card, Alert, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
-// import { useCookies } from 'react-cookie';
 import { auth, provider, signInWithPopup } from '../firebase';
 
 const LoginPage = () => {
@@ -12,11 +11,8 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState('phone'); 
     const [verificationId, setVerificationId] = useState('');
-    // const [, setCookie] = useCookies(['elk_authorization_token']);
 
-   
-
-    const navigate = useNavigate();
+   const navigate = useNavigate();
 
     const validatePhoneNumber = (number) => /^[0-9]{10}$/.test(number);
     const validateOtp = (otp) => /^[0-9]{6}$/.test(otp);
@@ -34,10 +30,6 @@ const LoginPage = () => {
                 uuid,
                 email,
             });
-            // setCookie('elk_authorization_token', response.data.data.token, {
-            //     path: '/',
-            //     maxAge: 7 * 24 * 60 * 60,
-            // });
             localStorage.setItem('elk_authorization_token', response.data.data.token);
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);
@@ -87,7 +79,6 @@ const LoginPage = () => {
         try {
             const response = await axios.post('https://api.elkcompany.online/api/verify_otp', { verificationId: verificationId, otp: otp });
             console.log('OTP Verified:', response.data);
-            // setCookie('elk_authorization_token',response.data.data.token,{path:'/',maxAge: 7 * 24 * 60 * 60, })
             localStorage.setItem('elk_authorization_token', response.data.data.token);
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);

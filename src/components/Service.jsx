@@ -88,7 +88,7 @@ const Service = () => {
             <PostCard key={post.id} post={post} onClick={handleCardClick} />
           ))
         ) : (
-          <EmptyState title="No Service Found" message="There are currently no service available." />
+          <EmptyState />
         )}
       </div>
       <PostModal show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
