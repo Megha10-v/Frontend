@@ -64,6 +64,8 @@ function AdLOcation({onClose, onSubmit}) {
     return (
         <>
             <form className="image-upload-form" onSubmit={handleUpload}>
+            <label>Select the Location</label>
+            <br />
                 <input
                     type="text"
                     placeholder="Search..."
@@ -85,7 +87,7 @@ function AdLOcation({onClose, onSubmit}) {
                 )}
                 <div className="form-actions">
                     <button type="button" className="btn-cancel" onClick={onClose}>Back</button>
-                    <button type="submit" className="btn-submit">Upload</button>
+                    <button type="submit" className="btn-submit">Set</button>
                 </div>
             </form>
         </>

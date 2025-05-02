@@ -89,7 +89,7 @@ function AppHeader() {
                   }
                   {token1 ? (
                     <NavDropdown
-                      title={<span style={{ color: "red"}}>{user?.name || "My Account"}</span>}
+                      title={<span style={{ color: "white"}}>{user?.name || "My Account"}</span>}
                       id="basic-nav-dropdown"
                       style={{
                         border: "2px solid #4FBBB4",

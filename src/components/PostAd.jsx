@@ -21,7 +21,7 @@ import electrician from '../assets/electrician.png';
 import AppHeader from './AppHeader';
 import Footer from './AppFooter';
 import OfferForm from './OfferForm';
-import { useSelector } from 'react-redux';
+
 import './AdTabs.css'
 import ImageUploadForm from './ImageUploadForm';
 import AdLOcation from './AdLocation';
@@ -57,6 +57,9 @@ const PostAdForm = () => {
     const [adId, setAdId] = useState(null);
     const [showSelectCategory, setShowSelectCategory] = useState(true);
     const [activeTab, setActiveTab] = useState('rent');
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+
+
     
     const [formData, setFormData] = useState({
         title: '',
@@ -79,6 +82,7 @@ const PostAdForm = () => {
     };
     const handleBack = () =>{
         setShowSelectCategory(true);
+        setStep(1);
         setFormData({
             title: '',
             description: '',
@@ -174,7 +178,9 @@ const PostAdForm = () => {
                 ad_status: 'online'
             };
             await axios.post('https://api.elkcompany.online/api/update_ad_address', payload, { headers });
-            navigate('/home');
+            setShowSuccessModal(true);
+            
+            // navigate('/home');
         } catch (err) {
             alert('Address update failed');
         } finally{
@@ -244,6 +250,16 @@ const PostAdForm = () => {
                     </div>
                 )}
             </div>
+            {showSuccessModal && (
+                <div className="modal-overlay">
+                    <div className="modal-content">
+                    <h2>🎉 Post Uploaded Successfully!</h2>
+                    <p>Your advertisement has been posted and is now live.</p>
+                <button className="modal-button" onClick={() => navigate('/home')}>Go to Home</button>
+            </div>
+        </div>
+)}
+
             <Footer/>
         </>
     );

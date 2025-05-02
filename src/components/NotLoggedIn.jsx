@@ -13,7 +13,7 @@ const NotLoggedIn = () => {
                 onClick={() => navigate('/login')}
                 className="btn btn-primary p-3"
             >
-                <strong style={{cursor:'pointer'}}>Login or Sign Up</strong>
+                <strong style={{cursor:'pointer',color:'#4FBBB4'}}>Login or Sign Up</strong>
             </Button>
         </div>
     );

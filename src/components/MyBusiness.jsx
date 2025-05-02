@@ -11,8 +11,6 @@ import NotLoggedIn from "./NotLoggedIn";
 const MyBusiness = () =>{
     const [wishlist, setWishlist] = useState([]);
     const [loading, setLoading] = useState(true);
-    // const [cookies] = useCookies(["elk_authorization_token"]);
-    // const token = cookies.elk_authorization_token;
     const token = localStorage.getItem('elk_authorization_token');
     const { isAuthenticated } = useSelector(state => state.auth);
     const [selectedPost, setSelectedPost] = useState(null);
