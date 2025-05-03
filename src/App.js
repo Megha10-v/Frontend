@@ -53,8 +53,8 @@ function App() {
         { id: 8, title: 'Salon', image: salon },
     ];
     const rentalCategories = [
-        { id: 1, title: 'Cars', image: car },
-        { id: 2, title: 'Properties', image: property },
+        { id: 1, title: 'Car', image: car },
+        { id: 2, title: 'Property', image: property },
         { id: 3, title: 'Electronics', image: electronics },
         { id: 4, title: 'Tools', image: tools },
         { id: 5, title: 'Furniture', image: furniture },
