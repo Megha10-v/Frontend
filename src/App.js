@@ -39,6 +39,7 @@ import Careers from './components/Careers';
 import Home from './components/Home';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
+import SearchResult from './components/SearchResult';
 function App() {
     const dispatch = useDispatch();
     // const [cookies] = useCookies(['elk_authorization_token']);
@@ -116,6 +117,7 @@ function App() {
                         element={<AdCategory category={category} type={'rent'}/>}
                     />
                 ))}
+                <Route path='/search/:query' element={<SearchResult/>}/>
                 <Route path="/admin" element={<AdminRoute><AdminHome /></AdminRoute>} />
                 <Route path='/admin/notification' element={<AdminRoute><AdminNotificationForm/></AdminRoute>}/>
                 <Route path="/admin/accounts" element={<AdminRoute><AdminAllUsers /></AdminRoute>} />

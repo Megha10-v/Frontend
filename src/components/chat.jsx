@@ -9,7 +9,7 @@ import Loader from "./Loader";
 import logonew from '../assets/footlogo.png';
 import { Image } from "react-bootstrap";
 import ChatAudioPlayer from "./AudioPlayer";
-
+import bgimg from '../assets/bg_chat.jpg'
 const ChatScreen = () => {
   const { user, token, isAuthenticated } = useSelector((state) => state.auth);
   const [chatRooms, setChatRooms] = useState([]);
@@ -51,7 +51,7 @@ const ChatScreen = () => {
       setChatLoading(true)
       try {
         const response = await fetch(
-          `https://api.elkcompany.online/api/get_chat?authUserId=${user.user_id}&otherUserId=${selectedChatRoom.otherUser.user_id}`, 
+          `http://localhost:3000/api/get_chat?authUserId=${user.user_id}&otherUserId=${selectedChatRoom.otherUser.user_id}`, 
           {
             method: 'GET',
             headers: {
@@ -156,7 +156,17 @@ const ChatScreen = () => {
                 ))}
               </ul>
             </div>     
-            <div className={"col-md-8 d-flex flex-column"} style={{backgroundColor: selectedChatRoom? '#4FBBB4': 'grey'}}> 
+            <div 
+              className={"col-md-8 d-flex flex-column"}
+              style={{
+                backgroundColor: selectedChatRoom ? '#4FBBB4' : 'grey',
+                backgroundImage: `url(${bgimg})`,
+                backgroundSize: 'cover',
+                backgroundRepeat: 'no-repeat',
+                backgroundPosition: 'center',
+              }}
+              // style={{backgroundColor: selectedChatRoom? '#4FBBB4': 'grey', background:''}}
+            > 
               {(chatLoading?
                 <>
                   <div className="d-flex align-items-center justify-content-between border-bottom pb-2 pt-3 mb-2">

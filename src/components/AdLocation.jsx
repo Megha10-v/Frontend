@@ -23,7 +23,7 @@ function AdLOcation({onClose, onSubmit}) {
             return;
         }
         try {
-            const response = await axios.post(`https://api.elkcompany.online/api/place_search`, 
+            const response = await axios.post(`http://localhost:3000/api/place_search`, 
                 {
                     query: query,
                     limited: false

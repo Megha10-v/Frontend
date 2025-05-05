@@ -10,7 +10,7 @@ import Loader from "./Loader";
 import EmptyState from "./EmptyAd";
 
 const AdCategory = ({category,type}) => {
-    const [wishlist, setWishlist] = useState([]);
+    const [ads, setads] = useState([]);
     const [loading, setLoading] = useState(true);
     // const [cookies] = useCookies(["elk_authorization_token"]);
     // const token = cookies.elk_authorization_token;
@@ -29,32 +29,28 @@ const AdCategory = ({category,type}) => {
       body = { ad_type: type, category: category.title }
     }
     useEffect(() => {
-        const fetchWishlist = async () => {
-          try {
-              const res = await axios.post("https://api.elkcompany.online/api/rent_category_posts", 
-                {
-                  ad_type: type,
-                  category: category.title
+      const fetchads = async () => {
+        setLoading(true)
+        try {
+            const res = await axios.post("http://localhost:3000/api/rent_category_posts", 
+              {
+                ad_type: type,
+                category: category.title
+              },
+              {
+                headers: {
+                    Authorization: `Bearer ${token}`,
                 },
-                {
-                  headers: {
-                      Authorization: `Bearer ${token}`,
-                  },
-                }
-              );            
-              setWishlist(res.data.data);
-          } catch (err) {
-              console.error("Error fetching wishlist:", err);
-          } finally {
-              setLoading(false);
-          }
-        };
-
-        // if (token) {
-        fetchWishlist();
-        // } else {
-        setLoading(false);
-        // }
+              }
+            );            
+            setads(res.data.data);
+        } catch (err) {
+            console.error("Error fetching ads:", err);
+        } finally {
+            setLoading(false);
+        }
+      };
+      fetchads();
     }, [token, category.title, type]);
 
   return (
@@ -64,11 +60,11 @@ const AdCategory = ({category,type}) => {
         <h1 className="mb-4" style={{textTransform:'capitalize'}}>{category.title}</h1>
         {loading ? (
           <Loader/>
-        ) : wishlist.length === 0 ? (
+        ) : ads.length === 0 ? (
           <EmptyState/>
         ) : (
           <div className="row">
-            {wishlist.map((ad) => (
+            {ads.map((ad) => (
                 <PostCard key={ad.id} post={ad} onClick={handleCardClick} />
             ))}
           </div>

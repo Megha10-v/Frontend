@@ -25,7 +25,7 @@ const ProfilePage = () => {
     
         try {
             setLoading(true)
-            const response = await fetch(`https://api.elkcompany.online/api/delete_account?user_id=${user.user_id}`, {
+            const response = await fetch(`http://localhost:3000/api/delete_account?user_id=${user.user_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -95,7 +95,7 @@ const ProfilePage = () => {
                         </div>
                         <div style={{display: 'flex'}}>
                             <button style={buttonStyle} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => setShowWizard(true)}>Edit Profile</button>
-                            <button style={deleteButtonStyle} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} onClick={handleDelete}>Delete Accoumt</button>
+                            <button style={deleteButtonStyle} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} onClick={handleDelete}>Delete Account</button>
                         </div>
                     </div>:<></>
                 )}

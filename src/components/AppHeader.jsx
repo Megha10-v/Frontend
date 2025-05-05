@@ -1,23 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import { Navbar, Nav, Image, Container, Button, NavDropdown } from 'react-bootstrap';
+import { Navbar, Nav, Image, Container, Button, NavDropdown, Form } from 'react-bootstrap';
 import logo from '../assets/logo3.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector } from 'react-redux';
-// import { clearUser } from '../store/slices/authSlice';
-// import { useCookies } from 'react-cookie';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
-// import { useDispatch } from 'react-redux';
 
 function AppHeader() {
   const navigate = useNavigate();
-  // const [cookies, removeCookie] = useCookies(['elk_authorization_token']);
   const { user } = useSelector(state => state.auth);
   const location = useLocation();
   const token1 = localStorage.getItem('elk_authorization_token');
   const [unsavedAd, setUnsavedAd] = useState({});
   const [showModal, setShowModal] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
+
   const handleContinue = () => {
     setShowModal(false);
     navigate(`/post-ad`);
@@ -30,7 +28,7 @@ function AppHeader() {
   useEffect(() => {    
     const fetchAd = async () => {      
       try {
-        const response = await axios.get('https://api.elkcompany.online/api/get_recent_unsaved_ad', { 
+        const response = await axios.get('http://localhost:3000/api/get_recent_unsaved_ad', { 
           headers: {
               'authorization': `Bearer ${token1}`,
               'Content-Type': 'application/json'
@@ -63,53 +61,60 @@ function AppHeader() {
             <Image src={logo} style={{ width: '100%', height: '70px', border: 'none' }} />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar-nav" />
+          <Form className="d-flex me-3" onSubmit={(e) => { e.preventDefault(); navigate(`/search/${searchTerm}`); }}>
+            <Form.Control
+              type="search"
+              placeholder="Search ads..."
+              className="me-2"
+              aria-label="Search"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{ borderRadius: '15px', width: '600px', marginLeft:'20px' }}
+            />
+          </Form>
           <Navbar.Collapse id="navbar-nav" style={{ zIndex: '1000' }}> 
-            {
-              (
-                <Nav className="ms-auto" style={{display: 'flex', justifyContent:'center', alignItems:'center'}}>
-                  {location.pathname !== '/post-ad' && (
-                    <Button
-                      className="ms-4 d-flex align-items-center"
-                      style={{ gap: '10px', borderRadius: '15px', backgroundColor: '#4FBBB4', borderColor: '#4FBBB4' }}
-                      onClick={() => !token1?navigate('/login') : (Object.keys(unsavedAd).length !== 0)? setShowModal(true) : navigate('/post-ad')
-                      }>
-                      <i className="bi bi-plus-circle"></i> Place Your Ad
-                    </Button>
-                    )
-                  }
-                  {
-                    token1 ? (
-                      <>
-                        <ChatIcon onClick={()=>navigate('/chat')} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>
-                        <FavoriteBorderIcon onClick={()=>navigate('/mywishlist')} fontSize="large" sx={{ color: '#4FBBB4', marginRight: "20px", cursor: 'pointer' }}/>
-                      </>
-                    ) : (
-                      <></>
-                    )
-                  }
-                  {token1 ? (
-                    <NavDropdown
-                      title={<span style={{ color: "white"}}>{user?.name || "My Account"}</span>}
-                      id="basic-nav-dropdown"
-                      style={{
-                        border: "2px solid #4FBBB4",
-                        borderRadius: "8px",
-                        padding: "0 2px",
-                      }}
-                    >
-                      <NavDropdown.Item href="/profile" >Profile</NavDropdown.Item>
-                      <NavDropdown.Divider />
-                      <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                    </NavDropdown>
-                    ) : (
-                      <Button style={{ all: "unset", color:'#FFFFFF', border:'2px black', margin:"0px 20px", cursor:'pointer' }} onClick={() => navigate('/login')}>
-                          <strong>Login</strong>
-                      </Button>
-                    )
-                  }
-                </Nav>
-              )
-            }
+            <Nav className="ms-auto" style={{display: 'flex', justifyContent:'center', alignItems:'center'}}>
+              {location.pathname !== '/post-ad' && (
+                <Button
+                  className="ms-4 d-flex align-items-center"
+                  style={{ gap: '10px', borderRadius: '15px', backgroundColor: '#4FBBB4', borderColor: '#4FBBB4' }}
+                  onClick={() => !token1?navigate('/login') : (Object.keys(unsavedAd).length !== 0)? setShowModal(true) : navigate('/post-ad')
+                  }>
+                  <i className="bi bi-plus-circle"></i> Place Your Ad
+                </Button>
+                )
+              }
+              {
+                token1 ? (
+                  <>
+                    <ChatIcon onClick={()=>navigate('/chat')} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>
+                    <FavoriteBorderIcon onClick={()=>navigate('/mywishlist')} fontSize="large" sx={{ color: '#4FBBB4', marginRight: "20px", cursor: 'pointer' }}/>
+                  </>
+                ) : (
+                  <></>
+                )
+              }
+              {token1 ? (
+                <NavDropdown
+                  title={<span style={{ color: "white"}}>{user?.name || "My Account"}</span>}
+                  id="basic-nav-dropdown"
+                  style={{
+                    border: "2px solid #4FBBB4",
+                    borderRadius: "8px",
+                    padding: "0 2px",
+                  }}
+                >
+                  <NavDropdown.Item href="/profile" >Profile</NavDropdown.Item>
+                  <NavDropdown.Divider />
+                  <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                </NavDropdown>
+                ) : (
+                  <Button style={{ all: "unset", color:'#FFFFFF', border:'2px black', margin:"0px 20px", cursor:'pointer' }} onClick={() => navigate('/login')}>
+                      <strong>Login</strong>
+                  </Button>
+                )
+              }
+            </Nav>
           </Navbar.Collapse>
         </Container>
         {showModal && unsavedAd && (

@@ -22,7 +22,7 @@ const MyBusiness = () =>{
     useEffect(() => {
       const fetchWishlist = async () => {
         try {
-          const res = await axios.get("https://api.elkcompany.online/api/my_ads", {
+          const res = await axios.get("http://localhost:3000/api/my_ads", {
             headers: {
               Authorization: `Bearer ${token}`,
             },

@@ -1,13 +1,63 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import PriceDetailsForm from './PriceDetailsForm';
 import './OfferForm.css';
+import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { db } from "../firebase";
+import { useSelector } from 'react-redux';
 
 export default function OfferForm({ selectedItem, onBack, onSubmit }) {
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [priceDetailsList, setPriceDetailsList] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null); 
-  
+  const userId = localStorage.getItem('elk_user_id');
+  const { user, token } = useSelector((state) => state.auth);
 
+  const [privacy, setPrivacy] = useState(true);
+  const [loading, setLoading] = useState(true);
+
+
+  useEffect(() => {
+    async function fetchPrivacy() {
+      const value = await getPrivacy(userId);
+      setPrivacy(value);
+      setLoading(false);
+    }
+    fetchPrivacy();
+    console.log(privacy);
+    
+  }, [userId]);
+
+  async function getPrivacy(userId) {
+    try {
+      const userDocRef = doc(db, "privacy", userId);
+      const docSnap = await getDoc(userDocRef);
+      if (docSnap.exists()) {
+        const data = docSnap.data();
+        return data.privacy;
+      } else {
+        return true;
+      }
+    } catch (error) {
+      return true;
+    }
+  }
+  async function updatePrivacy(userId, privacy, name) {
+    const userDocRef = doc(db, "privacy", userId);
+    const docSnap = await getDoc(userDocRef);
+  
+    const data = {
+      privacy: privacy,
+      name: name,
+      userid: userId.toString(),
+    };
+  
+    if (docSnap.exists()) {
+      await updateDoc(userDocRef, data);
+    } else {
+      await setDoc(userDocRef, data);
+    }
+    alert('Privacy changed')
+  }
   const handleSubmit = (e) => {
     e.preventDefault();
 
@@ -88,7 +138,14 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
           ))}
         </ul>
       </div>
-
+      
+      {
+        loading?
+          <></>:
+          privacy?<div style={{fontSize:'16px'}}>Contact details are visible to others. <span onClick={()=>{setPrivacy(!privacy); updatePrivacy(userId, !privacy, user.name)}} style={{color:'blue', cursor:'pointer'}}>Change</span></div>:<div style={{fontSize:'16px'}}>Contact Details are hidden. <span onClick={()=>{setPrivacy(!privacy); updatePrivacy(userId, !privacy, user.name)}} style={{color:'blue', cursor:'pointer'}}>Change</span></div>
+      }
+      
+      
       <div className="form-actions">
         <button type="button" className="btn-secondary" onClick={onBack}>
           Back
@@ -97,6 +154,8 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
           Next
         </button>
       </div>
+
+
 
       {showPriceModal && (
         <PriceDetailsForm

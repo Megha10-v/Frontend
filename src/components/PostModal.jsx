@@ -5,18 +5,35 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 // import { useCookies } from "react-cookie";
 import Loader from './Loader';
+import ChatIcon from '@mui/icons-material/Chat';
+import ShareIcon from '@mui/icons-material/Share';
+
 
 const PostModal = ({ show, onHide, post }) => {  
   const { isAuthenticated,user } = useSelector(state => state.auth);
   const navigate = useNavigate();
   const [adDetails, setAdDetails] = useState(null);
   const [loading, setLoading] = useState(false);
-  // const [cookies] = useCookies(["elk_authorization_token"]);
-  // const token = cookies.elk_authorization_token;
   const token = localStorage.getItem('elk_authorization_token');
   const [error, setError] = useState(false);
   const userId = localStorage.getItem('elk_user_id');
   
+  const handleShare = () => {
+    const shareUrl = `https://elkcompany.in/ad/${adDetails.id}`;
+    if (navigator.share) {
+      navigator.share({
+        title: adDetails.title,
+        text: adDetails.description,
+        url: shareUrl,
+      }).catch((err) => console.error('Share failed:', err));
+    } else {
+      navigator.clipboard.writeText(shareUrl)
+        .then(() => alert('Ad link copied to clipboard!'))
+        .catch(err => console.error('Failed to copy:', err));
+    }
+  };
+  
+
   const getAdDetails = async (adId, token) => {
     let body = {}
     if(token){      
@@ -28,7 +45,7 @@ const PostModal = ({ show, onHide, post }) => {
       setLoading(true)
       setError(false);
       const response = await axios.post(
-        'https://api.elkcompany.online/api/get_ad_details',
+        'http://localhost:3000/api/get_ad_details',
         body,
         {
           headers: {
@@ -64,8 +81,8 @@ const PostModal = ({ show, onHide, post }) => {
     if (!adDetails || !token) return;
   
     const url = adDetails.wishListed
-      ? 'https://api.elkcompany.online/api/remove_wishlist'
-      : 'https://api.elkcompany.online/api/add_to_wishlist';
+      ? 'http://localhost:3000/api/remove_wishlist'
+      : 'http://localhost:3000/api/add_to_wishlist';
   
     try {
       await axios.post(
@@ -166,9 +183,15 @@ const PostModal = ({ show, onHide, post }) => {
               <i className={adDetails.wishListed ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
             </button>
             )}
-
-  
             <div className="d-flex ml-auto">
+                <ShareIcon 
+                  onClick={() => handleShare()} 
+                  fontSize="large" 
+                  sx={{ color: '#4FBBB4', marginRight: "20px", cursor: 'pointer' }}
+                />
+                {
+                  isAuthenticated?<ChatIcon onClick={()=>navigate('/chat')} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>:<></>
+                }
                 {isAuthenticated?(<Button 
                     style={{ borderRadius: '15px', backgroundColor: '#4FBBB4', borderColor: '#4FBBB4' }} onClick={()=>navigate(`/user-profile/${adDetails.user_id}`)}>
                     View Profile

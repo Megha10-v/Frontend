@@ -23,7 +23,7 @@ const MyWishList = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const res = await axios.get("https://api.elkcompany.online/api/user_wishlists", {
+        const res = await axios.get("http://localhost:3000/api/user_wishlists", {
           headers: {
             Authorization: `Bearer ${token}`,
           },
