@@ -23,7 +23,7 @@ const SearchResult = () => {
         const fetchads = async () => {
           setLoading(true)
           try {
-              const res = await axios.post("http://localhost:3000/api/search_ad", 
+              const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/search_ad`, 
                 {
                   keyword: query
                 }

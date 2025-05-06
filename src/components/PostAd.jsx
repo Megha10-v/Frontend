@@ -100,7 +100,7 @@ const PostAdForm = () => {
         if (!token) return;
         const fetchAd = async () => {      
             try {
-                const response = await axios.get('http://localhost:3000/api/get_recent_unsaved_ad', { 
+                const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get_recent_unsaved_ad`, { 
                     headers: {
                         'authorization': `Bearer ${token}`,
                         'Content-Type': 'application/json'
@@ -124,7 +124,7 @@ const PostAdForm = () => {
     const handleAdCreate = async (data) => {
         setLoading(true);
         try {
-            const response = await axios.post('http://localhost:3000/api/create_post', 
+            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/create_post`, 
                 data, 
                 { 
                     headers: {
@@ -148,7 +148,7 @@ const PostAdForm = () => {
             for (const file of data) {
                 formDataImg.append('files', file);
             }            
-            await axios.post(`http://localhost:3000/api/upload_ad_image?ad_id=${adId}&ad_stage=2&ad_status=offline`, data, {
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/upload_ad_image?ad_id=${adId}&ad_stage=2&ad_status=offline`, data, {
                 headers: {
                     'authorization': `Bearer ${token}`,
                     'Content-Type': 'multipart/form-data',
@@ -177,7 +177,7 @@ const PostAdForm = () => {
                 ad_stage: 3,
                 ad_status: 'online'
             };
-            await axios.post('http://localhost:3000/api/update_ad_address', payload, { headers });
+            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/update_ad_address`, payload, { headers });
             setShowSuccessModal(true);
             
             // navigate('/home');
