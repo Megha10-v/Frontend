@@ -10,7 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 
 
 const PostModal = ({ show, onHide, post }) => {  
-  const { isAuthenticated,user } = useSelector(state => state.auth);
+  const { isAuthenticated } = useSelector(state => state.auth);
   const navigate = useNavigate();
   const [adDetails, setAdDetails] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -45,7 +45,7 @@ const PostModal = ({ show, onHide, post }) => {
       setLoading(true)
       setError(false);
       const response = await axios.post(
-        'http://localhost:3000/api/get_ad_details',
+        `${process.env.REACT_APP_API_BASE_URL}/api/get_ad_details`,
         body,
         {
           headers: {
@@ -81,8 +81,8 @@ const PostModal = ({ show, onHide, post }) => {
     if (!adDetails || !token) return;
   
     const url = adDetails.wishListed
-      ? 'http://localhost:3000/api/remove_wishlist'
-      : 'http://localhost:3000/api/add_to_wishlist';
+      ? `${process.env.REACT_APP_API_BASE_URL}/api/remove_wishlist`
+      : `${process.env.REACT_APP_API_BASE_URL}/api/add_to_wishlist`;
   
     try {
       await axios.post(

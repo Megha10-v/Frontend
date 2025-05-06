@@ -42,7 +42,6 @@ import Terms from './components/Terms';
 import SearchResult from './components/SearchResult';
 function App() {
     const dispatch = useDispatch();
-    // const [cookies] = useCookies(['elk_authorization_token']);
     const serviceCategories = [
         { id: 1, title: 'Cleaning', image: cleaning  },
         { id: 2, title: 'Repairing', image: repairing },
@@ -65,14 +64,13 @@ function App() {
     ];
 
     useEffect(() => {
-        // const token = cookies.elk_authorization_token;
         const token = localStorage.getItem('elk_authorization_token');        
         if (token && token.split('.').length === 3) {
             const fetchUserData = async () => {
                 try {
                     const { id: userId } = jwtDecode(token);
                     const response = await axios.post(
-                        `https://api.elkcompany.online/api/get_user?id=${userId}`,
+                        `${process.env.REACT_APP_API_BASE_URL}/api/get_user?id=${userId}`,
                         {},
                         {
                             headers: { authorization: `Bearer ${token}` }
@@ -130,33 +128,6 @@ function App() {
 export default App;
 
 
-
-
-
-
-// import React from 'react';
-// import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// import Footer from './components/Footer';
-// import Careers from './components/Careers';
-// import Home from './components/Home';
-// import Privacy from './components/Privacy';
-// import Terms from './components/Terms';
-
-// const App = () => {
-//   return (
-//     <Router>
-//       <Routes>
-//         <Route path="/" element={<Home />} />
-//         <Route path="/careers" element={<Careers />} />
-//         <Route path="/privacy" element={<Privacy />} />
-//         <Route path="/terms" element={<Terms />} />
-//       </Routes>
-//       <Footer />   
-//     </Router>
-//   );
-// };
-
-// export default App;
 
 
 

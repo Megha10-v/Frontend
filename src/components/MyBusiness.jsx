@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-// import { useCookies } from "react-cookie";
 import PostCard from "./PostCard";
 import PostModal from "./PostModal";
 import Loader from "./Loader";
@@ -22,7 +21,7 @@ const MyBusiness = () =>{
     useEffect(() => {
       const fetchWishlist = async () => {
         try {
-          const res = await axios.get("http://localhost:3000/api/my_ads", {
+          const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/my_ads`, {
             headers: {
               Authorization: `Bearer ${token}`,
             },

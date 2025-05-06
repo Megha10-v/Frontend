@@ -3,7 +3,6 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import AppHeader from "./AppHeader";
 import Footer from "./AppFooter";
 import axios from "axios";
-// import { useCookies } from "react-cookie";
 import PostCard from "./PostCard";
 import PostModal from "./PostModal";
 import Loader from "./Loader";
@@ -12,8 +11,6 @@ import EmptyState from "./EmptyAd";
 const AdCategory = ({category,type}) => {
     const [ads, setads] = useState([]);
     const [loading, setLoading] = useState(true);
-    // const [cookies] = useCookies(["elk_authorization_token"]);
-    // const token = cookies.elk_authorization_token;
     const token = localStorage.getItem('elk_authorization_token');
     const [selectedPost, setSelectedPost] = useState(null);
     const [showModal, setShowModal] = useState(false);
@@ -32,7 +29,7 @@ const AdCategory = ({category,type}) => {
       const fetchads = async () => {
         setLoading(true)
         try {
-            const res = await axios.post("http://localhost:3000/api/rent_category_posts", 
+            const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`, 
               {
                 ad_type: type,
                 category: category.title

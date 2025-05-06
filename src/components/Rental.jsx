@@ -43,7 +43,6 @@ const Rental = () => {
   const userId = localStorage.getItem('elk_user_id');
   let body = {}
   if(token){
-    console.log(userId);
     
     body = { page: 1, id: userId }
   }else{
@@ -51,7 +50,7 @@ const Rental = () => {
   }
   const fetchRecommendedPosts = async (token) => {    
     try {
-      const response = await axios.post(`https://api.elkcompany.online/api/recomented_posts`,
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/recomented_posts`,
         body,
         {
           headers: {
