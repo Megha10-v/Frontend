@@ -38,7 +38,8 @@ const ProfilePage = () => {
             if (data.success) {
                 alert("Account deleted successfully");
                 localStorage.removeItem('elk_authorization_token');
-                // removeCookie('elk_authorization_token');
+                localStorage.removeItem('elk_is_admin');
+                localStorage.removeItem('elk_user_id');
                 navigate('/home');
             } else {
                 alert(data.message || "Failed to delete account");
@@ -77,7 +78,7 @@ const ProfilePage = () => {
                     loading?<Loader/>:
                     user?
                     <div className="container py-4">
-                        <div className="d-flex align-items-center border-bottom pb-4 mb-4">
+                        <div className="d-flex align-items-center border-bottom pb-4 mb-4 flex-wrap">
                             <img 
                                 src={user.profile ?? 'https://static.vecteezy.com/system/resources/previews/036/280/651/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg'} 
                                 alt="Profile" 
@@ -93,7 +94,7 @@ const ProfilePage = () => {
                                 <p className="text-muted mb-0">{user.mobile_number}</p>
                             </div>
                         </div>
-                        <div style={{display: 'flex'}}>
+                        <div className='d-flex flex-column flex-sm-row gap-2'>
                             <button style={buttonStyle} onMouseEnter={() => setIsHovered(true)} onMouseLeave={() => setIsHovered(false)} onClick={() => setShowWizard(true)}>Edit Profile</button>
                             <button style={deleteButtonStyle} onMouseEnter={() => setIsDeleteHovered(true)} onMouseLeave={() => setIsDeleteHovered(false)} onClick={handleDelete}>Delete Account</button>
                         </div>

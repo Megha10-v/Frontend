@@ -23,7 +23,6 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
       setLoading(false);
     }
     fetchPrivacy();
-    console.log(privacy);
     
   }, [userId]);
 

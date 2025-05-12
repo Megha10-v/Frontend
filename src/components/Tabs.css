@@ -1,11 +1,11 @@
-/* Custom underline style for tabs */
+
 .custom-tabs .tab-item {
     color: #333;
     transition: color 0.3s ease;
   }
   
   .custom-tabs .tab-item.active-tab {
-    color: #4FBBB4; /* Active color */
+    color: #4FBBB4; 
   }
   
   .custom-tabs .tab-item.active-tab::after {
@@ -20,6 +20,9 @@
   }
   
   .custom-tabs .tab-item:not(.active-tab):hover {
-    color: #4FBBB4; /* Hover effect */
+    color: #4FBBB4; 
   }
   
+
+  
+   

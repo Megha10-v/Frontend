@@ -61,7 +61,7 @@ function AppHeader() {
             <Image src={logo} style={{ width: '100%', height: '70px', border: 'none' }} />
           </Navbar.Brand>
           <Navbar.Toggle aria-controls="navbar-nav" />
-          <Form className="d-flex me-3" onSubmit={(e) => { e.preventDefault(); navigate(`/search/${searchTerm}`); }}>
+          <Form className="d-flex flex-grow-1 my-2 my-lg-0 mx-lg-3" onSubmit={(e) => { e.preventDefault(); navigate(`/search/${searchTerm}`); }}>
             <Form.Control
               type="search"
               placeholder="Search ads..."
@@ -69,15 +69,15 @@ function AppHeader() {
               aria-label="Search"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ borderRadius: '15px', width: '600px', marginLeft:'20px' }}
+              style={{ borderRadius: '15px'}}
             />
           </Form>
           <Navbar.Collapse id="navbar-nav" style={{ zIndex: '1000' }}> 
-            <Nav className="ms-auto" style={{display: 'flex', justifyContent:'center', alignItems:'center'}}>
+            <Nav className ='ms-auto d-flex align-items-center flex-wrap gap-2 justify-content-end'>
               {location.pathname !== '/post-ad' && (
                 <Button
-                  className="ms-4 d-flex align-items-center"
-                  style={{ gap: '10px', borderRadius: '15px', backgroundColor: '#4FBBB4', borderColor: '#4FBBB4' }}
+                  className="ms-2 d-flex align-items-center"
+                  style={{ gap: '10px', borderRadius: '15px', backgroundColor: '#4FBBB4', borderColor: '#4FBBB4', whiteSpace: 'nowrap' }}
                   onClick={() => !token1?navigate('/login') : (Object.keys(unsavedAd).length !== 0)? setShowModal(true) : navigate('/post-ad')
                   }>
                   <i className="bi bi-plus-circle"></i> Place Your Ad
@@ -119,7 +119,8 @@ function AppHeader() {
         </Container>
         {showModal && unsavedAd && (
           <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-            <div className="modal-dialog" role="document">
+           <div className="modal-dialog modal-dialog-centered modal-sm modal-md modal-lg" role="document">
+
               <div className="modal-content rounded-3 shadow">
                 <div className="modal-header">
                   <h5 className="modal-title">Continue Editing?</h5>

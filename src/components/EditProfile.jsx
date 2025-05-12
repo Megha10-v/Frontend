@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { auth, provider, signInWithPopup } from '../firebase';
 import { Button, Modal } from 'react-bootstrap';
+import './EditProfile.css'; 
+
 
 const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
     const [activeTab, setActiveTab] = useState('profilePic');
@@ -173,7 +175,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                             style={{ objectFit: 'cover', marginBottom: '20px' }}
                         />
                         <input type="file" onChange={handleFileChange} className="form-control mb-3" />
-                        <button className="btn btn-warning" style={{ color: 'white' }} onClick={handleProfilePicUpload}>Upload</button>
+                        <button className="btn btn-warning btn-sm" style={{ color: 'white' }} onClick={handleProfilePicUpload}>Upload</button>
                     </div>
                 );
             case 'profileInfo':
@@ -181,7 +183,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="form-control mb-2" placeholder="Name" />
                         <input value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="form-control mb-2" placeholder="Description" />
-                        <button className="btn btn-warning" style={{ color: 'white' }} onClick={handleProfileUpdate}>Update</button>
+                        <button className="btn btn-warning btn-sm" style={{ color: 'white' }} onClick={handleProfileUpdate}>Update</button>
                     </div>
                 );
             case 'email':
@@ -190,7 +192,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                         <div className="text-center mt-3">
                             <Button
                                 variant="outline-primary"
-                                className="w-100 py-2"
+                                className="w-100 py-2 btn-sm "
                                 onClick={handleGoogleLogin}
                                 disabled={loading}
                             >
@@ -210,12 +212,12 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                         {!otpSent ? (
                             <>
                                 <input value={formData.mobile} onChange={(e) => setFormData({ ...formData, mobile: e.target.value })} className="form-control mb-2" placeholder="Mobile Number" />
-                                <button className="btn btn-warning" style={{ color: 'white' }} onClick={handleSendOtp}>Send OTP</button>
+                                <button className="btn btn-warning btn-sm" style={{ color: 'white' }} onClick={handleSendOtp}>Send OTP</button>
                             </>
                         ) : (
                             <>
                                 <input value={formData.otp} onChange={(e) => setFormData({ ...formData, otp: e.target.value })} className="form-control mb-2" placeholder="Enter OTP" />
-                                <button className="btn btn-success" style={{ color: 'white' }} onClick={handleVerifyOtp}>Verify OTP</button>
+                                <button className="btn btn-success btn-sm" style={{ color: 'white' }} onClick={handleVerifyOtp}>Verify OTP</button>
                             </>
                         )}
                     </div>
@@ -231,12 +233,12 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                 <Modal.Title>Edit Profile</Modal.Title>
             </Modal.Header>
             <Modal.Body>
-                <div className="p-4" >
+                <div className="p-4 edit-profile-modal" >
                     <div className="d-flex gap-2 mb-4 flex-wrap" style={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                        <button style={{ color: activeTab === 'profilePic' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'profilePic' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button`} onClick={() => setActiveTab('profilePic')}>Profile Picture</button>
-                        <button style={{ color: activeTab === 'profileInfo' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'profileInfo' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button`} onClick={() => setActiveTab('profileInfo')}>Name & Description</button>
-                        <button style={{ color: activeTab === 'email' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'email' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button`} onClick={() => setActiveTab('email')}>Update Email</button>
-                        <button style={{ color: activeTab === 'mobile' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'mobile' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button`} onClick={() => setActiveTab('mobile')}>Update Mobile</button>
+                        <button style={{ color: activeTab === 'profilePic' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'profilePic' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button btn-sm`} onClick={() => setActiveTab('profilePic')}>Profile Picture</button>
+                        <button style={{ color: activeTab === 'profileInfo' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'profileInfo' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button btn-sm`} onClick={() => setActiveTab('profileInfo')}>Name & Description</button>
+                        <button style={{ color: activeTab === 'email' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'email' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button btn-sm`} onClick={() => setActiveTab('email')}>Update Email</button>
+                        <button style={{ color: activeTab === 'mobile' ? 'white' : '#FFDA3F' }} className={`btn ${activeTab === 'mobile' ? 'btn-warning' : 'btn-outline-warning'} custom-tab-button btn-sm`} onClick={() => setActiveTab('mobile')}>Update Mobile</button>
                     </div>
                     {renderTab()}
                 </div>

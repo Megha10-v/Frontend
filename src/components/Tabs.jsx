@@ -51,6 +51,20 @@ export default function Tabs() {
           </button>
         ))}
       </Nav>
+      {/* <Nav className="custom-tabs-container">
+  {['rentals', 'services', 'my business'].map((tab) => (
+    <button
+      key={tab}
+      onClick={(e) => {
+        e.preventDefault();
+        setActiveTab(tab);
+      }}
+      className={`tab-item ${activeTab === tab ? 'active-tab' : ''}`}
+    >
+      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+    </button>
+  ))}
+</Nav> */}
 
       <div className="tab-content">{renderTabContent()}</div>
       <Footer />

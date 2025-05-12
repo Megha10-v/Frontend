@@ -1,9 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './Carousel.css'; 
 
 const Carousel = ({ categories, onCategoryClick }) => {
   const [currentSlide, setCurrentSlide] = useState(0);
-  const itemsPerPage = 4;
+  // const itemsPerPage = 4;
+  const [itemsPerPage, setItemsPerPage] = useState(getItemsPerPage());
+
+  function getItemsPerPage() {
+    const width = window.innerWidth;
+    if (width < 576) return 1;      // Mobile
+    if (width < 768) return 2;      // Small tablets
+    if (width < 992) return 3;      // Tablets
+    return 4;                       // Desktops
+  }
+
+  useEffect(() => {
+    const handleResize = () => {
+      setItemsPerPage(getItemsPerPage());
+      setCurrentSlide(0); // reset slide to avoid overflow
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   const nextSlide = () => {
     if (currentSlide < Math.ceil(categories.length / itemsPerPage) - 1) {

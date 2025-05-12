@@ -1,0 +1,29 @@
+.edit-profile-modal {
+    font-size: 1rem;
+  }
+  
+  @media (max-width: 576px) {
+    .edit-profile-modal {
+      font-size: 0.85rem;
+      padding: 1rem !important;
+    }
+  
+    .edit-profile-modal input.form-control {
+      font-size: 0.85rem;
+      padding: 0.375rem 0.5rem;
+    }
+  
+    .edit-profile-modal button.btn {
+      font-size: 0.85rem;
+      padding: 0.3rem 0.75rem;
+    }
+  
+    .modal-dialog {
+      max-width: 90% !important;
+      margin: auto;
+    }
+  
+    .modal-content {
+      padding: 0.5rem;
+    }
+  }
