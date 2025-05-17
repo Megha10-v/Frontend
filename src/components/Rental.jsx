@@ -40,41 +40,97 @@ const Rental = () => {
     const path = `/rental/${category.title.toLowerCase()}`;
     navigate(path);
   };
-  const userId = localStorage.getItem('elk_user_id');
-  let body = {}
-  if(token){
+//   const userId = localStorage.getItem('elk_user_id');
+//   let body = {}
+//   if(token){
     
-    body = { page: 1, id: userId }
-  }else{
-    body = { page: 1 }
-  }
-  const fetchRecommendedPosts = async (token) => {    
-    try {
-      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/recomented_posts`,
-        body,
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      );
-      return response.data;
-    } catch (error) {
-      console.error("Error fetching recommended posts:", error);
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  };  
+//     body = { page: 1, id: userId }
+//   }else{
+//     if (navigator.geolocation) {
+//       navigator.geolocation.getCurrentPosition(
+//         async (position) => {
+//           const { latitude, longitude } = position.coords;
+//           body = { page: 1, latitude:latitude, longitude: longitude }
+//         })
+        
+//   }
+//   else{
+//     body = { page: 1}
+//   }
+  
+// }
+
+
+  // const fetchRecommendedPosts = async (token) => {    
+  //   try {
+  //     console.log('body...',body)
+  //     const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/recomented_posts`,
+  //       body,
+  //       {
+  //         headers: {
+  //           Authorization: `Bearer ${token}`
+  //         }
+  //       }
+  //     );
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error("Error fetching recommended posts:", error);
+  //     throw error;
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };  
+
+  // useEffect(() => {
+  //   fetchRecommendedPosts(token)
+  //     .then(data => {
+  //       setAds(data.data);
+  //     })
+  //     .catch(error => {
+  //       console.error("Failed to fetch ads:", error);
+  //     });
+  // }, [token]);
 
   useEffect(() => {
-    fetchRecommendedPosts(token)
-      .then(data => {
-        setAds(data.data);
-      })
-      .catch(error => {
-        console.error("Failed to fetch ads:", error);
-      });
+    const fetchAds = async () => {
+      let requestBody = { page: 1 };
+  
+      if (token) {
+        const userId = localStorage.getItem('elk_user_id');
+        requestBody.id = userId;
+      } else {
+        if (navigator.geolocation) {
+          try {
+            const position = await new Promise((resolve, reject) => {
+              navigator.geolocation.getCurrentPosition(resolve, reject);
+            });
+            requestBody.latitude = position.coords.latitude;
+            requestBody.longitude = position.coords.longitude;
+          } catch (error) {
+            console.warn('Location access denied or unavailable', error);
+          }
+        }
+      }
+  
+      try {
+        console.log('body..',requestBody)
+        const response = await axios.post(
+          `${process.env.REACT_APP_API_BASE_URL}/api/recomented_posts`,
+          requestBody,
+          {
+            headers: token ? { Authorization: `Bearer ${token}` } : {},
+          }
+        );
+        setAds(response.data.data);
+      } catch (error) {
+        console.error('Failed to fetch ads:', error);
+      } finally {
+        setLoading(false);
+      }
+    };
+  
+    // Ensure the async function is called
+    fetchAds();
   }, [token]);
 
   const handleCardClick = (post) => {

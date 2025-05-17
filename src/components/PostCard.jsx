@@ -27,7 +27,7 @@ const PostCard = ({ post, onClick }) => {
           </p>
           <p className="card-text"><strong>Category:</strong> {post.category}</p>
           <p className="card-text"><strong>Price:</strong> {post.ad_price_details[0]?.rent_price || 'N/A'} per {post.ad_price_details[0]?.rent_duration || ''}</p>
-          <p className="card-text"><i className="fa-solid fa-location-dot"></i> {`${post.ad_location.locality?post.ad_location.locality+',' : ''} ${post.ad_location.district}, ${post.ad_location.state}, ${post.ad_location.country}`}</p>
+          <p className="card-text"><i className="fa-solid fa-location-dot"></i> {`${post.ad_location.locality?post.ad_location.locality+',' : ''} ${post.ad_location.district?post.ad_location.district+',' : ''} ${post.ad_location.state}, ${post.ad_location.country}`}</p>
         </div>
       </div>
     </div>
