@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import './Carousel.css'; 
 
 const Carousel = ({ categories, onCategoryClick }) => {
@@ -13,6 +13,17 @@ const Carousel = ({ categories, onCategoryClick }) => {
     if (width < 992) return 3;      // Tablets
     return 4;                       // Desktops
   }
+
+  const scrollContainerRef = useRef(null);
+  const scrollAmount = 200; // pixels per scroll
+
+  const scrollLeft = () => {
+    scrollContainerRef.current?.scrollBy({ left: -scrollAmount, behavior: 'smooth' });
+  };
+
+  const scrollRight = () => {
+    scrollContainerRef.current?.scrollBy({ left: scrollAmount, behavior: 'smooth' });
+  };
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,19 +52,31 @@ const Carousel = ({ categories, onCategoryClick }) => {
 
   return (
     <div className="carousel-container">
-      <button onClick={prevSlide} className="carousel-button">‹</button>
-      <div className="carousel">
-        <div className="carousel-track">
-          {visibleCategories.map((category) => (
-            <div key={category.id} className="image-container" style={{ cursor: 'pointer' }} onClick={() => onCategoryClick(category)}>
-              <img src={category.image} alt={category.title} className="circle-image" />
-              <p style={{ fontSize: '13px' }}>{category.title}</p>
-            </div>
-          ))}
-        </div>
+      <button onClick={scrollLeft} className="carousel-button">‹</button>
+      <div className="carousel-scroll" ref={scrollContainerRef}>
+        {categories.map((category) => (
+          <div key={category.id} className="image-container" onClick={() => onCategoryClick(category)} style={{ cursor: 'pointer' }}>
+            <img src={category.image} alt={category.title} className="circle-image" />
+            <p style={{ fontSize: '13px' }}>{category.title}</p>
+          </div>
+        ))}
       </div>
-      <button onClick={nextSlide} className="carousel-button">›</button>
+      <button onClick={scrollRight} className="carousel-button">›</button>
     </div>
+    // <div className="carousel-container">
+    //   <button onClick={prevSlide} className="carousel-button">‹</button>
+    //   <div className="carousel">
+    //     <div className="carousel-track">
+    //       {visibleCategories.map((category) => (
+    //         <div key={category.id} className="image-container" style={{ cursor: 'pointer' }} onClick={() => onCategoryClick(category)}>
+    //           <img src={category.image} alt={category.title} style={{width:'65px',height:'65px'}} className="circle-image" />
+    //           <p style={{ fontSize: '13px' }}>{category.title}</p>
+    //         </div>
+    //       ))}
+    //     </div>
+    //   </div>
+    //   <button onClick={nextSlide} className="carousel-button">›</button>
+    // </div>
   );
 };
 

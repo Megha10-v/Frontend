@@ -7,12 +7,16 @@ import axios from "axios";
 import PostCard from "./PostCard";
 import PostModal from "./PostModal";
 import Loader from "./Loader";
+import { useSelector } from 'react-redux';
+import EmptyState from "./EmptyAd";
+import NotLoggedIn from "./NotLoggedIn";
 
 const MyWishList = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
   // const [cookies] = useCookies(["elk_authorization_token"]);
   // const token = cookies.elk_authorization_token;
+  const { isAuthenticated } = useSelector(state => state.auth);
   const token = localStorage.getItem('elk_authorization_token');
   const [selectedPost, setSelectedPost] = useState(null);
   const [showModal, setShowModal] = useState(false);
@@ -39,7 +43,7 @@ const MyWishList = () => {
     if (token) {
       fetchWishlist();
     } else {
-      setLoading(false); // No token = no API call
+      setLoading(false);
     }
   }, [token]);
 
@@ -50,10 +54,12 @@ const MyWishList = () => {
         <h1 className="mb-4">My Wishlist</h1>
         {loading ? (
           <Loader/>
-        ) : !token ? (
-          <p>Please login to view your wishlist.</p>
+        ) : !isAuthenticated ? (
+          <div className="d-flex flex-column justify-content-center align-items-center p-5" >
+            <NotLoggedIn />
+          </div>
         ) : wishlist.length === 0 ? (
-          <p>Your wishlist is empty.</p>
+          <EmptyState />
         ) : (
           <div className="row">
             {wishlist.map((ad) => (
@@ -63,7 +69,7 @@ const MyWishList = () => {
         )}
       </div>
       <Footer />
-      <PostModal show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
+      <PostModal isMyAd={false} show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
     </>
   );
 };

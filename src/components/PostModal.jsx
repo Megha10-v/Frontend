@@ -7,9 +7,10 @@ import axios from 'axios';
 import Loader from './Loader';
 import ChatIcon from '@mui/icons-material/Chat';
 import ShareIcon from '@mui/icons-material/Share';
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
-
-const PostModal = ({ show, onHide, post }) => {  
+const PostModal = ({ show, onHide, post, isMyAd }) => {  
   const { isAuthenticated } = useSelector(state => state.auth);
   const navigate = useNavigate();
   const [adDetails, setAdDetails] = useState(null);
@@ -122,102 +123,97 @@ const PostModal = ({ show, onHide, post }) => {
   if(!adDetails) return null;
   return (
     <Modal show={show} onHide={onHide} centered >
-  <Modal.Header closeButton>
-    <Modal.Title>{adDetails.title}</Modal.Title>
-  </Modal.Header>
-  <Modal.Body>
-    {adDetails.ad_images && adDetails.ad_images.length > 1 ? (
-      <Carousel>
-        {adDetails.ad_images.map((image, index) => (
-          <Carousel.Item key={index}>
+      <Modal.Header closeButton>
+        <Modal.Title>{adDetails.title}</Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {adDetails.ad_images && adDetails.ad_images.length > 1 ? (
+          <Carousel>
+            {adDetails.ad_images.map((image, index) => (
+              <Carousel.Item key={index}>
+                <img
+                  src={image.image}
+                  alt={`Slide ${index + 1}`}
+                  className="d-block w-100 img-fluid rounded"
+                  style={{ maxHeight: '250px', objectFit: 'cover' }}
+                />
+              </Carousel.Item>
+            ))}
+          </Carousel>
+          ) : (
             <img
-              src={image.image}
-              alt={`Slide ${index + 1}`}
-              className="d-block w-100 img-fluid rounded"
+              src={adDetails.ad_images[0]?.image}
+              alt={adDetails.title}
+              className="img-fluid rounded mb-3 w-100"
               style={{ maxHeight: '250px', objectFit: 'cover' }}
             />
-          </Carousel.Item>
-        ))}
-      </Carousel>
-    ) : (
-      <img
-        src={adDetails.ad_images[0]?.image}
-        alt={adDetails.title}
-        className="img-fluid rounded mb-3 w-100"
-        style={{ maxHeight: '250px', objectFit: 'cover' }}
-      />
-    )}
-
-    <div className="mt-3">
-      <p className="text-muted fs-6" style={{ fontFamily: 'Arial, sans-serif' }}>
-        Post ID: {adDetails.id}
-      </p>
-      <p><strong>Category:</strong> {adDetails.category}</p>
-      <p><strong>Description:</strong> {adDetails.description}</p>
-      <p>
-        <strong>Price:</strong> {adDetails.ad_price_details[0]?.rent_price || 'N/A'} per {adDetails.ad_price_details[0]?.rent_duration || ''}
-      </p>
-      <p>
-        <i className="fa-solid fa-location-dot"></i> {`${adDetails.ad_location.locality ? adDetails.ad_location.locality + ',' : ''} ${adDetails.ad_location.district}, ${adDetails.ad_location.state}, ${adDetails.ad_location.country}`}
-      </p>
-    </div>
-
-    <div className="d-flex flex-row justify-content-between align-items-center mt-4 gap-3 flex-wrap">
-      <div>
-        <button
-          style={{
-            border: 'none',
-            backgroundColor: 'transparent',
-            padding: '0',
-            cursor: 'pointer'
-          }}
-          onClick={() => {
-            if (!isAuthenticated) {
-              navigate('/login');
-            } else {
-              toggleWishlist();
-            }
-          }}
-        >
-          <i className={adDetails.wishListed ? "fa-solid fa-heart" : "fa-regular fa-heart"}></i>
-        </button>
-      </div>
-
-      <div className="d-flex flex-row flex-wrap align-items-center gap-2">
-        <ShareIcon
-          onClick={() => handleShare()}
-          fontSize="medium"
-          sx={{ color: '#4FBBB4', cursor: 'pointer' }}
-        />
-
-         {isAuthenticated?<ChatIcon onClick={()=>navigate('/chat')} fontSize="medium" sx={{ color: '#4FBBB4', cursor: 'pointer' }}/>:<></>}
-                {isAuthenticated?(<Button 
-                   style={{
-                    borderRadius: '12px',
-                    backgroundColor: '#4FBBB4',
-                    borderColor: '#4FBBB4',
-                    padding: '4px 12px',
-                    fontSize: '0.8rem',
-                    lineHeight: 1.2
-                  }} onClick={()=>navigate(`/user-profile/${adDetails.user_id}`)}>
-                    View Profile
-                </Button>): (<Button 
-                    style={{
-                      borderRadius: '12px',
-                      backgroundColor: '#4FBBB4',
-                      borderColor: '#4FBBB4',
-                      padding: '4px 12px',
-                      fontSize: '0.8rem',
-                      lineHeight: 1.2
-                    }}
-                    onClick={() => navigate('/login')}>
-                    View Profile
-                </Button>)}
-      </div>
-    </div>
-  </Modal.Body>
-</Modal>
-
+          )
+        }
+        <div className="mt-3">
+          <p className="text-muted fs-6" style={{ fontFamily: 'Arial, sans-serif' }}>Post ID: {adDetails.id}</p>
+          <p><strong>Category:</strong> {adDetails.category}</p>
+          <p><strong>Description:</strong> {adDetails.description}</p>
+          <p><strong>Price:</strong> {adDetails.ad_price_details[0]?.rent_price || 'N/A'} per {adDetails.ad_price_details[0]?.rent_duration || ''}</p>
+          <p><i className="fa-solid fa-location-dot"></i> {`${adDetails.ad_location.locality ? adDetails.ad_location.locality + ',' : ''} ${adDetails.ad_location.district}, ${adDetails.ad_location.state}, ${adDetails.ad_location.country}`}</p>
+        </div>
+        <div className="d-flex flex-row justify-content-between align-items-center mt-4 flex-wrap">
+          {!isMyAd?(
+            <button
+              style={{
+                border: 'none',
+                backgroundColor: 'transparent',
+                padding: '0',
+                cursor: 'pointer'
+              }}
+              onClick={() => {
+                if (!isAuthenticated) {
+                  navigate('/login');
+                } else {
+                  toggleWishlist();
+                }
+              }}
+            >{adDetails.wishListed?<FavoriteIcon fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>:<FavoriteBorderIcon fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>}
+            </button>
+            ):
+            (<></>)
+          }
+          <ShareIcon
+            onClick={() => handleShare()}
+            fontSize="large"
+            sx={{ color: '#4FBBB4', cursor: 'pointer' }}
+          />
+          {
+            isAuthenticated&&!isMyAd?<ChatIcon onClick={()=>navigate('/chat',{ state: { userId: adDetails.user_id, userName: adDetails.user.name, adId:adDetails.id, adName: adDetails.title } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>:<></>
+          }
+          {isAuthenticated?(
+            <Button 
+              style={{
+                borderRadius: '12px',
+                backgroundColor: '#4FBBB4',
+                borderColor: '#4FBBB4',
+                padding: '4px 12px',
+                fontSize: '0.8rem',
+                lineHeight: 1.2
+              }}
+              onClick={()=>navigate(`/user-profile/${adDetails.user_id}`)}>
+              View Profile
+            </Button>) : (
+            <Button 
+              style={{
+                borderRadius: '12px',
+                backgroundColor: '#4FBBB4',
+                borderColor: '#4FBBB4',
+                padding: '4px 12px',
+                fontSize: '0.8rem',
+                lineHeight: 1.2
+              }}
+              onClick={() => navigate('/login')}>
+              View Profile
+            </Button>
+          )}
+        </div>
+      </Modal.Body>
+    </Modal>
   );
 };
 

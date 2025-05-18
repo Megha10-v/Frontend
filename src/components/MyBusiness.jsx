@@ -60,7 +60,7 @@ const MyBusiness = () =>{
           </div>
         )}
       </div>
-      <PostModal show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
+      <PostModal show={showModal} isMyAd={true} onHide={() => setShowModal(false)} post={selectedPost} />
     </>)
 }
 

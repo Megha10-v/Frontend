@@ -26,6 +26,7 @@ import './AdTabs.css'
 import ImageUploadForm from './ImageUploadForm';
 import AdLOcation from './AdLocation';
 import Loader from './Loader';
+import CurrentLocationButton from './CurrentLocationSearch';
 const PostAdForm = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -165,15 +166,27 @@ const PostAdForm = () => {
     const handleAddressSubmit = async (data) => {
         setLoading(true);
         try {
-            const payload = {
+            // const payload = {
+            //     ad_id: adId,
+            //     country: data.country,
+            //     latitude: data.latitude,
+            //     longitude: data.longitude,
+            //     state: data.state,
+            //     district: data.district,
+            //     locality: data.locality,
+            //     place: data.place,
+            //     ad_stage: 3,
+            //     ad_status: 'online'
+            // };
+             const payload = {
                 ad_id: adId,
-                country: data.country,
-                latitude: data.latitude,
-                longitude: data.longitude,
-                state: data.state,
-                district: data.district,
-                locality: data.locality,
-                place: data.place,
+                country: data.place.country,
+                latitude: data.place.latitude,
+                longitude: data.place.longitude,
+                state: data.place.state,
+                // district: data.district,
+                // locality: data.locality,
+                place: data.place.place,
                 ad_stage: 3,
                 ad_status: 'online'
             };
@@ -239,7 +252,8 @@ const PostAdForm = () => {
 
                 {step === 3 && (
                     <div>
-                        <AdLOcation onSubmit={handleAddressSubmit} onClose={handleBack}/>
+                        <CurrentLocationButton onSubmit={handleAddressSubmit} onClose={handleBack}/>
+                        {/* <AdLOcation onSubmit={handleAddressSubmit} onClose={handleBack}/> */}
                         {/* <input type="text" placeholder="Country" onChange={e => setAddress({ ...address, country: e.target.value })} />
                         <input type="text" placeholder="State" onChange={e => setAddress({ ...address, state: e.target.value })} />
                         <input type="text" placeholder="District" onChange={e => setAddress({ ...address, district: e.target.value })} />

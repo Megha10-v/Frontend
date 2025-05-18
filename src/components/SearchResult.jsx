@@ -29,8 +29,10 @@ const SearchResult = () => {
                 }
               );            
               setads(res.data.data);
+              console.log(ads);
+              
           } catch (err) {
-              console.error("Error fetching ads:", err);
+              console.log("Error fetching ads:", err);
           } finally {
               setLoading(false);
           }
@@ -58,7 +60,7 @@ const SearchResult = () => {
         )}
       </div>
       <Footer />
-      <PostModal show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
+      <PostModal isMyAd={false} show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
     </>
   );
 };

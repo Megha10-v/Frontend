@@ -8,7 +8,7 @@ import logonew from '../assets/footerlogo.png';
 
 const Footer = () => {
   return (
-    <Container fluid style={{backgroundColor: '#E5E5E5', marginTop: "20px"}} id='contacts' >
+    <Container fluid style={{backgroundColor: '#E5E5E5', marginTop:  window.innerWidth <= 768?'0px':"20px"}} id='contacts' >
       <Row className="text-center">
         <Col md={4} sm={12}>
         <Link to="/" style={{ display: 'inline-block' }}>

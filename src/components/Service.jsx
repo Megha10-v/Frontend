@@ -91,7 +91,7 @@ const Service = () => {
           <EmptyState />
         )}
       </div>
-      <PostModal show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
+      <PostModal isMyAd={false} show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
     </div>
   );
 }

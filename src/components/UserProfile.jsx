@@ -5,6 +5,9 @@ import Loader from './Loader';
 import '../App.css'
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import PostCard from './PostCard';
+import PostModal from './PostModal';
+import EmptyState from './EmptyAd';
 
 const UserProfilePage = () => {
     const token = localStorage.getItem('elk_authorization_token');
@@ -12,7 +15,12 @@ const UserProfilePage = () => {
     const [contact, setContact] = useState()
     const [loading, setLoading] = useState(false);
     const { id } = useParams();
-    
+    const [selectedPost, setSelectedPost] = useState(null);
+    const [showModal, setShowModal] = useState(false);
+    const handleCardClick = (post) => {
+        setSelectedPost(post);
+        setShowModal(true);
+    };
     useEffect(() => {
         const fetchUserData = async () => {
           try {
@@ -86,26 +94,27 @@ const UserProfilePage = () => {
                                 <p className="text-muted mb-0">{contact.data.mobile_number}</p>
                             </div>
                         </div>
-                        <h3>Ads:</h3>
+                        <h3 className='mb-5'>{contact.data.name}'s Ads</h3>
                         <div style={{display:'flex'}}>
                           {userData.ads.length === 0 ? (
-                            <p>No ads available.</p>
+                            <EmptyState />
                           ) : (
                             userData.ads.map((ad) => (
-                              <div key={ad.id} style={{ border: '1px solid gray', margin: '10px', padding: '10px' }}>
-                                <h4>{ad.title}</h4>
-                                <p>{ad.description}</p>
-                                <div>
-                                  {ad.ad_images.map((img) => (
-                                    <img key={img.id} src={img.image} alt="Ad" width="100" height="100" style={{ marginRight: '10px' }} />
-                                  ))}
-                                </div>
-                                {ad.ad_price_details.map((price) => (
-                                  <p key={price.id}>
-                                     ₹{price.rent_price} / {price.rent_duration}
-                                  </p>
-                                ))}
-                              </div>
+                              <PostCard key={ad.id} post={ad} onClick={handleCardClick} />
+                              // <div key={ad.id} style={{ border: '1px solid gray', margin: '10px', padding: '10px' }}>
+                              //   <h4>{ad.title}</h4>
+                              //   <p>{ad.description}</p>
+                              //   <div>
+                              //     {ad.ad_images.map((img) => (
+                              //       <img key={img.id} src={img.image} alt="Ad" width="100" height="100" style={{ marginRight: '10px' }} />
+                              //     ))}
+                              //   </div>
+                              //   {ad.ad_price_details.map((price) => (
+                              //     <p key={price.id}>
+                              //        ₹{price.rent_price} / {price.rent_duration}
+                              //     </p>
+                              //   ))}
+                              // </div>
                             ))
                           )}
                         </div>
@@ -113,6 +122,7 @@ const UserProfilePage = () => {
                 )}
             </main>
             <Footer />
+            <PostModal isMyAd={false} show={showModal} onHide={() => setShowModal(false)} post={selectedPost} />
         </>
     );
 };
