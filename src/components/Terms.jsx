@@ -104,6 +104,9 @@ function Terms() {
       </ul>
 
       <p style={{color:'white'}}>You agree that your Ad listing, posting, and/or Information: If you are registering on the Website/App, you are responsible for maintaining the confidentiality of your User ID, password, email address and for restricting access to your computer, computer system, computer network, and your ELK account, and you are responsible for all activities that occur under your User ID and password. If you access the Site using any electronic device other than by registration on the Site, the AUP remains applicable to you in the same manner as if you are a registered user on the Site.</p>
+      <h3 style={{color:'white'}}>3C. The renting of items prohibited under Indian law is strictly forbidden on the ELK platform</h3>
+      <p style={{color:'white'}}>The renting of motor vehicles on the ELK platform must be in accordance with the Indian Motor Vehicles Act.</p>
+
       <h2 style={{color:'white'}}>4. Value Added Services</h2>
       <p style={{color:'white'}}>ELK offers several value-added services for users who want to promote their products or services to gain special attention from viewers and receive more business inquiries. These services are optional, and ELK never pressures any user to utilize them at any time.</p>
       <p style={{color:'white'}}>ELK reserves the complete rights to edit, modify, remove or introduce new value-added services in the future.</p>
