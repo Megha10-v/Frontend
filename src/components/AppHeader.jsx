@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import { Navbar, Nav, Image, Container, Button, NavDropdown, Form } from 'react-bootstrap';
 import logo from '../assets/logo3.png';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearUser } from '../store/slices/authSlice';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
 
 function AppHeader() {
+
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(state => state.auth);
   const location = useLocation();
@@ -41,6 +44,7 @@ function AppHeader() {
     };
     if (token1){
       fetchAd();
+      console.log(user)
     }
   }, [token1]);
 
@@ -49,6 +53,7 @@ function AppHeader() {
     localStorage.removeItem('elk_authorization_token');
     localStorage.removeItem('elk_is_admin');
     localStorage.removeItem('elk_user_id');
+    dispatch(clearUser)
     navigate('/home');
     window.location.reload();
   };
@@ -131,6 +136,7 @@ function AppHeader() {
               )}
 
               {token1 ? (
+               
                 <NavDropdown
                   title={<span style={{ color: 'white' }}>{user?.name || 'My Account'}</span>}
                   id="basic-nav-dropdown"

@@ -1,20 +1,21 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import AppHeader from './AppHeader';
 import Footer from './AppFooter';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
 import { useNavigate } from 'react-router-dom';
 import Loader from './Loader';
-import '../App.css'
+import '../App.css';
+import { clearUser } from '../store/slices/authSlice';
 
 
 const ProfilePage = () => {
     const { user, token } = useSelector((state) => state.auth);
+    const dispatch = useDispatch();
     const [isHovered, setIsHovered] = useState(false);
     const [loading, setLoading] = useState(false);
     const [isDeleteHovered, setIsDeleteHovered] = useState(false);
     const [showWizard, setShowWizard] = useState(false);
-    // const [cookies, removeCookie] = useCookies(['elk_authorization_token']);
     const navigate = useNavigate();
     const refreshUserData = () => {
         navigate('/profile');
@@ -32,6 +33,7 @@ const ProfilePage = () => {
                     'Content-Type': 'application/json',
                 },
             });
+            
     
             const data = await response.json();
     
@@ -40,6 +42,7 @@ const ProfilePage = () => {
                 localStorage.removeItem('elk_authorization_token');
                 localStorage.removeItem('elk_is_admin');
                 localStorage.removeItem('elk_user_id');
+                dispatch(clearUser)
                 navigate('/home');
             } else {
                 alert(data.message || "Failed to delete account");

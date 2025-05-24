@@ -1,11 +1,14 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { auth, provider, signInWithPopup } from '../firebase';
 import { Button, Modal } from 'react-bootstrap';
 import './EditProfile.css'; 
+import { setUser, updateUser} from '../store/slices/authSlice';
 
 
 const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
+    const dispatch = useDispatch()
     const [activeTab, setActiveTab] = useState('profilePic');
 
     const [loading, setLoading] = useState(false);
@@ -56,6 +59,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                 },
             }
         );
+        dispatch(updateUser({name: formData.name}))
         alert("Name & description updated");
         setLoading(false);
         onClose();
@@ -113,6 +117,12 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
             localStorage.setItem('elk_authorization_token', response.data.data.token);
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);
+            dispatch(setUser({
+                user:{user_id:response.data.data.user_id, name:name},
+                token: response.data.data.token,
+                isAdmin: response.data.data.is_admin
+
+            }))
             alert("Email updated");
             setLoading(false);
             onClose();

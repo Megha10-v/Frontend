@@ -1,10 +1,13 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import axios from 'axios';
 import { Form, Button, Container, Card, Alert, Spinner } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, provider, signInWithPopup } from '../firebase';
+import { setUser } from '../store/slices/authSlice';
 
 const LoginPage = () => {
+    const dispatch = useDispatch()
     const [phoneNumber, setPhoneNumber] = useState('');
     const [otp, setOtp] = useState('');
     const [error, setError] = useState('');
@@ -33,6 +36,12 @@ const LoginPage = () => {
             localStorage.setItem('elk_authorization_token', response.data.data.token);
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);
+            dispatch(setUser({
+                user:{user_id:response.data.data.user_id, name:response.data.data.name},
+                token: response.data.data.token,
+                isAdmin: response.data.data.is_admin
+
+            }))
             navigate('/home');
         } catch (error) {
             console.error('Google Login Error:', error);
@@ -82,6 +91,12 @@ const LoginPage = () => {
             localStorage.setItem('elk_authorization_token', response.data.data.token);
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);
+            dispatch(setUser({
+                user:{user_id:response.data.data.user_id},
+                token: response.data.data.token,
+                isAdmin: response.data.data.is_admin
+
+            }))
             navigate('/home');
         } catch (error) {
             console.error('Error verifying OTP:', error);

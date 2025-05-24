@@ -11,7 +11,7 @@ import AdminNotificationForm from './components/admin2/AdminNotification';
 import ChatScreen from './components/chat';
 import MyWishList from './components/WishList';
 import AdminAllUsers from './components/admin2/AdminAllUsers';
-import ProfilePage from './components/Profile';
+import ProfilePage from './components/ProfilePage';
 import AdCategory from './components/AdCategory';
 import cleaning from './assets/ic_cleaning_service.png';
 import repairing from './assets/ic_repairing_service.png';
