@@ -37,7 +37,7 @@ const LoginPage = () => {
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);
             dispatch(setUser({
-                user:{user_id:response.data.data.user_id, name:response.data.data.name},
+                user:response.data.data,
                 token: response.data.data.token,
                 isAdmin: response.data.data.is_admin
 
@@ -92,7 +92,7 @@ const LoginPage = () => {
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);
             dispatch(setUser({
-                user:{user_id:response.data.data.user_id},
+                user:response.data.data,
                 token: response.data.data.token,
                 isAdmin: response.data.data.is_admin
 
