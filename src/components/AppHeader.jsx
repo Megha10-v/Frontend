@@ -44,7 +44,6 @@ function AppHeader() {
     };
     if (token1){
       fetchAd();
-      console.log(user)
     }
   }, [token1]);
 
@@ -63,7 +62,7 @@ function AppHeader() {
       <Navbar expand="lg" style={{backgroundColor: "#FFDA3F", marginBottom: window.innerWidth <= 768?'0px':"20px"}}>
         <Container>
           <Navbar.Brand href="/" className="align-items-center">
-            <Image src={logo} style={{ width: '100%', height: '70px',width:"70px", border: 'none' }} />
+            <Image src={logo} style={{ height: '70px',width:"70px", border: 'none' }} />
           </Navbar.Brand>
           <div className="w-100 my-2 order-3 order-lg-0 d-flex justify-content-center">
             <Form
@@ -165,50 +164,6 @@ function AppHeader() {
               )}
             </Nav>
           </Navbar.Collapse>
-          {/* <Navbar.Collapse id="navbar-nav" style={{ zIndex: '1000' }}> 
-            <Nav className ='ms-auto d-flex align-items-center flex-wrap gap-2 justify-content-end'>
-              {location.pathname !== '/post-ad' && (
-                <Button
-                  className="ms-2 d-flex align-items-center"
-                  style={{ gap: '10px', borderRadius: '15px', backgroundColor: '#4FBBB4', borderColor: '#4FBBB4', whiteSpace: 'nowrap' }}
-                  onClick={() => !token1?navigate('/login') : (Object.keys(unsavedAd).length !== 0)? setShowModal(true) : navigate('/post-ad')
-                  }>
-                  <i className="bi bi-plus-circle"></i> Place Your Ad
-                </Button>
-                )
-              }
-              {
-                token1 ? (
-                  <>
-                    <ChatIcon onClick={()=>navigate('/chat')} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>
-                    <FavoriteBorderIcon onClick={()=>navigate('/mywishlist')} fontSize="large" sx={{ color: '#4FBBB4', marginRight: "20px", cursor: 'pointer' }}/>
-                  </>
-                ) : (
-                  <></>
-                )
-              }
-              {token1 ? (
-                <NavDropdown
-                  title={<span style={{ color: "white"}}>{user?.name || "My Account"}</span>}
-                  id="basic-nav-dropdown"
-                  style={{
-                    border: "2px solid #4FBBB4",
-                    borderRadius: "8px",
-                    padding: "0 2px",
-                  }}
-                >
-                  <NavDropdown.Item href="/profile" >Profile</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                </NavDropdown>
-                ) : (
-                  <Button style={{ all: "unset", color:'#FFFFFF', border:'2px black', margin:"0px 20px", cursor:'pointer' }} onClick={() => navigate('/login')}>
-                      <strong>Login</strong>
-                  </Button>
-                )
-              }
-            </Nav>
-          </Navbar.Collapse> */}
         </Container>
         {showModal && unsavedAd && (
           <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>

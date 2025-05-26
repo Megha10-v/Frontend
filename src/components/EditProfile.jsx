@@ -59,7 +59,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                 },
             }
         );
-        dispatch(updateUser({name: formData.name}))
+        dispatch(updateUser({name: formData.name, description: formData.description}))
         alert("Name & description updated");
         setLoading(false);
         onClose();
@@ -118,7 +118,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
             localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             localStorage.setItem('elk_user_id', response.data.data.user_id);
             dispatch(setUser({
-                user:{user_id:response.data.data.user_id, name:name},
+                user:response.data.data,
                 token: response.data.data.token,
                 isAdmin: response.data.data.is_admin
 
@@ -189,11 +189,18 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                     </div>
                 );
             case 'profileInfo':
+                 const isValid = formData.name.trim() !== '' && formData.description.trim().length > 3;
                 return (
                     <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center' }}>
                         <input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} className="form-control mb-2" placeholder="Name" />
+                        {formData.name.trim() === ''&& (
+                            <small className="text-danger mb-2">Name should not be empty.</small>
+                            )}
                         <input value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="form-control mb-2" placeholder="Description" />
-                        <button className="btn btn-warning btn-sm" style={{ color: 'white' }} onClick={handleProfileUpdate}>Update</button>
+                        {formData.description.trim().length > 0 && formData.description.trim().length <= 3 && (
+                            <small className="text-danger mb-2">Description must be longer than 3 characters.</small>
+                            )}
+                        <button className="btn btn-warning btn-sm" style={{ color: 'white' }} onClick={handleProfileUpdate} disabled={!isValid}>Update</button>
                     </div>
                 );
             case 'email':
