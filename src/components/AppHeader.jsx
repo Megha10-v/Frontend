@@ -50,8 +50,8 @@ function AppHeader() {
 
   const handleLogout = () => {
     localStorage.removeItem('elk_authorization_token');
-    localStorage.removeItem('elk_is_admin');
-    localStorage.removeItem('elk_user_id');
+    // localStorage.removeItem('elk_is_admin');
+    // localStorage.removeItem('elk_user_id');
     dispatch(clearUser)
     navigate('/home');
     window.location.reload();
@@ -61,7 +61,7 @@ function AppHeader() {
     <>
       <Navbar expand="lg" style={{backgroundColor: "#FFDA3F", marginBottom: window.innerWidth <= 768?'0px':"20px"}}>
         <Container>
-          <Navbar.Brand href="/" className="align-items-center">
+          <Navbar.Brand href="/home" className="align-items-center">
             <Image src={logo} style={{ height: '70px',width:"70px", border: 'none' }} />
           </Navbar.Brand>
           <div className="w-100 my-2 order-3 order-lg-0 d-flex justify-content-center">

@@ -1,6 +1,5 @@
-import React, { useRef, useState, useEffect } from 'react';
-import { MdPlayArrow, MdPause, MdArrowDropDown, MdList, MdBook} from 'react-icons/md';
-import { FaUser } from "react-icons/fa";
+import { useRef, useState, useEffect } from 'react';
+import { MdPlayArrow, MdPause} from 'react-icons/md';
 
 const ChatAudioPlayer = ({ audioUrl }) => {
     const audioRef = useRef(null);

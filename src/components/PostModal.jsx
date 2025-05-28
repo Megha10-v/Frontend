@@ -11,13 +11,13 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 
 const PostModal = ({ show, onHide, post, isMyAd }) => {  
-  const { isAuthenticated } = useSelector(state => state.auth);
+  const { user,isAuthenticated } = useSelector(state => state.auth);
   const navigate = useNavigate();
   const [adDetails, setAdDetails] = useState(null);
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('elk_authorization_token');
   const [error, setError] = useState(false);
-  const userId = localStorage.getItem('elk_user_id');
+  
   
   const handleShare = () => {
     const shareUrl = `https://elkcompany.in/ad/${adDetails.id}`;
@@ -37,7 +37,8 @@ const PostModal = ({ show, onHide, post, isMyAd }) => {
 
   const getAdDetails = async (adId, token) => {
     let body = {}
-    if(token){      
+    if(token){   
+      const userId = user?.user_id;   
       body = { ad_id: adId, user_id: userId }
     }else{
       body = { ad_id: adId }

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import  { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
 import AppHeader from "./AppHeader";
 import Footer from "./AppFooter";
@@ -7,8 +7,10 @@ import PostCard from "./PostCard";
 import PostModal from "./PostModal";
 import Loader from "./Loader";
 import EmptyState from "./EmptyAd";
+import { useSelector } from "react-redux";
 
 const AdCategory = ({category,type}) => {
+    const {user} = useSelector((state) => state.auth)
     const [ads, setads] = useState([]);
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('elk_authorization_token');
@@ -18,9 +20,10 @@ const AdCategory = ({category,type}) => {
         setSelectedPost(post);
         setShowModal(true);
     };
-    const userId = localStorage.getItem('elk_user_id');
+    // const userId = localStorage.getItem('elk_user_id');
     let body = {}
-    if(token){      
+    if(token){
+      const userId = user.user_id      
       body = { ad_type: type, category: category.title, user_id: userId }
     }else{
       body = { ad_type: type, category: category.title }
