@@ -9,8 +9,9 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [priceDetailsList, setPriceDetailsList] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null); 
-  const userId = localStorage.getItem('elk_user_id');
-  const { user, token } = useSelector((state) => state.auth);
+  // const userId = localStorage.getItem('elk_user_id');
+  const { user } = useSelector((state) => state.auth);
+  const userId = user?.user_id;
 
   const [privacy, setPrivacy] = useState(true);
   const [loading, setLoading] = useState(true);

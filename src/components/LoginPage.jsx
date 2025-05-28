@@ -34,8 +34,8 @@ const LoginPage = () => {
                 email,
             });
             localStorage.setItem('elk_authorization_token', response.data.data.token);
-            localStorage.setItem('elk_is_admin', response.data.data.is_admin);
-            localStorage.setItem('elk_user_id', response.data.data.user_id);
+            // localStorage.setItem('elk_is_admin', response.data.data.is_admin);
+            // localStorage.setItem('elk_user_id', response.data.data.user_id);
             dispatch(setUser({
                 user:response.data.data,
                 token: response.data.data.token,
@@ -89,8 +89,8 @@ const LoginPage = () => {
             const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/verify_otp`, { verificationId: verificationId, otp: otp });
             console.log('OTP Verified:', response.data);
             localStorage.setItem('elk_authorization_token', response.data.data.token);
-            localStorage.setItem('elk_is_admin', response.data.data.is_admin);
-            localStorage.setItem('elk_user_id', response.data.data.user_id);
+            // localStorage.setItem('elk_is_admin', response.data.data.is_admin);
+            // localStorage.setItem('elk_user_id', response.data.data.user_id);
             dispatch(setUser({
                 user:response.data.data,
                 token: response.data.data.token,

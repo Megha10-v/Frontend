@@ -115,8 +115,8 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                 email,
             });
             localStorage.setItem('elk_authorization_token', response.data.data.token);
-            localStorage.setItem('elk_is_admin', response.data.data.is_admin);
-            localStorage.setItem('elk_user_id', response.data.data.user_id);
+            // localStorage.setItem('elk_is_admin', response.data.data.is_admin);
+            // localStorage.setItem('elk_user_id', response.data.data.user_id);
             dispatch(setUser({
                 user:response.data.data,
                 token: response.data.data.token,

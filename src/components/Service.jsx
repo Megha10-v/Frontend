@@ -1,6 +1,7 @@
 import React from 'react';
 import Carousel from './Carousel';
 import { useEffect, useState } from 'react';
+import { useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import cleaning from '../assets/ic_cleaning_service.png';
 import repairing from '../assets/ic_repairing_service.png';
@@ -29,6 +30,7 @@ const Service = () => {
     { id: 8, title: 'Salon', image: salon },
   ];
   const navigate = useNavigate();
+  const {user} = useSelector((state)=>state.auth)
 
   const handleCategoryClick = (category) => {
     const path = `/services/${category.title.toLowerCase()}`;
@@ -42,7 +44,8 @@ const Service = () => {
 
   // const token = cookies.elk_authorization_token;
   const token = localStorage.getItem('elk_authorization_token');
-  const userId = localStorage.getItem('elk_user_id');
+  const userId = user?.user_id;
+  // const userId = localStorage.getItem('elk_user_id');
   const [loading, setLoading] = useState(true);
   let body = {}
   if(token){      
@@ -70,7 +73,7 @@ const Service = () => {
     };
 
     fetchBestProviders();
-  }, [token]);
+  }, [token], user);
 
   const handleCardClick = (post) => {
       setSelectedPost(post);
