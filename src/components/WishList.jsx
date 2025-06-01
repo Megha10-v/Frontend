@@ -27,7 +27,7 @@ const MyWishList = () => {
   useEffect(() => {
     const fetchWishlist = async () => {
       try {
-        const res = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/user_wishlists`, {
+        const res = await axios.get(`http://localhost:3000/api/user_wishlists`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },
@@ -63,7 +63,7 @@ const MyWishList = () => {
         ) : (
           <div className="row">
             {wishlist.map((ad) => (
-              <PostCard key={ad.id} post={ad} onClick={handleCardClick} />
+              <PostCard key={ad.id} post={ad} onClick={handleCardClick} isMyAd={true}/>
             ))}
           </div>
         )}

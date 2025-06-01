@@ -9,9 +9,8 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [priceDetailsList, setPriceDetailsList] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null); 
-  // const userId = localStorage.getItem('elk_user_id');
   const { user } = useSelector((state) => state.auth);
-  const userId = user?.user_id;
+  const userId = String(user?.user_id);
 
   const [privacy, setPrivacy] = useState(true);
   const [loading, setLoading] = useState(true);
@@ -144,8 +143,6 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
           <></>:
           privacy?<div style={{fontSize:'16px'}}>Contact details are visible to others. <span onClick={()=>{setPrivacy(!privacy); updatePrivacy(userId, !privacy, user.name)}} style={{color:'blue', cursor:'pointer'}}>Change</span></div>:<div style={{fontSize:'16px'}}>Contact Details are hidden. <span onClick={()=>{setPrivacy(!privacy); updatePrivacy(userId, !privacy, user.name)}} style={{color:'blue', cursor:'pointer'}}>Change</span></div>
       }
-      
-      
       <div className="form-actions">
         <button type="button" className="btn-secondary" onClick={onBack}>
           Back
@@ -154,9 +151,6 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
           Next
         </button>
       </div>
-
-
-
       {showPriceModal && (
         <PriceDetailsForm
           initialDetails={editingIndex !== null ? priceDetailsList[editingIndex] : {}}

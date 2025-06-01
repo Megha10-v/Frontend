@@ -28,7 +28,7 @@ const LoginPage = () => {
             const name = user.displayName;
             const email = user.email;
             const uuid = user.uid;
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/create_user`, {
+            const response = await axios.post(`http://localhost:3000/api/create_user`, {
                 name,
                 uuid,
                 email,
@@ -63,8 +63,7 @@ const LoginPage = () => {
         setError('');
         setLoading(true);
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/send_otp`, { mobile: `+91 ${phoneNumber}` });
-            console.log('OTP Sent:', response.data);
+            const response = await axios.post(`http://localhost:3000/api/send_otp`, { mobile: `+91 ${phoneNumber}` });
             setStep('otp'); 
             setVerificationId(response.data.verificationId)
         } catch (error) {
@@ -86,8 +85,7 @@ const LoginPage = () => {
         setLoading(true);
 
         try {
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/verify_otp`, { verificationId: verificationId, otp: otp });
-            console.log('OTP Verified:', response.data);
+            const response = await axios.post(`http://localhost:3000/api/verify_otp`, { verificationId: verificationId, otp: otp });
             localStorage.setItem('elk_authorization_token', response.data.data.token);
             // localStorage.setItem('elk_is_admin', response.data.data.is_admin);
             // localStorage.setItem('elk_user_id', response.data.data.user_id);

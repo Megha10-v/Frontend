@@ -26,7 +26,7 @@ const ProfilePage = () => {
     
         try {
             setLoading(true)
-            const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/delete_account?user_id=${user.user_id}`, {
+            const response = await fetch(`http://localhost:3000/api/delete_account?user_id=${user.user_id}`, {
                 method: 'DELETE',
                 headers: {
                     'Authorization': `Bearer ${token}`,

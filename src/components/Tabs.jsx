@@ -26,7 +26,7 @@ export default function Tabs() {
   return (
     <>
       <AppHeader />
-      <Nav className="custom-tabs mx-auto d-flex justify-content-center">
+      <Nav className="custom-tabs mx-auto mt-4 d-flex justify-content-center">
         {['rentals', 'services', 'my business'].map((tab) => (
           <button
             key={tab}

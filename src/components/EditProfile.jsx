@@ -31,7 +31,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
         setLoading(true);
         const form = new FormData();
         form.append('file', formData.profile);
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/update_profile_pic?id=${user.user_id}`,
+        await axios.post(`http://localhost:3000/api/update_profile_pic?id=${user.user_id}`,
             form,
             {
                 headers: {
@@ -47,7 +47,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
 
     const handleProfileUpdate = async () => {
         setLoading(true);
-        await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/update_profile`,
+        await axios.post(`http://localhost:3000/api/update_profile`,
             {
                 user_id: user.user_id,
                 name: formData.name,
@@ -75,7 +75,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
         }
         try {
             setLoading(true);
-            const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/send_otp`,
+            const res = await axios.post(`http://localhost:3000/api/send_otp`,
                 {
                     mobile: formData.mobile,
 
@@ -109,7 +109,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
             const name = user.displayName;
             const email = user.email;
             const uuid = user.uid;
-            const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/create_user`, {
+            const response = await axios.post(`http://localhost:3000/api/create_user`, {
                 name,
                 uuid,
                 email,
@@ -136,7 +136,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
     const handleVerifyOtp = async () => {
         try {
             setLoading(true);
-            await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/verify_update_mobile`,
+            await axios.post(`http://localhost:3000/api/verify_update_mobile`,
                 {
                     verificationId: formData.verificationId,
                     otp: formData.otp
@@ -148,7 +148,7 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
                 }
             ).then(async (res) => {
                 await axios.post(
-                    `${process.env.REACT_APP_API_BASE_URL}/api/update_email_or_mobile`,
+                    `http://localhost:3000/api/update_email_or_mobile`,
                     {
                         user_id: user.user_id,
                         mobile: formData.mobile,

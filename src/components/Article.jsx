@@ -23,7 +23,6 @@ function Article() {
         const emailDoc = await addDoc(collection(db, 'emails'), {
           email: email,
         });
-        console.log('Document written with ID: ', emailDoc.id);
         setEmail('');
         setShowModal(true);
       } catch (error) {

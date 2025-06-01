@@ -20,19 +20,11 @@ const AdCategory = ({category,type}) => {
         setSelectedPost(post);
         setShowModal(true);
     };
-    // const userId = localStorage.getItem('elk_user_id');
-    let body = {}
-    if(token){
-      const userId = user.user_id      
-      body = { ad_type: type, category: category.title, user_id: userId }
-    }else{
-      body = { ad_type: type, category: category.title }
-    }
     useEffect(() => {
       const fetchads = async () => {
         setLoading(true)
         try {
-            const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`, 
+            const res = await axios.post(`http://localhost:3000/api/rent_category_posts`, 
               {
                 ad_type: type,
                 category: category.title
@@ -42,7 +34,7 @@ const AdCategory = ({category,type}) => {
                     Authorization: `Bearer ${token}`,
                 },
               }
-            );            
+            );
             setads(res.data.data);
         } catch (err) {
             console.error("Error fetching ads:", err);
@@ -65,7 +57,7 @@ const AdCategory = ({category,type}) => {
         ) : (
           <div className="row">
             {ads.map((ad) => (
-                <PostCard key={ad.id} post={ad} onClick={handleCardClick} />
+                <PostCard key={ad.id} post={ad} onClick={handleCardClick} isMyAd={false}/>
             ))}
           </div>
         )}

@@ -58,7 +58,7 @@ function App() {
         { id: 3, title: 'Electronics', image: electronics },
         { id: 4, title: 'Tools', image: tools },
         { id: 5, title: 'Furniture', image: furniture },
-        { id: 6, title: 'Bikes', image: bike },
+        { id: 6, title: 'Bike', image: bike },
         { id: 7, title: 'Clothes', image: clothes },
         { id: 8, title: 'Helicopter', image: helicopter },
     ];
@@ -70,7 +70,7 @@ function App() {
                 try {
                     const { id: userId } = jwtDecode(token);
                     const response = await axios.post(
-                        `${process.env.REACT_APP_API_BASE_URL}/api/get_user?id=${userId}`,
+                        `http://localhost:3000/api/get_user?id=${userId}`,
                         {},
                         {
                             headers: { authorization: `Bearer ${token}` }

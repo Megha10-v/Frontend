@@ -31,7 +31,7 @@ function AppHeader() {
   useEffect(() => {    
     const fetchAd = async () => {      
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get_recent_unsaved_ad`, { 
+        const response = await axios.get(`http://localhost:3000/api/get_recent_unsaved_ad`, { 
           headers: {
               'authorization': `Bearer ${token1}`,
               'Content-Type': 'application/json'
@@ -39,7 +39,7 @@ function AppHeader() {
         });
         setUnsavedAd(response.data);
       } catch (error) {
-        console.log(error);     
+        //
       }
     };
     if (token1){
