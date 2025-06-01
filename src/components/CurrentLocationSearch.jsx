@@ -27,7 +27,7 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
       return;
     }
     try {
-      const response = await axios.post(`http://localhost:3000/api/place_search`,
+      const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/place_search`,
         {
           query: query,
           limited: false
@@ -82,7 +82,7 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
           longitude: longitude
         }
         try {
-          const response = await axios.post(`http://localhost:3000/api/get_place`, payload);
+          const response = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/get_place`, payload);
           const place = response.data;          
           setLocationName(place.place);
           onSubmit(place);

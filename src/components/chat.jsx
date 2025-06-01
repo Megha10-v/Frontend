@@ -68,7 +68,7 @@ const ChatScreen = () => {
       if (!user?.user_id || !selectedOtherUser) return;
       try {
         const response = await fetch(
-          `http://localhost:3000/api/get_chat?authUserId=${user.user_id}&otherUserId=${selectedOtherUser}`,
+          `${process.env.REACT_APP_API_BASE_URL}/api/get_chat?authUserId=${user.user_id}&otherUserId=${selectedOtherUser}`,
           {
             method: 'GET',
             headers: {

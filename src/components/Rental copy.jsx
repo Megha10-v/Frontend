@@ -64,7 +64,7 @@ const Rental = () => {
   
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/recomented_posts`,
+          `${process.env.REACT_APP_API_BASE_URL}/api/recomented_posts`,
           requestBody,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -217,7 +217,7 @@ export default Rental;
   
 //       try {
 //         const response = await axios.post(
-//           `http://localhost:3000/api/recomented_posts`,
+//           `${process.env.REACT_APP_API_BASE_URL}/api/recomented_posts`,
 //           requestBody,
 //           {
 //             headers: token ? { Authorization: `Bearer ${token}` } : {},

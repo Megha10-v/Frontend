@@ -37,7 +37,6 @@ function AdminNotificationForm() {
                                 placeholder="Type your notification here..."
                             ></textarea>
                         </div>
-
                         <button type="submit">Send Notification</button>
                     </form>
                 </div>

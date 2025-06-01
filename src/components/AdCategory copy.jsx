@@ -29,7 +29,7 @@ const AdCategory = ({category,type}) => {
       const fetchads = async () => {
         setLoading(true)
         try {
-            const res = await axios.post(`http://localhost:3000/api/rent_category_posts`, 
+            const res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`, 
               {
                 ad_type: type,
                 category: category.title

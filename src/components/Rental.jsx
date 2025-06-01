@@ -67,13 +67,13 @@ const Rental = () => {
   
       try {
         const response = await axios.post(
-          `http://localhost:3000/api/recomented_posts`,
+          `${process.env.REACT_APP_API_BASE_URL}/api/recomented_posts`,
           requestBody,
           {
             headers: token ? { Authorization: `Bearer ${token}` } : {},
           }
         );
-        const car_res = await axios.post(`http://localhost:3000/api/rent_category_posts`, 
+        const car_res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`, 
           {
             ad_type: 'rent',
             category: 'car'
@@ -84,7 +84,7 @@ const Rental = () => {
             },
           }
         );
-        const prop_res = await axios.post(`http://localhost:3000/api/rent_category_posts`, 
+        const prop_res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`, 
           {
             ad_type: 'rent',
             category: 'property'
@@ -95,7 +95,7 @@ const Rental = () => {
             },
           }
         );
-        const electro_res = await axios.post(`http://localhost:3000/api/rent_category_posts`, 
+        const electro_res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`, 
           {
             ad_type: 'rent',
             category: 'electronics'
@@ -106,7 +106,7 @@ const Rental = () => {
             },
           }
         );
-        const bikes_res = await axios.post(`http://localhost:3000/api/rent_category_posts`, 
+        const bikes_res = await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`, 
           {
             ad_type: 'rent',
             category: 'bike'
