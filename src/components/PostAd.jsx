@@ -67,11 +67,13 @@ const PostAdForm = () => {
         ad_type: '',
         category: '',
         ad_prices: {
-            daily: '',
-            weekly: '',
-            monthly: ''
+            // daily: '',
+            // weekly: '',
+            // monthly: ''
         }
     });
+
+    const [imageData, setImageData] = useState([])
     
     const handleCategoryClick = (itemName) => {
         setFormData((prevData) => ({
@@ -80,7 +82,28 @@ const PostAdForm = () => {
         }));
         setShowSelectCategory(false)
     };
-    const handleBack = () =>{
+    // const handleBack = () =>{
+    //     setShowSelectCategory(true);
+    //     setStep(1);
+    //     setFormData({
+    //         title: '',
+    //         description: '',
+    //         ad_type: '',
+    //         category: '',
+    //         ad_prices: {
+    //             // daily: '',
+    //             // weekly: '',
+    //             // monthly: ''
+    //         }
+    //     });
+    // }
+    const handleBack = () => {
+    if (step === 2) {
+        setStep(1);
+        setImageData([])
+    } else if (step === 3) {
+        setStep(2); 
+    } else if (!showSelectCategory) {
         setShowSelectCategory(true);
         setStep(1);
         setFormData({
@@ -89,12 +112,14 @@ const PostAdForm = () => {
             ad_type: '',
             category: '',
             ad_prices: {
-                daily: '',
-                weekly: '',
-                monthly: ''
+                // daily: '',
+                // weekly: '',
+                // monthly: ''
             }
-        });
+        }); 
     }
+    };
+
     const token = localStorage.getItem('elk_authorization_token');
     useEffect(() => {
         if (!token) return;
@@ -143,11 +168,7 @@ const PostAdForm = () => {
 
     const handleImageUpload = async (data) => {
         setLoading(true);
-        try {
-            const formDataImg = new FormData();
-            for (const file of data) {
-                formDataImg.append('files', file);
-            }            
+        try {     
             await axios.post(`${process.env.REACT_APP_API_BASE_URL}/api/upload_ad_image?ad_id=${adId}&ad_stage=2&ad_status=offline`, data, {
                 headers: {
                     'authorization': `Bearer ${token}`,
@@ -224,6 +245,8 @@ const PostAdForm = () => {
                                 selectedItem={{ type: activeTab, name: formData.category }}
                                 onBack={handleBack}
                                 onSubmit={handleAdCreate}
+                                formData={formData}
+                                setFormData={setFormData}
                             />
                         )}
                     </div>
@@ -231,21 +254,14 @@ const PostAdForm = () => {
 
                 {step === 2 && (
                     <div>
-                        <ImageUploadForm postId={adId}  onClose={handleBack} onSubmit={handleImageUpload}/>
+                        <ImageUploadForm  onClose={handleBack} onSubmit={handleImageUpload} 
+                        imageData={imageData} setImageData={setImageData}/>
                     </div>
                 )}
 
                 {step === 3 && (
                     <div>
                         <CurrentLocationButton onSubmit={handleAddressSubmit} onClose={handleBack}/>
-                        {/* <AdLOcation onSubmit={handleAddressSubmit} onClose={handleBack}/> */}
-                        {/* <input type="text" placeholder="Country" onChange={e => setAddress({ ...address, country: e.target.value })} />
-                        <input type="text" placeholder="State" onChange={e => setAddress({ ...address, state: e.target.value })} />
-                        <input type="text" placeholder="District" onChange={e => setAddress({ ...address, district: e.target.value })} />
-                        <input type="text" placeholder="Locality" onChange={e => setAddress({ ...address, locality: e.target.value })} />
-                        <input type="number" placeholder="Latitude" onChange={e => setAddress({ ...address, latitude: e.target.value })} />
-                        <input type="number" placeholder="Longitude" onChange={e => setAddress({ ...address, longitude: e.target.value })} />
-                        <button onClick={handleAddressSubmit}>Finish & Go Home</button> */}
                     </div>
                 )}
             </div>

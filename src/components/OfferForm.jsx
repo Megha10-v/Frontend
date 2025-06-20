@@ -5,7 +5,7 @@ import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../firebase";
 import { useSelector } from 'react-redux';
 
-export default function OfferForm({ selectedItem, onBack, onSubmit }) {
+export default function OfferForm({ selectedItem, onBack, onSubmit, formData, setFormData }) {
   const [showPriceModal, setShowPriceModal] = useState(false);
   const [priceDetailsList, setPriceDetailsList] = useState([]);
   const [editingIndex, setEditingIndex] = useState(null); 
@@ -14,6 +14,16 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
 
   const [privacy, setPrivacy] = useState(true);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    if (formData?.ad_prices) {
+      const priceList = Object.entries(formData.ad_prices).map(([unit, amount]) => ({
+        unit,
+        amount,
+      }));
+      setPriceDetailsList(priceList);
+    }
+  }, [formData]);
 
 
   useEffect(() => {
@@ -58,14 +68,31 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
     alert('Privacy changed')
   }
   const handleSubmit = (e) => {
+    // e.preventDefault();
+
+    // const priceDetailsObject = priceDetailsList.reduce((acc, detail) => {
+    //   acc[detail.unit] = detail.amount;
+    //   return acc;
+    // }, {});
+    
+    // const formData = {
+    //   ad_type: selectedItem.type,
+    //   category: selectedItem.name,
+    //   title: e.target.title.value,
+    //   description: e.target.description.value,
+    //   ad_prices: priceDetailsObject,
+    // };
+
+    // onSubmit(formData);
     e.preventDefault();
 
     const priceDetailsObject = priceDetailsList.reduce((acc, detail) => {
       acc[detail.unit] = detail.amount;
       return acc;
     }, {});
-    
-    const formData = {
+
+    const updatedFormData = {
+      ...formData,
       ad_type: selectedItem.type,
       category: selectedItem.name,
       title: e.target.title.value,
@@ -73,7 +100,8 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
       ad_prices: priceDetailsObject,
     };
 
-    onSubmit(formData);
+    setFormData(updatedFormData); // Save into parent state
+    onSubmit(updatedFormData); 
   };
 
   const handleSavePriceDetails = (details) => {
@@ -102,12 +130,12 @@ export default function OfferForm({ selectedItem, onBack, onSubmit }) {
     <form className="offer-form" onSubmit={handleSubmit}>
       <div className="form-group">
         <label>Title</label>
-        <input type="text" name="title" placeholder="Enter a catchy title" required />
+        <input type="text" name="title" placeholder="Enter a catchy title" defaultValue={formData?.title || ''} required />
       </div>
 
       <div className="form-group">
         <label>Description</label>
-        <textarea name="description" placeholder="Add some details" rows="4" required />
+        <textarea name="description" placeholder="Add some details" rows="4" defaultValue={formData?.description || ''} required />
       </div>
 
       <div className="form-group">

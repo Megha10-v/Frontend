@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import "./ImageUploadForm.css";
-import AdLOcation from './AdLocation';
 
 const CurrentLocationButton = ({ onSubmit, onClose }) => {
   const [loading, setLoading] = useState(false);
@@ -12,7 +11,7 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
   const [query, setQuery] = useState('');
   const [address, setAddress] = useState({});
   const token = localStorage.getItem('elk_authorization_token');
-  const [payloads, setPayloads] = useState({})
+ 
   useEffect(() => {
     if (selectedLocation) {
       const selected = location.find(loc => loc.name === selectedLocation);
