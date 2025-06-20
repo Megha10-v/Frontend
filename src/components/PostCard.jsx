@@ -1,9 +1,7 @@
-import React, {useState} from 'react'; 
 import { Carousel } from 'react-bootstrap';
 
 
 const PostCard = ({ post, onClick, isMyAd }) => {
-  const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
   
   return (
     // <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center" style={{maxWidth:'100%',backgroundColor:'blue'}}>
@@ -35,11 +33,6 @@ const PostCard = ({ post, onClick, isMyAd }) => {
           </div>
         </div>
 
-        {/* <div className="card-body p-2 d-flex flex-column">
-          <h5 className="card-title fs-6">{post.title}</h5>
-          <span className="card-text">₹{post.ad_price_details[0]?.rent_price || 'N/A'} per {post.ad_price_details[0]?.rent_duration || ''}</span>
-          <span className="card-text"><i className="fa-solid fa-location-dot"></i> {`${post.ad_location.locality?post.ad_location.locality+',' : ''} ${post.ad_location.place?post.ad_location.place+',' : ''} ${post.ad_location.district?post.ad_location.district+',' : ''} ${post.ad_location.state?post.ad_location.state+',' : ''} ${post.ad_location.country?post.ad_location.country : ''}`}</span>
-        </div> */}
       </div>
     </div>
   );
