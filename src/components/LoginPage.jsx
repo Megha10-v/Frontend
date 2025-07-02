@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { Form, Button, Container, Card, Alert, Spinner } from 'react-bootstrap';
+import { Form, Button, Container, Card, Alert, Spinner, FormCheck } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, provider, signInWithPopup } from '../firebase';
 import { setUser } from '../store/slices/authSlice';
@@ -14,9 +14,12 @@ const LoginPage = () => {
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState('phone'); 
     const [verificationId, setVerificationId] = useState('');
+    const [acceptedTerms, setAcceptedTerms] = useState(false); // New state for terms acceptance
 
-   const navigate = useNavigate();
-
+    const navigate = useNavigate();
+    const handleTermsAccepted = (e) => {
+        setAcceptedTerms(e.target.checked);
+    };
     const validatePhoneNumber = (number) => /^[0-9]{10}$/.test(number);
     const validateOtp = (otp) => /^[0-9]{6}$/.test(otp);
     const handleGoogleLogin = async () => {
@@ -161,19 +164,20 @@ const LoginPage = () => {
                                     justifyContent: 'center',
                                     gap: '8px',
                                 }}
-                                disabled={loading}
+                                disabled={loading || !acceptedTerms}
                             >
                                 {loading && <Spinner as="span" animation="border" size="sm" />}
                                 {step === 'phone' ? 'Send OTP' : 'Verify OTP'}
                             </Button>
                         </Form>
+                        
                         <div className="text-center mt-3">
                             <p className="text-muted">or</p>
                             <Button
                                 variant="outline-dark"
                                 className="w-100 py-2"
                                 onClick={handleGoogleLogin}
-                                disabled={loading}
+                                disabled={loading || !acceptedTerms}
                             >
                                 <img
                                     src="https://developers.google.com/identity/images/g-logo.png"
@@ -183,12 +187,42 @@ const LoginPage = () => {
                                 Continue with Google
                             </Button>
                         </div>
+                        <div className="custom-checkbox-wrapper mt-3 text-muted d-flex align-items-center justify-content-center">
+                            <input
+                                type="checkbox"
+                                id="termsCheck"
+                                checked={acceptedTerms}
+                                onChange={handleTermsAccepted}
+                                className="custom-black-checkbox me-2"
+                            />
+                            <label htmlFor="termsCheck" style={{ fontSize: '14px' }}>
+                                To continue, accept&nbsp;
+                                <Link to="https://elkbusinesshub.com/terms" target="_blank" rel="noopener noreferrer">
+                                    Terms and Conditions
+                                </Link>
+                            </label>
+                        </div>
 
+                        {/* <div className="d-flex align-items-center justify-content-center mt-3">
+                            <FormCheck
+                                type="checkbox"
+                                id="termsCheck"
+                                checked={acceptedTerms}
+                                onChange={handleTermsAccepted}
+                                className="me-2"
+                            />
+                            <label htmlFor="termsCheck" className="text-muted" style={{ fontSize: '14px' }}>
+                                To continue, accept&nbsp;
+                                <Link to="https://elkbusinesshub.com/terms" target="_blank" rel="noopener noreferrer">
+                                    Terms and Conditions
+                                </Link>
+                            </label>
+                        </div> */}
 
-                        <p className="text-muted text-center mt-4" style={{ fontSize: '14px' }}>
+                        {/* <p className="text-muted text-center mt-4" style={{ fontSize: '14px' }}>
                             By continuing, you agree to our <Link to="https://elkbusinesshub.com/terms" target="_blank">Terms of Service</Link> &{' '}
                             <Link to="https://elkbusinesshub.com/privacy" target="_blank" >Privacy Policy</Link>
-                        </p>
+                        </p> */}
                     </Card.Body>
                 </Card>
             </Container>

@@ -41,6 +41,35 @@
   display: none; /* Chrome, Safari, Opera */
 }
 
+.custom-black-checkbox {
+  width: 20px;
+  height: 20px;
+  appearance: none;
+  background-color: #fff;
+  border: 2px solid #000;
+  border-radius: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+}
+
+.custom-black-checkbox:checked {
+  background-color: black;
+  border-color: black;
+}
+
+.custom-black-checkbox:checked::after {
+  content: '✓';
+  color: white;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+}
+
+
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
