@@ -203,22 +203,6 @@ const LoginPage = () => {
                             </label>
                         </div>
 
-                        {/* <div className="d-flex align-items-center justify-content-center mt-3">
-                            <FormCheck
-                                type="checkbox"
-                                id="termsCheck"
-                                checked={acceptedTerms}
-                                onChange={handleTermsAccepted}
-                                className="me-2"
-                            />
-                            <label htmlFor="termsCheck" className="text-muted" style={{ fontSize: '14px' }}>
-                                To continue, accept&nbsp;
-                                <Link to="https://elkbusinesshub.com/terms" target="_blank" rel="noopener noreferrer">
-                                    Terms and Conditions
-                                </Link>
-                            </label>
-                        </div> */}
-
                         {/* <p className="text-muted text-center mt-4" style={{ fontSize: '14px' }}>
                             By continuing, you agree to our <Link to="https://elkbusinesshub.com/terms" target="_blank">Terms of Service</Link> &{' '}
                             <Link to="https://elkbusinesshub.com/privacy" target="_blank" >Privacy Policy</Link>
