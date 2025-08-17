@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import axios from 'axios';
-import { Form, Button, Container, Card, Alert, Spinner, FormCheck } from 'react-bootstrap';
+import { Form, Button, Container, Card, Alert, Spinner, FormCheck, InputGroup } from 'react-bootstrap';
 import { Link, useNavigate } from 'react-router-dom';
 import { auth, provider, signInWithPopup } from '../firebase';
 import { setUser } from '../store/slices/authSlice';
@@ -127,14 +127,32 @@ const LoginPage = () => {
                             {step === 'phone' && (
                                 <Form.Group controlId="phoneNumber" className="mb-3">
                                     <Form.Label>Phone Number</Form.Label>
-                                    <Form.Control
-                                        type="tel"
-                                        placeholder="Enter your 10-digit phone number"
-                                        value={phoneNumber}
-                                        onChange={(e) => setPhoneNumber(e.target.value)}
-                                        isInvalid={!!error}
-                                    />
+                                    <InputGroup>
+                                        <InputGroup.Text>+91</InputGroup.Text>
+                                        <Form.Control
+                                            type="tel"
+                                            placeholder="Enter 10-digit phone number"
+                                            value={phoneNumber}
+                                            onChange={(e) => {
+                                                // Allow only digits and max 10
+                                                const value = e.target.value.replace(/\D/g, '').slice(0, 10);
+                                                setPhoneNumber(value);
+                                            }}
+                                            maxLength={10}
+                                            isInvalid={!!error}
+                                        />
+                                    </InputGroup>
                                 </Form.Group>
+                                // <Form.Group controlId="phoneNumber" className="mb-3">
+                                //     <Form.Label>Phone Number</Form.Label>
+                                //     <Form.Control
+                                //         type="tel"
+                                //         placeholder="Enter your 10-digit phone number"
+                                //         value={phoneNumber}
+                                //         onChange={(e) => setPhoneNumber(e.target.value)}
+                                //         isInvalid={!!error}
+                                //     />
+                                // </Form.Group>
                             )}
 
                             {step === 'otp' && (

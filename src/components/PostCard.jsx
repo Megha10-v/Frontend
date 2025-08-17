@@ -6,7 +6,7 @@ const PostCard = ({ post, onClick, isMyAd }) => {
   return (
     // <div className="col-12 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center" style={{maxWidth:'100%',backgroundColor:'blue'}}>
     <div className={isMyAd?"col-6 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center":""}>
-      <div className="card shadow-sm cursor-pointer" onClick={() => onClick(post)} style={{borderRadius:'10px',maxWidth:'250px'}}>
+      <div className="card shadow-sm cursor-pointer" onClick={() => onClick(post)} style={{borderRadius:'10px',maxWidth:'250px' }}>
        {post.ad_images && post.ad_images.length > 0 && (
           <Carousel interval={3000} indicators={false} controls={true}>
             {post.ad_images.map((imgObj, index) => (
@@ -22,7 +22,7 @@ const PostCard = ({ post, onClick, isMyAd }) => {
           </Carousel>
         )}
         <div className="card-body p-2 d-flex flex-column">
-          <h5 className="card-title fs-6">{post.title}</h5>
+          <h6 className="card-title post-title">{post.title}</h6>
           
           <div className="d-flex flex-column text-truncate" style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
             <span className="card-text me-2">₹{post.ad_price_details[0]?.rent_price || 'N/A'} per {post.ad_price_details[0]?.rent_duration || ''}</span>

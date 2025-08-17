@@ -13,6 +13,18 @@
   }
 }
 
+.post-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;   /* limit to 2 lines */
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+
+  /* Ensure constant height (2 line height always) */
+  min-height: calc(1.2em * 2); /* 1.2em ≈ line-height */
+  line-height: 1.2em;
+}
+
 .App-header {
   background-color: #282c34;
   min-height: 100vh;
