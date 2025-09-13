@@ -408,7 +408,7 @@ function Home() {
     fontSize: '15px'
   }}
 >
-<motion.span
+{/* <motion.span
         animate={{ x: [0, -30, 0] }}
         transition={{
           duration: 2,
@@ -418,7 +418,7 @@ function Home() {
         style={{ display: "inline-block", marginRight: "0.5rem" }}
       >
         🚀
-      </motion.span> Ready to get started?<button  className="adbutton"> <Link to='/home' style={{textDecoration:'none',color:'white'}}>Start Your Free Account</Link></button>
+      </motion.span> Ready to get started?<button  className="adbutton"> <Link to='/home' style={{textDecoration:'none',color:'white'}}>Start Your Free Account</Link></button> */}
 </div>
 
  
