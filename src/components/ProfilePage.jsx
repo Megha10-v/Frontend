@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import AppHeader from './AppHeader';
 import Footer from './AppFooter';
 import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
@@ -40,8 +39,6 @@ const ProfilePage = () => {
             if (data.success) {
                 alert("Account deleted successfully");
                 localStorage.removeItem('elk_authorization_token');
-                // localStorage.removeItem('elk_is_admin');
-                // localStorage.removeItem('elk_user_id');
                 dispatch(clearUser)
                 navigate('/home');
             } else {
@@ -75,7 +72,6 @@ const ProfilePage = () => {
     };
     return (
         <>
-            <AppHeader />
             <main className="container py-4" style={{ minHeight: '70vh' }}>
                 {(
                     loading?<Loader/>:

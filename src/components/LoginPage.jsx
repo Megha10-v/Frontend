@@ -7,6 +7,7 @@ import { auth, provider, signInWithPopup } from '../firebase';
 import { setUser } from '../store/slices/authSlice';
 
 const LoginPage = () => {
+    console.log(process.env.REACT_APP_API_BASE_URL)
     const dispatch = useDispatch()
     const [phoneNumber, setPhoneNumber] = useState('');
     const [otp, setOtp] = useState('');

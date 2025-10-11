@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppHeader from "./AppHeader";
 import Footer from "./AppFooter";
 import axios from "axios";
-// import { useCookies } from "react-cookie";
 import PostCard from "./PostCard";
 import PostModal from "./PostModal";
 import Loader from "./Loader";
@@ -14,8 +12,6 @@ import NotLoggedIn from "./NotLoggedIn";
 const MyWishList = () => {
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
-  // const [cookies] = useCookies(["elk_authorization_token"]);
-  // const token = cookies.elk_authorization_token;
   const { isAuthenticated } = useSelector(state => state.auth);
   const token = localStorage.getItem('elk_authorization_token');
   const [selectedPost, setSelectedPost] = useState(null);
@@ -49,7 +45,6 @@ const MyWishList = () => {
 
   return (
     <>
-      <AppHeader />
       <div className="main container py-4" style={{ minHeight: "80vh" }}>
         <h1 className="mb-4">My Wishlist</h1>
         {loading ? (

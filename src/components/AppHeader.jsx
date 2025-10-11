@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { Navbar, Nav, Image, Container, Button, NavDropdown, Form } from 'react-bootstrap';
+import React, { useEffect, useState, useRef } from 'react';
+import { Navbar, Nav, Image, Container, Button, NavDropdown, Form, ListGroup } from 'react-bootstrap';
 import logo from '../assets/logo3.png';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
@@ -8,8 +8,22 @@ import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
 
-function AppHeader() {
+// A mock list of potential search terms. In a real app, this would come from a server.
+const MOCK_SUGGESTIONS = [
+  'Honda CB Unicorn 2014',
+  'Vintage Car',
+  'CAR RENTALS',
+  'baby pink colour lehenga',
+  'sound box',
+  'safety helmet',
+  'Cleaning Service',
+  'Electrician',
+  'Property for Rent',
+  'Tools for Hire',
+];
 
+
+function AppHeader() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(state => state.auth);
@@ -17,7 +31,57 @@ function AppHeader() {
   const token1 = localStorage.getItem('elk_authorization_token');
   const [unsavedAd, setUnsavedAd] = useState({});
   const [showModal, setShowModal] = useState(false);
+
+  // States for search and suggestions
   const [searchTerm, setSearchTerm] = useState('');
+  const [suggestions, setSuggestions] = useState([]);
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const searchWrapperRef = useRef(null); // To detect clicks outside the search area
+
+  // This effect filters suggestions based on user input
+  useEffect(() => {
+    // We use a timeout to avoid searching on every single keystroke (this is called "debouncing")
+    const handler = setTimeout(() => {
+      if (searchTerm) {
+        const filteredSuggestions = MOCK_SUGGESTIONS.filter(suggestion =>
+          suggestion.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setSuggestions(filteredSuggestions);
+        setShowSuggestions(true);
+      } else {
+        setSuggestions([]);
+        setShowSuggestions(false);
+      }
+    }, 250); // Wait 250ms after the user stops typing
+
+    return () => {
+      clearTimeout(handler); // Cleanup the timeout
+    };
+  }, [searchTerm]);
+
+  // This effect closes the suggestions when you click outside of the search bar
+  useEffect(() => {
+    function handleClickOutside(event) {
+      if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [searchWrapperRef]);
+
+  const handleSearchSubmit = (term) => {
+    if (!term.trim()) return; // Don't search if the term is empty
+    setSearchTerm(term);
+    setShowSuggestions(false);
+    navigate(`/search/${term}`);
+  };
+
+  const handleSuggestionClick = (suggestion) => {
+    handleSearchSubmit(suggestion);
+  };
 
   const handleContinue = () => {
     setShowModal(false);
@@ -28,14 +92,12 @@ function AppHeader() {
     setShowModal(false);
     navigate('/home');
   };
-  useEffect(() => {    
-    const fetchAd = async () => {      
+
+  useEffect(() => {
+    const fetchAd = async () => {
       try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get_recent_unsaved_ad`, { 
-          headers: {
-              'authorization': `Bearer ${token1}`,
-              'Content-Type': 'application/json'
-          }
+        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get_recent_unsaved_ad`, {
+          headers: { authorization: `Bearer ${token1}`, 'Content-Type': 'application/json' }
         });
         setUnsavedAd(response.data);
       } catch (error) {
@@ -47,56 +109,77 @@ function AppHeader() {
     }
   }, [token1]);
 
-
   const handleLogout = () => {
     localStorage.removeItem('elk_authorization_token');
-    // localStorage.removeItem('elk_is_admin');
-    // localStorage.removeItem('elk_user_id');
-    dispatch(clearUser)
+    dispatch(clearUser());
     navigate('/home');
     window.location.reload();
   };
   
   return (
     <>
-      <Navbar expand="lg" style={{backgroundColor: "#FFDA3F", marginBottom: window.innerWidth <= 768?'0px':"20px"}}>
+      <Navbar 
+        expand="lg" 
+        sticky="top"
+        className={'navbar-scrolled'}
+        style={{
+          backgroundColor: "#FFDA3F",
+          zIndex: 1020,
+          padding: '0.5rem 0' /* Added padding to make header taller */
+        }}
+      >
         <Container>
-          <Navbar.Brand href="/home" className="align-items-center">
-            <Image src={logo} style={{ height: '70px',width:"70px", border: 'none' }} />
+          <Navbar.Brand href="/home" style={{ marginLeft: '-30px' }}>
+            <Image 
+              src={logo} 
+              style={{ 
+                height: '80px', /* Increased logo size */
+                width: '80px',
+              }} 
+            />
           </Navbar.Brand>
-          <div className="w-100 my-2 order-3 order-lg-0 d-flex justify-content-center">
+          
+          {/* We wrap the search bar and suggestions in a div to handle outside clicks */}
+          <div ref={searchWrapperRef} className="w-100 my-2 order-3 order-lg-0 d-flex justify-content-center position-relative">
             <Form
               className="d-flex w-100 w-lg-50"
               onSubmit={(e) => {
                 e.preventDefault();
-                navigate(`/search/${searchTerm}`);
+                handleSearchSubmit(searchTerm);
               }}
             >
               <Form.Control
                 type="search"
                 placeholder="Search ads..."
                 className="me-2"
-                aria-label="Search"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ borderRadius: '15px',maxWidth: '500px',width: '100%' }}
+                onFocus={() => setShowSuggestions(true)}
+                autoComplete="off" // Disable browser's default autocomplete
+                style={{ borderRadius: '15px', maxWidth: '500px', width: '100%' }}
               />
             </Form>
+
+            {/* Conditionally render the suggestions dropdown */}
+            {showSuggestions && suggestions.length > 0 && (
+              <ListGroup className="search-suggestions">
+                {suggestions.map((suggestion, index) => (
+                  <ListGroup.Item
+                    key={index}
+                    action
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion}
+                  </ListGroup.Item>
+                ))}
+              </ListGroup>
+            )}
           </div>
-          {/* <Form className="d-flex flex-grow-1 my-2 my-lg-0 mx-lg-3" onSubmit={(e) => { e.preventDefault(); navigate(`/search/${searchTerm}`); }}>
-            <Form.Control
-              type="search"
-              placeholder="Search ads..."
-              className="me-2"
-              aria-label="Search"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              style={{ borderRadius: '15px'}}
-            />
-          </Form> */}
+
           <Navbar.Toggle aria-controls="navbar-nav" />
-          <Navbar.Collapse id="navbar-nav" style={{ zIndex: '1000' }}>
-            <Nav className="ms-auto d-flex flex-row flex-nowrap align-items-center gap-3 justify-content-end w-100">
+          <Navbar.Collapse id="navbar-nav">
+            <Nav className="ms-auto d-flex align-items-center gap-3">
+              
               {location.pathname !== '/post-ad' && (
                 <Button
                   className="d-flex align-items-center"
@@ -135,7 +218,6 @@ function AppHeader() {
               )}
 
               {token1 ? (
-               
                 <NavDropdown
                   title={<span style={{ color: 'white' }}>{user?.name || 'My Account'}</span>}
                   id="basic-nav-dropdown"
@@ -151,12 +233,7 @@ function AppHeader() {
                 </NavDropdown>
               ) : (
                 <Button
-                  style={{
-                    all: 'unset',
-                    color: '#FFFFFF',
-                    margin: '0px 20px',
-                    cursor: 'pointer',
-                  }}
+                  style={{ all: 'unset', color: '#FFFFFF', margin: '0px 20px', cursor: 'pointer' }}
                   onClick={() => navigate('/login')}
                 >
                   <strong>Login</strong>
@@ -165,10 +242,10 @@ function AppHeader() {
             </Nav>
           </Navbar.Collapse>
         </Container>
+
         {showModal && unsavedAd && (
           <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
-           <div className="modal-dialog modal-dialog-centered modal-sm modal-md modal-lg" role="document">
-
+            <div className="modal-dialog modal-dialog-centered modal-sm modal-md modal-lg" role="document">
               <div className="modal-content rounded-3 shadow">
                 <div className="modal-header">
                   <h5 className="modal-title">Continue Editing?</h5>

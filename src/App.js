@@ -1,9 +1,9 @@
 import { jwtDecode } from 'jwt-decode';
 import React, { useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
 import { setUser } from './store/slices/authSlice';
-import axios from 'axios'; 
+import axios from 'axios';
 import LoginPage from './components/LoginPage';
 import Tabs from './components/Tabs';
 import AdminHome from './components/admin2/AdminHome';
@@ -13,6 +13,19 @@ import MyWishList from './components/WishList';
 import AdminAllUsers from './components/admin2/AdminAllUsers';
 import ProfilePage from './components/ProfilePage';
 import AdCategory from './components/AdCategory';
+import PostAdForm from './components/PostAd';
+import ProtectedRoute from './components/ProtectedRoute';
+import Error from './components/Error';
+import AdminRoute from './components/AdminRoute';
+import LoginRoute from './components/LoginRoute';
+import UserProfilePage from './components/UserProfile';
+import Careers from './components/Careers';
+import Home from './components/Home';
+import Privacy from './components/Privacy';
+import Terms from './components/Terms';
+import SearchResult from './components/SearchResult';
+import Header from './components/Header';
+import AppHeader from './components/AppHeader';
 import cleaning from './assets/ic_cleaning_service.png';
 import repairing from './assets/ic_repairing_service.png';
 import painting from './assets/ic_painting_service.png';
@@ -29,19 +42,11 @@ import furniture from './assets/home_cate_furniture.png';
 import bike from './assets/home_cate_bikes.png';
 import clothes from './assets/home_cate_clothes.png';
 import helicopter from './assets/home_cate_helicopter.png';
-import PostAdForm from './components/PostAd';
-import ProtectedRoute from './components/ProtectedRoute';
-import Error from './components/Error';
-import AdminRoute from './components/AdminRoute';
-import LoginRoute from './components/LoginRoute';
-import UserProfilePage from './components/UserProfile';
-import Careers from './components/Careers';
-import Home from './components/Home';
-import Privacy from './components/Privacy';
-import Terms from './components/Terms';
-import SearchResult from './components/SearchResult';
+
 function App() {
     const dispatch = useDispatch();
+    const location = useLocation();
+
     const serviceCategories = [
         { id: 1, title: 'Cleaning', image: cleaning  },
         { id: 2, title: 'Repairing', image: repairing },
@@ -86,48 +91,76 @@ function App() {
         }
     }, [dispatch]); 
 
+    // --- Start of new logic ---
+
+    // This determines WHICH header to show (the yellow AppHeader or the white landing page Header)
+    const showAppHeader = ![ '/', '/careers', '/privacy', '/terms'].includes(location.pathname);
+
+    // This determines IF a global header should be shown at all.
+    // We create a list of all pages that render their own internal header.
+    const pathsWithInternalHeader = [
+        '/chat',
+        '/mywishlist',
+        '/profile',
+        '/post-ad',
+        '/search',
+        '/services',
+        '/rental',
+        '/user-profile',
+    ];
+
+    // We check if the current path starts with any of the paths in our list.
+    const shouldHideGlobalHeader = pathsWithInternalHeader.some(path => location.pathname.startsWith(path));
+
+    // --- End of new logic ---
+
+
     return (
         <>
-            <Routes>
-                <Route path="/" element={<Home />} />
-                <Route path="/careers" element={<Careers />} />
-                <Route path="/privacy" element={<Privacy />} />
-                <Route path="/terms" element={<Terms />} />
+            {/* We only render the global header if `shouldHideGlobalHeader` is false */}
+            {!shouldHideGlobalHeader && (showAppHeader ? <AppHeader /> : <Header />)}
 
-                <Route path="/home" element={<Tabs />} />
-                <Route path="/login" element={<LoginRoute><LoginPage /></LoginRoute>} />
-                <Route path="/post-ad" element={<ProtectedRoute><PostAdForm /></ProtectedRoute>} />
-                <Route path="/chat" element={<ProtectedRoute><ChatScreen/></ProtectedRoute>}/>
-                <Route path="/mywishlist" element={<ProtectedRoute><MyWishList/></ProtectedRoute>}/>
-                <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
-                <Route path='/user-profile/:id' element={<ProtectedRoute><UserProfilePage/></ProtectedRoute>}/>
-                {serviceCategories.map((category) => (
-                    <Route
-                        key={category.id}
-                        path={`/services/${category.title.toLowerCase()}`}
-                        element={<AdCategory category={category} type={'service'}/>}
-                    />
-                ))}
-                {rentalCategories.map((category) => (
-                    <Route
-                        key={category.id}
-                        path={`/rental/${category.title.toLowerCase()}`}
-                        element={<AdCategory category={category} type={'rent'}/>}
-                    />
-                ))}
-                <Route path='/search/:query' element={<SearchResult/>}/>
-                <Route path="/admin" element={<AdminRoute><AdminHome /></AdminRoute>} />
-                <Route path='/admin/notification' element={<AdminRoute><AdminNotificationForm/></AdminRoute>}/>
-                <Route path="/admin/accounts" element={<AdminRoute><AdminAllUsers /></AdminRoute>} />
-                <Route path="*" element={<Error/>}/>
-            </Routes>
+            <main className={showAppHeader ? "main-content" : ""}>
+                <Routes>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/careers" element={<Careers />} />
+                    <Route path="/privacy" element={<Privacy />} />
+                    <Route path="/terms" element={<Terms />} />
+                    
+                    <Route path="/home" element={<Tabs />} />
+                    <Route path="/login" element={<LoginRoute><LoginPage /></LoginRoute>} />
+                    <Route path="/post-ad" element={<ProtectedRoute><PostAdForm /></ProtectedRoute>} />
+                    <Route path="/chat" element={<ProtectedRoute><ChatScreen/></ProtectedRoute>}/>
+                    <Route path="/mywishlist" element={<ProtectedRoute><MyWishList/></ProtectedRoute>}/>
+                    <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
+                    <Route path='/user-profile/:id' element={<ProtectedRoute><UserProfilePage/></ProtectedRoute>}/>
+                    
+                    {serviceCategories.map((category) => (
+                        <Route
+                            key={category.id}
+                            path={`/services/${category.title.toLowerCase()}`}
+                            element={<AdCategory category={category} type={'service'}/>}
+                        />
+                    ))}
+                    {rentalCategories.map((category) => (
+                        <Route
+                            key={category.id}
+                            path={`/rental/${category.title.toLowerCase()}`}
+                            element={<AdCategory category={category} type={'rent'}/>}
+                        />
+                    ))}
+
+                    <Route path='/search/:query' element={<SearchResult/>}/>
+                    
+                    <Route path="/admin" element={<AdminRoute><AdminHome /></AdminRoute>} />
+                    <Route path='/admin/notification' element={<AdminRoute><AdminNotificationForm/></AdminRoute>}/>
+                    <Route path="/admin/accounts" element={<AdminRoute><AdminAllUsers /></AdminRoute>} />
+                    
+                    <Route path="*" element={<Error/>}/>
+                </Routes>
+            </main>
         </>
     );
 }
 
 export default App;
-
-
-
-
-
