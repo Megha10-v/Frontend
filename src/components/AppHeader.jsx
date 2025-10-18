@@ -6,22 +6,14 @@ import { useSelector, useDispatch } from 'react-redux';
 import { clearUser } from '../store/slices/authSlice';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import HistoryIcon from '@mui/icons-material/History';
 import axios from 'axios';
 
-// A mock list of potential search terms. In a real app, this would come from a server.
 const MOCK_SUGGESTIONS = [
-  'Honda CB Unicorn 2014',
-  'Vintage Car',
-  'CAR RENTALS',
-  'baby pink colour lehenga',
-  'sound box',
-  'safety helmet',
-  'Cleaning Service',
-  'Electrician',
-  'Property for Rent',
+  'Honda CB Unicorn 2014', 'Vintage Car', 'CAR RENTALS', 'baby pink colour lehenga',
+  'sound box', 'safety helmet', 'Cleaning Service', 'Electrician', 'Property for Rent',
   'Tools for Hire',
 ];
-
 
 function AppHeader() {
   const dispatch = useDispatch();
@@ -32,15 +24,19 @@ function AppHeader() {
   const [unsavedAd, setUnsavedAd] = useState({});
   const [showModal, setShowModal] = useState(false);
 
-  // States for search and suggestions
   const [searchTerm, setSearchTerm] = useState('');
   const [suggestions, setSuggestions] = useState([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const searchWrapperRef = useRef(null); // To detect clicks outside the search area
+  const [searchHistory, setSearchHistory] = useState([]);
+  const searchWrapperRef = useRef(null);
 
-  // This effect filters suggestions based on user input
+  // Load search history from localStorage on component mount
   useEffect(() => {
-    // We use a timeout to avoid searching on every single keystroke (this is called "debouncing")
+    const storedHistory = JSON.parse(localStorage.getItem('searchHistory')) || [];
+    setSearchHistory(storedHistory);
+  }, []);
+  
+  useEffect(() => {
     const handler = setTimeout(() => {
       if (searchTerm) {
         const filteredSuggestions = MOCK_SUGGESTIONS.filter(suggestion =>
@@ -50,16 +46,13 @@ function AppHeader() {
         setShowSuggestions(true);
       } else {
         setSuggestions([]);
-        setShowSuggestions(false);
+        // Don't hide suggestions here, so history can be shown
       }
-    }, 250); // Wait 250ms after the user stops typing
+    }, 250);
 
-    return () => {
-      clearTimeout(handler); // Cleanup the timeout
-    };
+    return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  // This effect closes the suggestions when you click outside of the search bar
   useEffect(() => {
     function handleClickOutside(event) {
       if (searchWrapperRef.current && !searchWrapperRef.current.contains(event.target)) {
@@ -67,13 +60,17 @@ function AppHeader() {
       }
     }
     document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [searchWrapperRef]);
 
   const handleSearchSubmit = (term) => {
-    if (!term.trim()) return; // Don't search if the term is empty
+    if (!term.trim()) return;
+
+    // Update search history
+    const newHistory = [term, ...searchHistory.filter(item => item.toLowerCase() !== term.toLowerCase())].slice(0, 5);
+    setSearchHistory(newHistory);
+    localStorage.setItem('searchHistory', JSON.stringify(newHistory));
+    
     setSearchTerm(term);
     setShowSuggestions(false);
     navigate(`/search/${term}`);
@@ -81,6 +78,13 @@ function AppHeader() {
 
   const handleSuggestionClick = (suggestion) => {
     handleSearchSubmit(suggestion);
+  };
+  
+  const handleClearHistory = (e) => {
+    e.stopPropagation();
+    setSearchHistory([]);
+    localStorage.removeItem('searchHistory');
+    setShowSuggestions(false);
   };
 
   const handleContinue = () => {
@@ -125,7 +129,7 @@ function AppHeader() {
         style={{
           backgroundColor: "#FFDA3F",
           zIndex: 1020,
-          padding: '0.5rem 0' /* Added padding to make header taller */
+          padding: '0.5rem 0'
         }}
       >
         <Container>
@@ -133,16 +137,19 @@ function AppHeader() {
             <Image 
               src={logo} 
               style={{ 
-                height: '80px', /* Increased logo size */
+                height: '80px',
                 width: '80px',
               }} 
             />
           </Navbar.Brand>
           
-          {/* We wrap the search bar and suggestions in a div to handle outside clicks */}
-          <div ref={searchWrapperRef} className="w-100 my-2 order-3 order-lg-0 d-flex justify-content-center position-relative">
+          <div 
+            ref={searchWrapperRef} 
+            className="my-2 order-3 order-lg-0 position-relative mx-auto" 
+            style={{ width: '100%', maxWidth: '500px' }}
+          >
             <Form
-              className="d-flex w-100 w-lg-50"
+              className="d-flex w-100"
               onSubmit={(e) => {
                 e.preventDefault();
                 handleSearchSubmit(searchTerm);
@@ -155,23 +162,44 @@ function AppHeader() {
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
                 onFocus={() => setShowSuggestions(true)}
-                autoComplete="off" // Disable browser's default autocomplete
-                style={{ borderRadius: '15px', maxWidth: '500px', width: '100%' }}
+                autoComplete="off"
+                style={{ borderRadius: '15px', width: '100%' }}
               />
             </Form>
 
-            {/* Conditionally render the suggestions dropdown */}
-            {showSuggestions && suggestions.length > 0 && (
+            {showSuggestions && (
               <ListGroup className="search-suggestions">
-                {suggestions.map((suggestion, index) => (
-                  <ListGroup.Item
-                    key={index}
-                    action
-                    onClick={() => handleSuggestionClick(suggestion)}
-                  >
-                    {suggestion}
-                  </ListGroup.Item>
-                ))}
+                {searchTerm.length === 0 && searchHistory.length > 0 && (
+                  <>
+                    <ListGroup.Item className="history-header">
+                      <span>Recent Searches</span>
+                      <button className="clear-history-btn" onClick={handleClearHistory}>Clear</button>
+                    </ListGroup.Item>
+                    {searchHistory.map((item, index) => (
+                      <ListGroup.Item
+                        key={`history-${index}`}
+                        action
+                        onClick={() => handleSuggestionClick(item)}
+                        className="history-item"
+                      >
+                        <HistoryIcon className="history-icon" />
+                        {item}
+                      </ListGroup.Item>
+                    ))}
+                  </>
+                )}
+
+                {searchTerm.length > 0 && suggestions.length > 0 && (
+                  suggestions.map((suggestion, index) => (
+                    <ListGroup.Item
+                      key={`suggestion-${index}`}
+                      action
+                      onClick={() => handleSuggestionClick(suggestion)}
+                    >
+                      {suggestion}
+                    </ListGroup.Item>
+                  ))
+                )}
               </ListGroup>
             )}
           </div>
@@ -204,16 +232,20 @@ function AppHeader() {
 
               {token1 && (
                 <>
-                  <ChatIcon
-                    onClick={() => navigate('/chat')}
-                    fontSize="large"
-                    sx={{ color: '#4FBBB4', cursor: 'pointer' }}
-                  />
-                  <FavoriteBorderIcon
-                    onClick={() => navigate('/mywishlist')}
-                    fontSize="large"
-                    sx={{ color: '#4FBBB4', cursor: 'pointer' }}
-                  />
+                  {location.pathname !== '/chat' && (
+                    <ChatIcon
+                      onClick={() => navigate('/chat')}
+                      fontSize="large"
+                      sx={{ color: '#4FBBB4', cursor: 'pointer' }}
+                    />
+                  )}
+                  {location.pathname !== '/mywishlist' && (
+                    <FavoriteBorderIcon
+                      onClick={() => navigate('/mywishlist')}
+                      fontSize="large"
+                      sx={{ color: '#4FBBB4', cursor: 'pointer' }}
+                    />
+                  )}
                 </>
               )}
 

@@ -1,6 +1,5 @@
 import  { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppHeader from "./AppHeader";
 import Footer from "./AppFooter";
 import axios from "axios";
 import PostCard from "./PostCard";
@@ -47,7 +46,6 @@ const AdCategory = ({category,type}) => {
 
   return (
     <>
-      <AppHeader />
       <div className="main container py-4" style={{ minHeight: "80vh" }}>
         <h1 className="mb-4" style={{textTransform:'capitalize'}}>{category.title}</h1>
         {loading ? (

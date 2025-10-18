@@ -1,15 +1,10 @@
 import React from 'react'
-import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
-import {Image} from 'react-bootstrap'
 import Footer from './Footer'
 
 
 function Privacy() {
     return (
         <div >
-          <a href="/" style={{ display: 'inline-block' }}>
-          <Image src={logonew} thumbnail style={{ marginTop:'30px',marginLeft:'50px',marginBottom:'30px',width: '208px', height: '80px', border: 'none' }} />
-          </a>
         <div style={{background:'linear-gradient(180deg, #F5CC40 0%, #4FBBB4 100%)'}} id ='contacts'>
         <div style={{ margin: '0 auto', maxWidth: '800px', padding: '20px', fontFamily: 'Arial, sans-serif', lineHeight: '1.6' ,background: 'linear-gradient(180deg, #F5CC40 0%, #4FBBB4 100%)',}}>
       <h1 style={{ textAlign: 'center',color:'white' }}>Privacy Policy for ELK</h1>

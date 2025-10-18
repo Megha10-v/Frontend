@@ -1,18 +1,46 @@
 import { Carousel } from 'react-bootstrap';
 import dayjs from 'dayjs';
-// Removed: import DeleteIcon from '@mui/icons-material/Delete'; 
+import { MdDeleteForever } from "react-icons/md"; 
 
 const PostCard = ({ post, onClick, isMyAd, onDeleteAd }) => {
   const postDateTime = dayjs(post.createdAt).format('MMM D, YYYY [at] h:mm A');
 
-  // Removed: handleDelete function as the button is moved
+  const handleDelete = (e) => {
+    e.stopPropagation(); // Prevent opening the modal
+    onDeleteAd(post.ad_id);
+  };
 
   return (
     <div className={isMyAd ? "col-6 col-sm-6 col-md-4 col-lg-3 mb-4 d-flex justify-content-center" : ""}>
       <div className="card shadow-sm" style={{ borderRadius: '10px', maxWidth: '250px', position: 'relative' }}>
-        {/* Removed: Delete button JSX */}
+        {isMyAd && (
+          <button
+            onClick={handleDelete}
+            style={{
+              position: 'absolute',
+              top: '5px',
+              left: '5px',
+              zIndex: '10',
+              background: 'rgba(255, 255, 255, 0.7)',
+              border: 'none',
+              borderRadius: '50%',
+              width: '30px',
+              height: '30px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              cursor: 'pointer'
+            }}
+          >
+            <MdDeleteForever color="blue" size={20} />
+          </button>
+        )}
         {post.ad_images && post.ad_images.length > 0 ? (
-          <Carousel interval={null} indicators={false} controls={true}>
+          <Carousel 
+            interval={null} 
+            indicators={false} 
+            controls={post.ad_images.length > 1} // This line hides controls for single images
+          >
             {post.ad_images.map((imgObj, index) => (
               <Carousel.Item key={index}>
                 <img

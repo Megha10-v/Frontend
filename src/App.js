@@ -91,71 +91,56 @@ function App() {
         }
     }, [dispatch]); 
 
-    // --- Start of new logic ---
-
-    // This determines WHICH header to show (the yellow AppHeader or the white landing page Header)
+    // Determine which global header to show based on the current path
     const showAppHeader = ![ '/', '/careers', '/privacy', '/terms'].includes(location.pathname);
-
-    // This determines IF a global header should be shown at all.
-    // We create a list of all pages that render their own internal header.
-    const pathsWithInternalHeader = [
-        '/chat',
-        '/mywishlist',
-        '/profile',
-        '/post-ad',
-        '/search',
-        '/services',
-        '/rental',
-        '/user-profile',
-    ];
-
-    // We check if the current path starts with any of the paths in our list.
-    const shouldHideGlobalHeader = pathsWithInternalHeader.some(path => location.pathname.startsWith(path));
-
-    // --- End of new logic ---
-
 
     return (
         <>
-            {/* We only render the global header if `shouldHideGlobalHeader` is false */}
-            {!shouldHideGlobalHeader && (showAppHeader ? <AppHeader /> : <Header />)}
-
+            {/* Render the appropriate global header */}
+            {showAppHeader ? <AppHeader /> : <Header />}
+            
             <main className={showAppHeader ? "main-content" : ""}>
                 <Routes>
+                    {/* Public Routes */}
                     <Route path="/" element={<Home />} />
                     <Route path="/careers" element={<Careers />} />
                     <Route path="/privacy" element={<Privacy />} />
                     <Route path="/terms" element={<Terms />} />
                     
+                    {/* App Routes */}
                     <Route path="/home" element={<Tabs />} />
                     <Route path="/login" element={<LoginRoute><LoginPage /></LoginRoute>} />
+                    <Route path="/search/:query" element={<SearchResult/>}/>
+                    
+                    {/* Protected App Routes */}
                     <Route path="/post-ad" element={<ProtectedRoute><PostAdForm /></ProtectedRoute>} />
                     <Route path="/chat" element={<ProtectedRoute><ChatScreen/></ProtectedRoute>}/>
                     <Route path="/mywishlist" element={<ProtectedRoute><MyWishList/></ProtectedRoute>}/>
                     <Route path='/profile' element={<ProtectedRoute><ProfilePage/></ProtectedRoute>}/>
                     <Route path='/user-profile/:id' element={<ProtectedRoute><UserProfilePage/></ProtectedRoute>}/>
                     
+                    {/* Dynamic Category Routes */}
                     {serviceCategories.map((category) => (
                         <Route
-                            key={category.id}
+                            key={`service-${category.id}`}
                             path={`/services/${category.title.toLowerCase()}`}
                             element={<AdCategory category={category} type={'service'}/>}
                         />
                     ))}
                     {rentalCategories.map((category) => (
                         <Route
-                            key={category.id}
+                            key={`rental-${category.id}`}
                             path={`/rental/${category.title.toLowerCase()}`}
                             element={<AdCategory category={category} type={'rent'}/>}
                         />
                     ))}
 
-                    <Route path='/search/:query' element={<SearchResult/>}/>
-                    
+                    {/* Admin Routes */}
                     <Route path="/admin" element={<AdminRoute><AdminHome /></AdminRoute>} />
                     <Route path='/admin/notification' element={<AdminRoute><AdminNotificationForm/></AdminRoute>}/>
                     <Route path="/admin/accounts" element={<AdminRoute><AdminAllUsers /></AdminRoute>} />
                     
+                    {/* Fallback Route */}
                     <Route path="*" element={<Error/>}/>
                 </Routes>
             </main>
