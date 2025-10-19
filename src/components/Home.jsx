@@ -27,7 +27,6 @@ import Footer from "./Footer";
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 
-
 function Home() {
   const [expandedServiceJobs, setExpandedServiceJobs] = useState(false);
   const [expandedRentingOpportunities, setExpandedRentingOpportunities] = useState(false);

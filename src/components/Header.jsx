@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect } from "react";
 import { motion, useInView } from "framer-motion";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom"; // Import useLocation
 
 import logonew from "../images/logonew.mp4"; // Ensure this path is correct
 
@@ -9,6 +9,7 @@ import Nav from "react-bootstrap/Nav";
 import Navbar from "react-bootstrap/Navbar";
 
 function Header() {
+  const location = useLocation(); // Get the current location
   const logoRef = useRef(null);
   const isInView = useInView(logoRef, { once: false });
 
@@ -34,6 +35,9 @@ function Header() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [lastScrollY]);
 
+  // Check if the current page is /careers or /privacy
+  const showNavLinks = !['/careers', '/privacy'].includes(location.pathname);
+
   return (
     <Navbar
       expand="lg"
@@ -54,39 +58,47 @@ function Header() {
             muted
             style={{
               width: scrolled ? "250px" : "300px",
-              height: scrolled ? "80px" : "90px", // Corrected this line
+              height: scrolled ? "80px" : "90px",
               border: "none",
               transition: "all 0.3s ease",
+              pointerEvents: "none",
             }}
           />
         </Navbar.Brand>
 
-        <Navbar.Toggle aria-controls="navbar-nav" />
-        <Navbar.Collapse id="navbar-nav" style={{ zIndex: "1000" }}>
-          <Nav className="ms-auto">
-            <Nav.Link href="#home" className="ms-5">Home</Nav.Link>
-            <Nav.Link href="#aboutus" className="ms-5">About Us</Nav.Link>
-            <Nav.Link href="#elk" className="ms-5 fw-bold">ELK Platform</Nav.Link>
-            <Nav.Link href="#blog" className="ms-5">Blog</Nav.Link>
-            <Nav.Link
-              as={Link}
-              to="/privacy"
-              className="ms-5"
-              onClick={() => {
-                setTimeout(() => {
-                  const element = document.getElementById("contactsinprivacy");
-                  if (element) {
-                    element.scrollIntoView({ behavior: "smooth" });
-                  }
-                }, 0);
-              }}
-            >
-              Contacts
-            </Nav.Link>
-            <Nav.Link as={Link} to="/careers" className="ms-5">Careers</Nav.Link>
-            <Nav.Link as={Link} to="/login" className="ms-5 fw-bold">Sign Up</Nav.Link>
-          </Nav>
-        </Navbar.Collapse>
+        {/* --- Start of Changes --- */}
+        {/* Only show the toggle and nav links if showNavLinks is true */}
+        {showNavLinks && <Navbar.Toggle aria-controls="navbar-nav" />}
+        
+        {showNavLinks && (
+            <Navbar.Collapse id="navbar-nav" style={{ zIndex: "1000" }}>
+            <Nav className="ms-auto">
+                <Nav.Link href="#home" className="ms-5">Home</Nav.Link>
+                <Nav.Link href="#aboutus" className="ms-5">About Us</Nav.Link>
+                <Nav.Link href="#elk" className="ms-5 fw-bold">ELK Platform</Nav.Link>
+                <Nav.Link href="#blog" className="ms-5">Blog</Nav.Link>
+                <Nav.Link
+                    as={Link}
+                    to="/privacy"
+                    className="ms-5"
+                    onClick={() => {
+                        setTimeout(() => {
+                        const element = document.getElementById("contactsinprivacy");
+                        if (element) {
+                            element.scrollIntoView({ behavior: "smooth" });
+                        }
+                        }, 0);
+                    }}
+                >
+                Contacts
+                </Nav.Link>
+                <Nav.Link as={Link} to="/careers" className="ms-5">Careers</Nav.Link>
+                <Nav.Link as={Link} to="/login" className="ms-5 fw-bold">Sign Up</Nav.Link>
+            </Nav>
+            </Navbar.Collapse>
+        )}
+        {/* --- End of Changes --- */}
+
       </Container>
     </Navbar>
   );

@@ -19,11 +19,14 @@ const FullscreenImageView = ({ images, startIndex, onClose }) => {
   // Effect to handle keyboard navigation (left/right arrows)
   useEffect(() => {
     const handleKeyDown = (e) => {
-      if (e.key === 'ArrowRight') {
-        handleNext(e);
-      } else if (e.key === 'ArrowLeft') {
-        handlePrev(e);
-      } else if (e.key === 'Escape') {
+      if (images.length > 1) { // Only allow arrow navigation if there's more than one image
+        if (e.key === 'ArrowRight') {
+          handleNext(e);
+        } else if (e.key === 'ArrowLeft') {
+          handlePrev(e);
+        }
+      }
+      if (e.key === 'Escape') {
         onClose();
       }
     };
@@ -32,13 +35,15 @@ const FullscreenImageView = ({ images, startIndex, onClose }) => {
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, [images.length]); // Re-run effect if images change
+  }, [images, currentIndex]); // Rerun effect if images or index change
 
   return (
     <div className="fullscreen-image-view" onClick={onClose}>
-      <button className="nav-button prev-button" onClick={handlePrev}>
-        &lt;
-      </button>
+      {images.length > 1 && (
+        <button className="nav-button prev-button" onClick={handlePrev}>
+          &lt;
+        </button>
+      )}
       
       {/* Image container */}
       <div className="fullscreen-image-container">
@@ -50,9 +55,11 @@ const FullscreenImageView = ({ images, startIndex, onClose }) => {
         />
       </div>
 
-      <button className="nav-button next-button" onClick={handleNext}>
-        &gt;
-      </button>
+      {images.length > 1 && (
+        <button className="nav-button next-button" onClick={handleNext}>
+          &gt;
+        </button>
+      )}
     </div>
   );
 };

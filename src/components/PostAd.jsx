@@ -18,14 +18,13 @@ import repair from '../assets/repair.png';
 import haircut from '../assets/haircut.png';
 import laundry from '../assets/laundry.png';
 import electrician from '../assets/electrician.png';
-import AppHeader from './AppHeader';
 import Footer from './AppFooter';
 import OfferForm from './OfferForm';
-
-import './AdTabs.css'
+import './AdTabs.css';
 import ImageUploadForm from './ImageUploadForm';
 import Loader from './Loader';
 import CurrentLocationButton from './CurrentLocationSearch';
+
 const PostAdForm = () => {
     const navigate = useNavigate();
     const [loading, setLoading] = useState(false);
@@ -82,21 +81,7 @@ const PostAdForm = () => {
         }));
         setShowSelectCategory(false)
     };
-    // const handleBack = () =>{
-    //     setShowSelectCategory(true);
-    //     setStep(1);
-    //     setFormData({
-    //         title: '',
-    //         description: '',
-    //         ad_type: '',
-    //         category: '',
-    //         ad_prices: {
-    //             // daily: '',
-    //             // weekly: '',
-    //             // monthly: ''
-    //         }
-    //     });
-    // }
+
     const handleBack = () => {
     if (step === 2) {
         setStep(1);
@@ -209,7 +194,6 @@ const PostAdForm = () => {
 
     return (
         <>
-            <AppHeader/>
             <div className="container" style={{minHeight:'70vh'}}>
                 {loading??<Loader/>}
                 {step === 1 && (

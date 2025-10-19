@@ -1,5 +1,4 @@
 import React, { useState,useEffect } from 'react';
-import AppHeader from './AppHeader';
 import Footer from './AppFooter';
 import Loader from './Loader';
 import '../App.css'
@@ -69,7 +68,6 @@ const UserProfilePage = () => {
       }, [token]);
     return (
         <>
-            <AppHeader />
             <main className="container py-4" style={{ minHeight: '70vh' }}>
                 {(
                     loading?<Loader/>:
@@ -98,20 +96,6 @@ const UserProfilePage = () => {
                           ) : (
                             userData.ads.map((ad) => (
                               <PostCard key={ad.id} post={ad} onClick={handleCardClick} isMyAd={true}/>
-                              // <div key={ad.id} style={{ border: '1px solid gray', margin: '10px', padding: '10px' }}>
-                              //   <h4>{ad.title}</h4>
-                              //   <p>{ad.description}</p>
-                              //   <div>
-                              //     {ad.ad_images.map((img) => (
-                              //       <img key={img.id} src={img.image} alt="Ad" width="100" height="100" style={{ marginRight: '10px' }} />
-                              //     ))}
-                              //   </div>
-                              //   {ad.ad_price_details.map((price) => (
-                              //     <p key={price.id}>
-                              //        ₹{price.rent_price} / {price.rent_duration}
-                              //     </p>
-                              //   ))}
-                              // </div>
                             ))
                           )}
                         </div>

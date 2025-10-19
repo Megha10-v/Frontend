@@ -11,7 +11,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import dayjs from 'dayjs';
 import FullscreenImageView from './FullscreenImageView';
 import './PostModal.css';
-import DeleteIcon from '@mui/icons-material/Delete'; // Import the new icon
+import { MdDeleteForever } from "react-icons/md";
 
 const PostModal = ({ show, onHide, post, isMyAd, onDeleteAd }) => {
   const { user, isAuthenticated } = useSelector(state => state.auth);
@@ -210,7 +210,30 @@ const PostModal = ({ show, onHide, post, isMyAd, onDeleteAd }) => {
                 )}
               </button>
             )}
-            <ShareIcon onClick={() => handleShare()} fontSize="large" sx={{ color: '#4FBBB4', cursor: 'pointer' }} />
+            
+            <div className="d-flex align-items-center gap-3">
+                <ShareIcon onClick={() => handleShare()} fontSize="large" sx={{ color: '#4FBBB4', cursor: 'pointer' }} />
+                
+                {isMyAd && (
+                  <Button
+                    variant="danger"
+                    size="sm"
+                    onClick={() => onDeleteAd(adDetails.ad_id)}
+                    style={{
+                        borderRadius: '50%',
+                        width: '40px',
+                        height: '40px',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: 0
+                    }}
+                  >
+                    <MdDeleteForever size={25} />
+                  </Button>
+                )}
+            </div>
+
             {isAuthenticated && !isMyAd && (
               <ChatIcon
                 onClick={() =>
@@ -227,32 +250,21 @@ const PostModal = ({ show, onHide, post, isMyAd, onDeleteAd }) => {
                 sx={{ color: '#4FBBB4', margin: '0 20px', cursor: 'pointer' }}
               />
             )}
+            
             {isAuthenticated ? (
-              <div className="d-flex align-items-center gap-2"> {/* New container for buttons */}
-                {isMyAd && (
-                  <Button
-                    variant="danger"
-                    size="sm"
-                    onClick={() => onDeleteAd(adDetails.ad_id)}
-                    className="d-flex align-items-center gap-1"
-                  >
-                    <DeleteIcon sx={{ fontSize: '1rem' }} /> Delete Ad
-                  </Button>
-                )}
-                <Button
-                  style={{
-                    borderRadius: '12px',
-                    backgroundColor: '#4FBBB4',
-                    borderColor: '#4FBBB4',
-                    padding: '4px 12px',
-                    fontSize: '0.8rem',
-                    lineHeight: 1.2,
-                  }}
-                  onClick={() => navigate(`/user-profile/${adDetails.user_id}`)}
-                >
-                  View Profile
-                </Button>
-              </div>
+              <Button
+                style={{
+                  borderRadius: '12px',
+                  backgroundColor: '#4FBBB4',
+                  borderColor: '#4FBBB4',
+                  padding: '4px 12px',
+                  fontSize: '0.8rem',
+                  lineHeight: 1.2,
+                }}
+                onClick={() => navigate(`/user-profile/${adDetails.user_id}`)}
+              >
+                View Profile
+              </Button>
             ) : (
               <Button
                 style={{
