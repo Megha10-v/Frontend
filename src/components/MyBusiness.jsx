@@ -14,10 +14,32 @@ const MyBusiness = () =>{
     const { isAuthenticated } = useSelector(state => state.auth);
     const [selectedPost, setSelectedPost] = useState(null);
     const [showModal, setShowModal] = useState(false);
+
     const handleCardClick = (post) => {
         setSelectedPost(post);
         setShowModal(true);
     };
+
+    const handleDeleteAd = async (adId) => {
+      const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
+      if (!confirmDelete) return;
+
+      try {
+        await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${adId}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setWishlist(wishlist.filter(ad => ad.ad_id !== adId));
+        if (selectedPost?.ad_id === adId) {
+          setShowModal(false);
+        }
+      } catch (err) {
+        console.error("Error deleting ad:", err);
+        alert("Failed to delete ad.");
+      }
+    };
+
     useEffect(() => {
       const fetchWishlist = async () => {
         try {
@@ -55,12 +77,12 @@ const MyBusiness = () =>{
         ) : (
           <div className="row">
             {wishlist.map((ad) => (
-              <PostCard key={ad.id} post={ad} onClick={handleCardClick} isMyAd={true}/>
+              <PostCard key={ad.id} post={ad} onClick={handleCardClick} isMyAd={true} onDeleteAd={handleDeleteAd} />
             ))}
           </div>
         )}
       </div>
-      <PostModal show={showModal} isMyAd={true} onHide={() => setShowModal(false)} post={selectedPost} />
+      <PostModal show={showModal} isMyAd={true} onHide={() => setShowModal(false)} post={selectedPost} onDeleteAd={handleDeleteAd} />
     </>)
 }
 

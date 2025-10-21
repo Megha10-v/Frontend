@@ -4,7 +4,6 @@ import Rental from './Rental';
 import Service from './Service';
 import MyBusiness from './MyBusiness';
 import './Tabs.css';
-import AppHeader from './AppHeader';
 import Footer from './AppFooter';
 
 export default function Tabs() {
@@ -24,8 +23,7 @@ export default function Tabs() {
   };
 
   return (
-    <>
-      <AppHeader />
+    <div>
       <Nav className="custom-tabs mx-auto mt-4 d-flex justify-content-center">
         {['rentals', 'services', 'my business'].map((tab) => (
           <button
@@ -51,23 +49,8 @@ export default function Tabs() {
           </button>
         ))}
       </Nav>
-      {/* <Nav className="custom-tabs-container">
-  {['rentals', 'services', 'my business'].map((tab) => (
-    <button
-      key={tab}
-      onClick={(e) => {
-        e.preventDefault();
-        setActiveTab(tab);
-      }}
-      className={`tab-item ${activeTab === tab ? 'active-tab' : ''}`}
-    >
-      {tab.charAt(0).toUpperCase() + tab.slice(1)}
-    </button>
-  ))}
-</Nav> */}
-
       <div className="tab-content">{renderTabContent()}</div>
       <Footer />
-    </>
+    </div>
   );
 }

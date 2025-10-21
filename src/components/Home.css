@@ -1,111 +1,121 @@
-/* Starting Nav bg color */
+/* ==========================================================
+   0. REMOVE WHITE GAP BETWEEN NAVBAR & HERO
+========================================================== */
+.navbar {
+  margin-bottom: 0 !important;
+  padding-bottom: 0 !important; /* remove any extra padding */
+}
+
+/* ==========================================================
+   1. NAVBAR COLOUR
+========================================================== */
 .nav-bg {
-    background-color: #4FBBB4; 
-  }
+  background-color: #4FBBB4;
+}
 
-  /* Search button */
+/* ==========================================================
+   2. SEARCH WIDGET
+========================================================== */
 .search-style {
-      border-radius: 53px 53px 53px 53px;
-  }
+  border-radius: 53px;
+}
 .search-btn {
-      border-radius: 53px 53px 53px 53px;
-      cursor:pointer;
-  }
+  border-radius: 53px;
+  cursor: pointer;
+}
 
+/* ==========================================================
+   3. MISC BOOTSTRAP TWEAKS
+========================================================== */
 .download-btn {
-    border-radius: 14px;
-    background-color: #4FBBB4;
+  border-radius: 14px;
+  background-color: #4FBBB4;
 }
-
 .custom-tab {
-  margin-right: 20px; /* Adjust the spacing as needed */
+  margin-right: 20px;   /* spacing between nav-links */
 }
-
 .description {
   font-size: 15px;
-  margin-bottom: 30px;
-  margin-top: 30px;
+  margin: 30px 0;
 }
-
 .word-description {
   word-wrap: break-word;
 }
-
 .no-gutters {
   margin-right: 0;
   margin-left: 0;
 }
-
 .line {
   border-top: 1px solid #ccc;
-  margin-top: 20px;
-  margin-left: 80px;
-  margin-right: 80px;
+  margin: 20px 80px 0;
 }
 
-.form{
+/* ==========================================================
+   4. ARTICLE FORM
+========================================================== */
+.form {
   width: 100%;
   display: flex;
   justify-content: center;
 }
-.form .articleinput{
+.form .articleinput {
   background-color: #FDD77F;
   border-color: #FDD77F;
   border-radius: 21px;
   width: 500px;
   height: 40px;
 }
-.form .articlebutton{
+.form .articlebutton {
   background-color: #4FBBB4;
   border-color: #4FBBB4;
   border-radius: 21px;
   height: 40px;
   width: 200px;
 }
-.form .space{
+.form .space {
   width: 10px;
 }
-
-
-@media only screen and (max-width: 600px){
-  .form{
+@media (max-width: 600px) {
+  .form {
     flex-direction: column;
-    justify-content: center;
     align-items: center;
   }
-  .form .articleinput{
+  .form .articleinput {
     width: 300px;
   }
-  .form .articlebutton{
+  .form .articlebutton {
     margin-top: 10px;
     width: 200px;
   }
-  .form .space{
+  .form .space {
     width: 0;
   }
 }
 
-#home
-{
+/* ==========================================================
+   5. HERO BACKGROUND
+========================================================== */
+#home {
   background-image: url(../images/overjoyed_webp.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
   transform: scaleX(-1);
+  margin-top: 0; /* remove any top margin */
+  padding-top: 0; /* remove any top padding */
   z-index: -1;
 }
-
-@media only screen and (max-width: 600px){
-
-  #home{
-    background-position: 20% 0%;
+@media (max-width: 600px) {
+  #home {
+    background-position: 20% 0;
     background-size: 600%;
-  
   }
 }
 
-
-.adbutton{
+/* ==========================================================
+   6. BUTTONS
+========================================================== */
+.adbutton {
   background-color: #4FBBB4;
   border-color: #4FBBB4;
   border-radius: 21px;
@@ -113,15 +123,14 @@
   width: 400px;
   color: white;
 }
-
-@media only screen and (max-width: 600px){
-  .adbutton{
+@media (max-width: 600px) {
+  .adbutton {
     margin-top: 10px;
     width: 200px;
   }
 }
 
-.rentbutton{
+.rentbutton {
   background-color: #4FBBB4;
   border-color: #4FBBB4;
   border-radius: 21px;
@@ -129,27 +138,33 @@
   width: 300px;
   color: white;
 }
-
-@media only screen and (max-width: 600px){
-  .rentbutton{
+@media (max-width: 600px) {
+  .rentbutton {
     margin-top: 10px;
     width: 200px;
   }
 }
 
+/* ==========================================================
+   7. SWIPER COVER-FLOW VISUALS
+========================================================== */
 .swiper-slide {
   transform: scale(0.85);
   filter: brightness(0.7);
   transition: all 0.4s ease;
+  cursor: pointer;          /* hand cursor on clickable slides */
 }
-
 .swiper-slide-active {
   transform: scale(1);
   filter: brightness(1);
   z-index: 10;
 }
 
-
-
-
-
+/* ==========================================================
+   8. REMOVE ANY EXTRA BODY MARGINS
+========================================================== */
+body, html, #root {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}

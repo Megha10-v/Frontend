@@ -1,23 +1,16 @@
 import React from 'react';
-import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
-import {Image} from 'react-bootstrap'
 import Footer from './Footer';
 
 const Careers = () => {
   return (
     <div>
-      <a href="/" style={{ display: 'inline-block' }}>
-      <Image src={logonew} thumbnail style={{ marginTop:'30px',marginLeft:'50px',marginBottom:'30px',width: '208px', height: '80px', border: 'none' }} />
-      </a>
       <div style={{ 
       display: 'flex', 
       justifyContent: 'center', 
       alignItems: 'center', 
-      height: '100vh',
+      minHeight: '80vh',
       textAlign: 'center',
       background: 'linear-gradient(180deg, #F5CC40 0%, #4FBBB4 100%)',
-      
-
     }}>
       <h2 style={{ color: 'white' }}>"Thank you for your interest, <br/>
         but there are no job openings available at this time. <br/>
