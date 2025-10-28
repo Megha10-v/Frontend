@@ -9,8 +9,11 @@ import ChatIcon from '@mui/icons-material/Chat';
 import ShareIcon from '@mui/icons-material/Share';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-const PostModal = ({ show, onHide, post, isMyAd }) => {  
+<DeleteIcon style={{ color: 'red' }} />
+
+const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {  
   const { user,isAuthenticated } = useSelector(state => state.auth);
   const navigate = useNavigate();
   const [adDetails, setAdDetails] = useState(null);
@@ -20,7 +23,7 @@ const PostModal = ({ show, onHide, post, isMyAd }) => {
   
   
   const handleShare = () => {
-    const shareUrl = `https://elkcompany.in/ad/${adDetails.id}`;
+    const shareUrl = `https://api.elkcompany.online/ad/${adDetails.id}`;
     if (navigator.share) {
       navigator.share({
         title: adDetails.title,
@@ -33,7 +36,25 @@ const PostModal = ({ show, onHide, post, isMyAd }) => {
         .catch(err => console.error('Failed to copy:', err));
     }
   };
-  
+  const deleteAd = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
+    if (!confirmDelete) return;
+
+    try {
+      const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${id}`);
+      if (response.data.success) {
+        alert("Ad deleted successfully!");
+        if (onAdDeleted) onAdDeleted(post.ad_id);  // 👈 notify parent to remove the ad
+        onHide(); // 👈 close modal
+      } else {
+        alert(response?.data?.message || "Failed to delete ad.");
+      }
+    } catch (error) {
+      console.error("Error deleting ad:", error.response?.data || error.message);
+      alert(error.response?.data?.message || "Failed to delete ad.");
+    }
+  };
+
 
   const getAdDetails = async (adId, token) => {
     let body = {}
@@ -185,6 +206,9 @@ const PostModal = ({ show, onHide, post, isMyAd }) => {
           />
           {
             isAuthenticated&&!isMyAd?<ChatIcon onClick={()=>navigate('/chat',{ state: { userId: adDetails.user_id, userName: adDetails.user.name, adId:adDetails.id, adName: adDetails.title } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>:<></>
+          }
+          {
+            isMyAd?<DeleteIcon onClick={() => deleteAd(adDetails.id)} fontSize="large" sx={{ color: '#ad1616ff', margin: "0 20px", cursor: 'pointer' }}/>:<></>
           }
           {isAuthenticated?(
             <Button 

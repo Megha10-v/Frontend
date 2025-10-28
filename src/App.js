@@ -40,6 +40,7 @@ import Home from './components/Home';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import SearchResult from './components/SearchResult';
+
 function App() {
     const dispatch = useDispatch();
     const serviceCategories = [

@@ -17,12 +17,12 @@ const Footer = () => {
         </Col>
         <Col className='mt-md-5 mb-4' md={2} sm={12} >
           <Row className='justify-content-center'>
-            <Link to="https://play.google.com" target="_blank" rel="noopener noreferrer">
+            <Link to="https://play.google.com/store/apps/details?id=com.elkbusinesshub.elk" target="_blank" rel="noopener noreferrer">
               <Image src={layer1} alt="Google Play" fluid style={{ maxWidth: '150px', margin: '10px 0' }} />
             </Link>
           </Row>
           <Row className='justify-content-center'>
-            <Link to="https://www.apple.com/app-store/" target="_blank" rel="noopener noreferrer">
+            <Link to="https://apps.apple.com/in/app/elk-business-hub/id6747287788" target="_blank" rel="noopener noreferrer">
               <Image src={layer2} alt="App Store" fluid style={{ maxWidth: '150px' }} />
             </Link>
           </Row>

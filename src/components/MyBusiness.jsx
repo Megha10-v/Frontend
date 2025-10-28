@@ -18,6 +18,10 @@ const MyBusiness = () =>{
         setSelectedPost(post);
         setShowModal(true);
     };
+    const handleAdDeleted = (deletedAdId) => {
+      setWishlist(prev => prev.filter(ad => ad.ad_id !== deletedAdId));
+    };
+
     useEffect(() => {
       const fetchWishlist = async () => {
         try {
@@ -60,7 +64,7 @@ const MyBusiness = () =>{
           </div>
         )}
       </div>
-      <PostModal show={showModal} isMyAd={true} onHide={() => setShowModal(false)} post={selectedPost} />
+      <PostModal show={showModal} isMyAd={true} onHide={() => setShowModal(false)} post={selectedPost} onAdDeleted={handleAdDeleted}/>
     </>)
 }
 

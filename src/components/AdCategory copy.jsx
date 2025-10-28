@@ -52,7 +52,7 @@ const AdCategory = ({category,type}) => {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isChat={false} />
       <div className="main container py-4" style={{ minHeight: "80vh" }}>
         <h1 className="mb-4" style={{textTransform:'capitalize'}}>{category.title}</h1>
         {loading ? (

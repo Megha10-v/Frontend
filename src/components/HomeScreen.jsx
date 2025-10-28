@@ -23,7 +23,7 @@ import Service from './Service';
 const HomeScreen = () => {
   return (
     <>
-      {/* <AppHeader /> */}
+      {/* <AppHeader isChat={false} /> */}
       <Rental/>
       <Service/>
       {/* <Footer/> */}

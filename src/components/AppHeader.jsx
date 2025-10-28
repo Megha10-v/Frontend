@@ -7,8 +7,9 @@ import { clearUser } from '../store/slices/authSlice';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
+import { use } from 'react';
 
-function AppHeader() {
+function AppHeader({isChat}) {
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -18,16 +19,32 @@ function AppHeader() {
   const [unsavedAd, setUnsavedAd] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
-
+  const [deleteSuccess, setDeleteSuccess] = useState(false)
+  const deleteAd = async () => {
+      try {
+          const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${unsavedAd?.id}`);
+          if (response.data.success) {
+            setDeleteSuccess(true)
+            navigate(`/post-ad`);
+          }else{
+            setDeleteSuccess(false)
+            navigate('/home');
+          }
+      } catch (error) {
+        setDeleteSuccess(false)
+        console.error("Error", error.response?.data || error.message);
+      }
+  };
   const handleContinue = () => {
     setShowModal(false);
     navigate(`/post-ad`);
   };
 
-  const handleDiscard = () => {
-    setShowModal(false);
-    navigate('/home');
-  };
+  // const handleDiscard = () => {
+  //   setShowModal(false);
+  //   deleteAd(unsavedAd?.id)
+    
+  // };
   useEffect(() => {    
     const fetchAd = async () => {      
       try {
@@ -64,25 +81,32 @@ function AppHeader() {
           <Navbar.Brand href="/home" className="align-items-center">
             <Image src={logo} style={{ height: '70px',width:"70px", border: 'none' }} />
           </Navbar.Brand>
-          <div className="w-100 my-2 order-3 order-lg-0 d-flex justify-content-center">
-            <Form
-              className="d-flex w-100 w-lg-50"
-              onSubmit={(e) => {
-                e.preventDefault();
-                navigate(`/search/${searchTerm}`);
-              }}
-            >
-              <Form.Control
-                type="search"
-                placeholder="Search ads..."
-                className="me-2"
-                aria-label="Search"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                style={{ borderRadius: '15px',maxWidth: '500px',width: '100%' }}
-              />
-            </Form>
-          </div>
+          {
+            !isChat ?
+            <>
+              <div className="w-100 my-2 order-3 order-lg-0 d-flex justify-content-center">
+                <Form
+                  className="d-flex w-100 w-lg-50"
+                  onSubmit={(e) => {
+                    e.preventDefault();
+                    navigate(`/search/${searchTerm}`);
+                  }}
+                >
+                  <Form.Control
+                    type="search"
+                    placeholder="Search ads..."
+                    className="me-2"
+                    aria-label="Search"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                    style={{ borderRadius: '15px',maxWidth: '500px',width: '100%' }}
+                  />
+                </Form>
+              </div>
+            </>
+            :
+            <></>
+          }
           {/* <Form className="d-flex flex-grow-1 my-2 my-lg-0 mx-lg-3" onSubmit={(e) => { e.preventDefault(); navigate(`/search/${searchTerm}`); }}>
             <Form.Control
               type="search"
@@ -96,73 +120,106 @@ function AppHeader() {
           </Form> */}
           <Navbar.Toggle aria-controls="navbar-nav" />
           <Navbar.Collapse id="navbar-nav" style={{ zIndex: '1000' }}>
-            <Nav className="ms-auto d-flex flex-row flex-nowrap align-items-center gap-3 justify-content-end w-100">
-              {location.pathname !== '/post-ad' && (
-                <Button
-                  className="d-flex align-items-center"
-                  style={{
-                    gap: '10px',
-                    borderRadius: '15px',
-                    backgroundColor: '#4FBBB4',
-                    borderColor: '#4FBBB4',
-                    whiteSpace: 'nowrap',
-                  }}
-                  onClick={() =>
-                    !token1
-                      ? navigate('/login')
-                      : Object.keys(unsavedAd).length !== 0
-                      ? setShowModal(true)
-                      : navigate('/post-ad')
-                  }
-                >
-                  <i className="bi bi-plus-circle"></i> Place Your Ad
-                </Button>
-              )}
+            {
+              !isChat?
+              <Nav className="ms-auto d-flex flex-row flex-nowrap align-items-center gap-3 justify-content-end w-100">
+                {location.pathname !== '/post-ad' && (
+                  <Button
+                    className="d-flex align-items-center"
+                    style={{
+                      gap: '10px',
+                      borderRadius: '15px',
+                      backgroundColor: '#4FBBB4',
+                      borderColor: '#4FBBB4',
+                      whiteSpace: 'nowrap',
+                    }}
+                    onClick={() =>
+                      !token1
+                        ? navigate('/login')
+                        : Object.keys(unsavedAd).length !== 0
+                        ? setShowModal(true)
+                        : navigate('/post-ad')
+                    }
+                  >
+                    <i className="bi bi-plus-circle"></i> Place Your Ad
+                  </Button>
+                )}
 
-              {token1 && (
-                <>
-                  <ChatIcon
-                    onClick={() => navigate('/chat')}
-                    fontSize="large"
-                    sx={{ color: '#4FBBB4', cursor: 'pointer' }}
-                  />
-                  <FavoriteBorderIcon
-                    onClick={() => navigate('/mywishlist')}
-                    fontSize="large"
-                    sx={{ color: '#4FBBB4', cursor: 'pointer' }}
-                  />
-                </>
-              )}
+                {token1 && (
+                  <>
+                    <ChatIcon
+                      onClick={() => navigate('/chat')}
+                      fontSize="large"
+                      sx={{ color: '#4FBBB4', cursor: 'pointer' }}
+                    />
+                    <FavoriteBorderIcon
+                      onClick={() => navigate('/mywishlist')}
+                      fontSize="large"
+                      sx={{ color: '#4FBBB4', cursor: 'pointer' }}
+                    />
+                  </>
+                )}
 
-              {token1 ? (
-               
-                <NavDropdown
-                  title={<span style={{ color: 'white' }}>{user?.name || 'My Account'}</span>}
-                  id="basic-nav-dropdown"
-                  style={{
-                    border: '2px solid #4FBBB4',
-                    borderRadius: '8px',
-                    padding: '0 2px',
-                  }}
-                >
-                  <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
-                  <NavDropdown.Divider />
-                  <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
-                </NavDropdown>
-              ) : (
-                <Button
-                  style={{
-                    all: 'unset',
-                    color: '#FFFFFF',
-                    margin: '0px 20px',
-                    cursor: 'pointer',
-                  }}
-                  onClick={() => navigate('/login')}
-                >
-                  <strong>Login</strong>
-                </Button>
-              )}
-            </Nav>
+                {token1 ? (
+                
+                  <NavDropdown
+                    title={<span style={{ color: 'white' }}>{user?.name || 'My Account'}</span>}
+                    id="basic-nav-dropdown"
+                    style={{
+                      border: '2px solid #4FBBB4',
+                      borderRadius: '8px',
+                      padding: '0 2px',
+                    }}
+                  >
+                    <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                  </NavDropdown>
+                ) : (
+                  <Button
+                    style={{
+                      all: 'unset',
+                      color: '#FFFFFF',
+                      margin: '0px 20px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => navigate('/login')}
+                  >
+                    <strong>Login</strong>
+                  </Button>
+                )}
+              </Nav>
+              :
+              <Nav className="ms-auto d-flex flex-row flex-nowrap align-items-center gap-3 justify-content-end w-100">
+                {token1 ? (
+                  <NavDropdown
+                    title={<span style={{ color: 'white' }}>{user?.name || 'My Account'}</span>}
+                    id="basic-nav-dropdown"
+                    style={{
+                      border: '2px solid #4FBBB4',
+                      borderRadius: '8px',
+                      padding: '0 2px',
+                    }}
+                  >
+                    <NavDropdown.Item href="/profile">Profile</NavDropdown.Item>
+                    <NavDropdown.Divider />
+                    <NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
+                  </NavDropdown>
+                ) : (
+                  <Button
+                    style={{
+                      all: 'unset',
+                      color: '#FFFFFF',
+                      margin: '0px 20px',
+                      cursor: 'pointer',
+                    }}
+                    onClick={() => navigate('/login')}
+                  >
+                    <strong>Login</strong>
+                  </Button>
+                )}
+              </Nav>
+            }
           </Navbar.Collapse>
         </Container>
         {showModal && unsavedAd && (
@@ -179,7 +236,7 @@ function AppHeader() {
                 </div>
                 <div className="modal-footer">
                   <button className="btn btn-success" onClick={handleContinue}>Continue Editing</button>
-                  <button className="btn btn-secondary" onClick={handleDiscard}>Discard & Go Home</button>
+                  <button className="btn btn-secondary" onClick={deleteAd}>Discard & Go Home</button>
                 </div>
               </div>
             </div>

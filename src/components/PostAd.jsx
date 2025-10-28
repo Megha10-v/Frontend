@@ -209,7 +209,7 @@ const PostAdForm = () => {
 
     return (
         <>
-            <AppHeader/>
+            <AppHeader isChat={false}/>
             <div className="container" style={{minHeight:'70vh'}}>
                 {loading??<Loader/>}
                 {step === 1 && (

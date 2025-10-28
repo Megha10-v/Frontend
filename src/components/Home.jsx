@@ -28,20 +28,32 @@ import astronaut from '../images/astronaut.jpg'
 import Article from "./Article";
 import Header from "./Header";
 import Footer from "./Footer";
-
+import bg1 from "../images/overjoyed_webp.webp"
+import bg2 from "../images/SAVE_20251012_152044.webp"
+import bg3 from "../images/SAVE_20251012_152039.webp"
+import popimg1 from "../images/1758433842360-removebg-preview.png"
+import popimg2 from "../images/1758435179263-removebg-preview.png"
 function Home() {
   const [expandedServiceJobs, setExpandedServiceJobs] = useState(false);
   const [expandedRentingOpportunities, setExpandedRentingOpportunities] = useState(false);
   const [expandedGettingStarted, setExpandedGettingStarted] = useState(false);
   const [expandedMaximizingEarnings, setExpandedMaximizingEarnings] = useState(false);
-
+  const [currentImage, setCurrentImage] = useState(0);
+  const imgs = [bg1,bg2,bg3];
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % imgs.length);
+    }, 15000);
+    return () => clearInterval(interval);
+  }, []);
+  
   const texts = ["Service Now", "Rent Now"];
   const [index, setIndex] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
       setIndex((prev) => (prev + 1) % texts.length);
-    }, 2000); // change every 2 seconds
+    }, 5000); // change every 2 seconds
 
     return () => clearInterval(interval);
   }, []);
@@ -76,6 +88,13 @@ function Home() {
       swiperRef.current.autoplay.start();
     }
   };
+  const handleNextImage = () => {
+    setCurrentImage((prev) => (prev + 1) % imgs.length);
+  };
+
+  const handlePrevImage = () => {
+    setCurrentImage((prev) => (prev - 1 + imgs.length) % imgs.length);
+  };
 
   return (
     <div>
@@ -92,148 +111,255 @@ function Home() {
       </Container>
     </Navbar>
       
-    <Container fluid className="position-relative " style={{ maxWidth: "100%", height: "100%" }} >
-  <div className="position-absolute top-0 start-0 end-0 bottom-0 " id='home' >
-  </div>
-  
-
-  <Container className="pt-md-5">
-<div className="d-flex justify-content-center">
-<button className="rentbutton position-relative px-4 py-2">
-      <AnimatePresence mode="wait">
-        <motion.span
-          key={texts[index]}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.5 }}
-          className="absolute left-0 right-0 top-1/2 -translate-y-1/2"
-        >
-          <Link to='/home' style={{textDecoration:'none',color:'white'}}>{texts[index]}</Link>
-        </motion.span>
-      </AnimatePresence>
-    </button>
-</div>
-
-
-
-
-<motion.h1
-  className=" mt-md-5 text-white"
-  animate={{ scale:[0.5,1] ,}}
-  transition={{ duration: 5}}
-
->
-  TURN YOUR STUFF AND SERVICES <br /> INTO CASH MACHINES
-</motion.h1>
-    <Row className="justify-content-start mt-4 ">
-    <div style={{ maxWidth: '620px' }}>
-      <Swiper
-        modules={[EffectCoverflow, Autoplay]}
-        effect="coverflow"
-        grabCursor={true}
-        centeredSlides={true}
-        slidesPerView={1.2}
-        breakpoints={{
-          576: {
-            slidesPerView: 2,
-          },
-          768: {
-            slidesPerView: 3,
-          },
+    <Container fluid className="position-relative " style={{ maxWidth: "100%", height: "100%",minHeight:'100vh' }} >
+  {/* <div className="position-absolute top-0 start-0 end-0 bottom-0 " style={{backgroundImage: `url(${imgs[currentImage]})`}} id='home' >
+  </div> */}
+    <div
+      className="position-absolute top-0 start-0 end-0 bottom-0 d-flex align-items-center justify-content-between"
+      style={{ overflow: 'hidden' }}
+    >
+      <button
+        onClick={handlePrevImage}
+        style={{
+          backgroundColor: "rgba(0,0,0,0.4)",
+          border: "none",
+          color: "white",
+          fontSize: "2rem",
+          borderRadius: "50%",
+          width: "50px",
+          height: "50px",
+          cursor: "pointer",
+          zIndex: 10,
+          marginLeft: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
         }}
-        loop={true}
-        autoplay={{
-          delay: 2000,
-          disableOnInteraction: false,
-        }}
-        navigation
-        coverflowEffect={{
-          rotate: 0,
-          stretch: 0,
-          depth: 150,
-          modifier: 2,
-          slideShadows: true,
-        }}
-        onSwiper={(swiper) => {
-          swiperRef.current = swiper;
-        }}
-        style={{ padding: '10px 0' }}
       >
-        {images.map((src, i) => (
-          <SwiperSlide key={i}>
-            <img
-              src={src}
-              alt={`app${i}`}
-              onClick={handleImageClick}
-              onMouseLeave={handleMouseLeave}
-              className="img rounded"
-              style={{
-                width: '189px',
-                height: '336px',
-                cursor: 'pointer',
-              }}
-            />
-          </SwiperSlide>
-        ))}
-      </Swiper>
+        ❮
+      </button>
+
+      <motion.div
+        key={currentImage}
+        className="w-100 h-100 position-absolute top-0 start-0"
+        style={{
+          backgroundImage: `url(${imgs[currentImage]})`,
+          backgroundSize: "cover",
+        }}
+        id="home"
+        initial={{ opacity: 0, scale: 1.05 }}
+        animate={{ opacity: 1, scale: 1 }}
+        exit={{ opacity: 0, scale: 1.05 }}
+        transition={{ duration: 1.5, ease: "easeInOut" }}
+      ></motion.div>
+
+      <button
+        onClick={handleNextImage}
+        style={{
+          backgroundColor: "rgba(0,0,0,0.4)",
+          border: "none",
+          color: "white",
+          fontSize: "2rem",
+          borderRadius: "50%",
+          width: "50px",
+          height: "50px",
+          cursor: "pointer",
+          zIndex: 10,
+          marginRight: "20px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        ❯
+      </button>
     </div>
-         
-    </Row>
-    <Row className="justify-content-start pb-5 flex-wrap mt-4">
-  <Col xs="12" md="auto" className="mb-3 mb-md-0 text-center">
+  <Container className="pt-md-5">
+  <div className="d-flex justify-content-center">
+    {(imgs[currentImage] === bg1)?
+      <button className="rentbutton position-relative px-4 py-2">
+        <AnimatePresence mode="wait">
+          <motion.span
+            key={texts[index]}
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -10 }}
+            transition={{ duration: 0.5 }}
+            className="absolute left-0 right-0 top-1/2 -translate-y-1/2"
+          >
+            <Link to='/home' style={{textDecoration:'none',color:'white'}}>{texts[index]}</Link>
+          </motion.span>
+        </AnimatePresence>
+      </button>:<></>
+    }
+  </div>
 
-<motion.a
-  whileHover={{ scale: 1.1 }}
-  href="https://play.google.com/store/apps/details?id=com.elkbusinesshub.elk&hl=en-US" 
-  target="_blank"
-  rel="noopener noreferrer"
-  className="download-btn text-white d-inline-block"
-  style={{
-    width: '189px',
-    height: '57px',
-    textAlign: 'center',
-    lineHeight: '57px',
-    textDecoration: 'none',
-  }}
->
-  Download App <FiDownload />
-</motion.a>
+{(imgs[currentImage] === bg2) && (
+  <div className="banner-container">
+    <div className="overlay">
+      <h1 className="banner-heading">The Rental<br /> Revolution is Here!</h1>
+      <h1 className="banner-sub">
+        Find what you need, hire who<br /> you need, all in one hub.
+      </h1>
+    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.5, ease: "easeInOut" }}
+      className="slideInUp"
+    >
+      <img
+        src={popimg1}
+        alt="promo"
+        className="popimg"
+      />
+    </motion.div>
+  </div>
+)}
 
-  </Col>
-  <Col xs="12" md="auto" className="mb-3 mb-md-0 text-center">
-  <motion.a
-    whileHover={{ scale: 1.1 }}
-    href="https://play.google.com/store/apps/details?id=com.elkbusinesshub.elk&hl=en-US"
-    target="_blank"
-    rel="noopener noreferrer"
-    style={{ display: 'inline-block' }}
+
+{(imgs[currentImage] === bg3)&&(
+  <div className="services-banner">
+    <div className="services-overlay">
+      <h1 className="services-heading">Services Made<br/> Simple</h1>
+      <h1 className="services-sub">Trusted Services at<br/> Your Fingertips</h1>
+    </div>
+    <motion.div
+      initial={{ opacity: 0, y: 100 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 1.5, ease: "easeInOut" }}
+      className="slideInUp"
+    >
+      <img
+        src={popimg2}
+        alt="promo"
+        className="popimg"
+      />
+    </motion.div>
+  </div>
+)}
+  <motion.h1
+    className=" mt-md-5 text-white"
+    animate={{ scale:[0.5,1] ,}}
+    transition={{ duration: 5}}
+
   >
-    <img
+    {(imgs[currentImage] === bg1)?
+      <>TURN YOUR STUFF AND SERVICES <br /> INTO CASH MACHINES</>:<></>
+    }
+  </motion.h1>
+  {(imgs[currentImage] === bg1)?
+    <>
+      <Row className="justify-content-start mt-4 ">
+        <div style={{ maxWidth: '620px' }}>
+          <Swiper
+            modules={[EffectCoverflow, Autoplay]}
+            effect="coverflow"
+            grabCursor={true}
+            centeredSlides={true}
+            slidesPerView={1.2}
+            breakpoints={{
+              576: {
+                slidesPerView: 2,
+              },
+              768: {
+                slidesPerView: 3,
+              },
+            }}
+            loop={true}
+            autoplay={{
+              delay: 2000,
+              disableOnInteraction: false,
+            }}
+            navigation
+            coverflowEffect={{
+              rotate: 0,
+              stretch: 0,
+              depth: 150,
+              modifier: 2,
+              slideShadows: true,
+            }}
+            onSwiper={(swiper) => {
+              swiperRef.current = swiper;
+            }}
+            style={{ padding: '10px 0' }}
+          >
+            {images.map((src, i) => (
+              <SwiperSlide key={i}>
+                <img
+                  src={src}
+                  alt={`app${i}`}
+                  onClick={handleImageClick}
+                  onMouseLeave={handleMouseLeave}
+                  className="img rounded"
+                  style={{
+                    width: '189px',
+                    height: '336px',
+                    cursor: 'pointer',
+                  }}
+                />
+              </SwiperSlide>
+            ))}
+          </Swiper>
+        </div>
+            
+      </Row>
+      <Row className="justify-content-start pb-5 flex-wrap mt-4">
+      <Col xs="12" md="auto" className="mb-3 mb-md-0 text-center">
+
+    <motion.a
       whileHover={{ scale: 1.1 }}
-      src={layer1}
-      alt="layer1"
-      className="img rounded"
+      href="https://play.google.com/store/apps/details?id=com.elkbusinesshub.elk&hl=en-US" 
+      target="_blank"
+      rel="noopener noreferrer"
+      className="download-btn text-white d-inline-block"
       style={{
         width: '189px',
         height: '57px',
+        textAlign: 'center',
+        lineHeight: '57px',
+        textDecoration: 'none',
       }}
-    />
+    >
+      Download App <FiDownload />
     </motion.a>
-  </Col>
-  <Col xs="12" md="auto" className="text-center">
-    <motion.img
-      whileHover={{ scale: 1.1 }}
-      src={layer2}
-      alt="layer2"
-      className="img rounded"
-      style={{
-        width: '189px',
-        height: '57px',
-      }}
-    />
-  </Col>
-  </Row>
+
+      </Col>
+      <Col xs="12" md="auto" className="mb-3 mb-md-0 text-center">
+      <motion.a
+        whileHover={{ scale: 1.1 }}
+        href="https://play.google.com/store/apps/details?id=com.elkbusinesshub.elk&hl=en-US"
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ display: 'inline-block' }}
+      >
+        <img
+          whileHover={{ scale: 1.1 }}
+          src={layer1}
+          alt="layer1"
+          className="img rounded"
+          style={{
+            width: '189px',
+            height: '57px',
+          }}
+        />
+        </motion.a>
+      </Col>
+      <Col xs="12" md="auto" className="text-center">
+        <motion.img
+          whileHover={{ scale: 1.1 }}
+          src={layer2}
+          alt="layer2"
+          className="img rounded"
+          style={{
+            width: '189px',
+            height: '57px',
+          }}
+        />
+      </Col>
+      </Row>
+    </>:<></>
+  }
 </Container>
 </Container>
 

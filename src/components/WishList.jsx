@@ -49,7 +49,7 @@ const MyWishList = () => {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isChat={false} />
       <div className="main container py-4" style={{ minHeight: "80vh" }}>
         <h1 className="mb-4">My Wishlist</h1>
         {loading ? (

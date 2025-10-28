@@ -41,7 +41,7 @@ const SearchResult = () => {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isChat={false} />
       <div className="main container py-4" style={{ minHeight: "80vh" }}>
         <h1 className="mb-4" style={{textTransform:'capitalize'}}>Search result of {query}</h1>
         {loading ? (

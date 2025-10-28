@@ -69,7 +69,7 @@ const UserProfilePage = () => {
       }, [token]);
     return (
         <>
-            <AppHeader />
+            <AppHeader isChat={false} />
             <main className="container py-4" style={{ minHeight: '70vh' }}>
                 {(
                     loading?<Loader/>:

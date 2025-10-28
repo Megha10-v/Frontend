@@ -87,20 +87,133 @@
 
 #home
 {
-  background-image: url(../images/overjoyed_webp.webp);
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  transform: scaleX(-1);
-  z-index: -1;
 }
 
-@media only screen and (max-width: 600px){
+@keyframes slideInUp {
+  0% {
+    transform: translateY(100%);
+    opacity: 0.8;
+  }
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
 
+/* keep final state after animation */
+.slideInUp {
+  animation: slideInUp 1.5s ease-in-out forwards;
+  margin-right: 3rem;
+}
+
+
+@import url('https://fonts.googleapis.com/css2?family=Anton&family=Lato:wght@300;400;700&display=swap');
+
+.services-banner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  position: relative;
+}
+
+.services-overlay {
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+  margin-left: 3rem;
+}
+
+.services-heading {
+  font-family: 'Anton', sans-serif;
+  font-size: 83px;
+  line-height: 1.1;
+  color: #ffeb3b;
+  text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.3);
+  margin: 0;
+}
+
+.services-sub {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  color: #3b210b;
+  margin-top: 20px;
+}
+
+.banner-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  text-align: center;
+  position: relative;
+}
+
+.overlay {
+  padding: 50px;
+  border-radius: 20px;
+  margin-left: 3rem;
+}
+
+.banner-heading {
+  font-family: 'Anton', sans-serif;
+  font-size: 80px;
+  color: #3b210b;
+  line-height: 1.1;
+  margin: 0;
+}
+
+.banner-sub {
+  font-family: 'Lato', sans-serif;
+  font-weight: 400;
+  color: black;
+  margin-top: 20px;
+}
+.popimg{
+  width: 400px;
+}
+@media only screen and (max-width: 600px){
   #home{
-    background-position: 20% 0%;
-    background-size: 600%;
-  
+    background-position: 80% center;
+    background-size: cover;
+  }
+  .services-banner {
+    justify-content: center;
+    flex-direction: column;
+  }
+  .banner-container {
+    flex-direction: column;
+    justify-content: center;
+  }
+  .overlay {
+    margin-left: 0;
+  }
+  .services-overlay{
+    margin-left: 0;
+  }
+  .slideInUp {
+    margin-right: 0;
+  }
+  .services-heading {
+    font-size: 40px;
+  }
+
+  .services-sub {
+    margin-top: 10px;
+    font-size: 25px;
+  }
+  .banner-heading {
+    font-size: 40px;
+  }
+
+  .banner-sub {
+    margin-top: 10px;
+    font-size: 25px;
+  }
+  .popimg{
+    width: 300px;
   }
 }
 
@@ -148,8 +261,4 @@
   filter: brightness(1);
   z-index: 10;
 }
-
-
-
-
 

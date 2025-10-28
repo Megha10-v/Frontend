@@ -148,12 +148,12 @@ const ChatScreen = () => {
 
   return (
     <>
-      <AppHeader />
+      <AppHeader isChat={true}/>
       {loading ? <Loader /> :
         <div className={`container`} style={{ maxWidth: "1000px" }}>
           <div className={`row ${isMobile?'':'border rounded'} shadow-sm`} style={{ height: "700px", backgroundColor: '#4FBBB4' }}>
             {(isMobile ? !selectedOtherUser : true) && (
-                <div className={`${isMobile ? 'col-12' : 'col-md-4 border-end'} p-3`} style={{ overflowY: "auto" }}>
+                <div className={`${isMobile ? 'col-12' : 'col-md-4 border-end'} p-3`} style={{ overflowY: "auto", maxHeight: "100%", height: "100%" }}>
                   <h5 className="border-bottom" style={{ color: 'white', fontWeight: 'bold' }}>Chats</h5>
                   <ul className="list-group list-unstyled">
                     {chatRooms.map((chat) => (
@@ -161,7 +161,7 @@ const ChatScreen = () => {
                         <img src={chat.otherUser.profile ?? 'https://static.vecteezy.com/system/resources/previews/036/280/651/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg'} alt={chat.otherUser.name} className="rounded-circle me-2" width="40" height="40" />
                         <div>
                           <strong style={{ color: 'white' }}>{chat.otherUser.name}</strong>
-                          <p className="small text-muted mb-0" style={{ color: '#FFFFFF' }}>{chat.otherUser.description}</p>
+                          {/* <p className="small text-muted mb-0" style={{ color: '#FFFFFF' }}>{chat.otherUser.description}</p> */}
                         </div>
                       </li>
                     ))}
@@ -179,7 +179,7 @@ const ChatScreen = () => {
             >
               {!selectedOtherUser ? (
                 <div className="d-flex align-items-center justify-content-center flex-grow-1" style={{ height: '100%' }}>
-                  <Image src={logonew} thumbnail alt="Company Logo" style={{ width: '400px', height: '250px', backgroundColor: 'transparent' }} />
+                  {/* <Image src={logonew} thumbnail alt="Company Logo" style={{ width: '400px', height: '250px', backgroundColor: 'transparent' }} /> */}
                 </div>
               ) : (
                 <>
