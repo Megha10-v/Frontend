@@ -5,6 +5,12 @@ import AdminNav from "./AdminNav";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Loader from "../Loader";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
+import ChatIcon from '@mui/icons-material/Chat';
+import WhatsAppIcon from '@mui/icons-material/WhatsApp';
+import { useNavigate } from 'react-router-dom';
+import Swal from "sweetalert2";
 
 function AdminHome() {
     const [selectedDate, setSelectedDate] = useState("");
@@ -12,6 +18,7 @@ function AdminHome() {
     const [ads, setAds] = useState([]);
     const [adLocations, setAdLocations] = useState([]);
     const [loading, setLoading] = useState(true);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -59,6 +66,61 @@ function AdminHome() {
             alert(error.response?.data?.message || "Failed to delete ad.");
         }
     };
+
+    const downloadExcel = () => {
+        if (ads.length === 0) {
+            Swal.fire({
+                icon: "warn",
+                title: "No ads available to export!",
+                confirmButtonColor: "#3085d6",
+            });
+            return;
+        }
+
+        const data = ads.map((ad, index) => ({
+            "S No": index + 1,
+            "Ad ID": ad.ad_id,
+            "Title": ad.title,
+            "Category": ad.category,
+            "Type": ad.ad_type,
+            "Phone": ad.user?.mobile_number ?? "-",
+            "Email": ad.user?.email ?? "-",
+            "Status": ad.ad_status,
+            "Location": ad.ad_location
+                ? `${ad.ad_location.place ?? ""}${ad.ad_location.place ? ", " : ""}${ad.ad_location.district}, ${ad.ad_location.state}`
+                : "N/A",
+            "Price": ad.ad_price_details?.[0]?.rent_price
+                ? `₹${ad.ad_price_details[0].rent_price} / ${ad.ad_price_details[0].rent_duration}`
+                : "N/A",
+            "Posted By": ad.user?.name || "User",
+            "Date": new Date(ad.createdAt).toLocaleDateString(),
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Ads");
+
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+        saveAs(blob, `elk_ads_report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    };
+
+    const handleWhatsAppClick = async (phone, message) => {
+        if(phone){
+            const phoneNumber = phone.replace(/\D/g, "");
+            const encodedMessage = encodeURIComponent(message);
+
+            const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodedMessage}`;
+
+            const newWindow = window.open(whatsappUrl, "_blank");
+        } else {
+            Swal.fire({
+                icon: "warn",
+                title: "Phone Number Not Available",
+                confirmButtonColor: "#3085d6",
+            });
+        }
+    };
     return (
         <>
             <Sidebar />
@@ -94,6 +156,11 @@ function AdminHome() {
                     </div>
                     <div>
                         <h4>Total: {ads.length}</h4>
+                    </div>
+                    <div>
+                        <Button variant="success" onClick={downloadExcel}>
+                            Download Excel
+                        </Button>
                     </div>
                 </div>
                 {loading ? <Loader/> : (
@@ -146,7 +213,11 @@ function AdminHome() {
                                             </td>
                                             <td>{ad.user?.name || "User"}</td>
                                             <td>{new Date(ad.createdAt).toLocaleDateString()}</td>
-                                            <td><Button style={{ backgroundColor: "red", color: "white" }} onClick={() => deleteAd(ad.ad_id)}>Delete</Button></td>
+                                            <td>
+                                                <Button style={{ backgroundColor: "red", color: "white" }} onClick={() => deleteAd(ad.ad_id)}>Delete</Button>
+                                                <ChatIcon onClick={()=>navigate('/chat',{ state: { userId: ad.user_id, userName: ad.user.name, adName: ad.title, profile: ad.user.profile, message: `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.` } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>
+                                                <WhatsAppIcon style={{ color: 'green', fontSize: 30, cursor: 'pointer' }} onClick={()=>handleWhatsAppClick(ad.user?.mobile_number, `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.`)}/>
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
@@ -158,7 +229,6 @@ function AdminHome() {
                         </table>
                 </div>
                 )}
-
             </div>
         </>
     );

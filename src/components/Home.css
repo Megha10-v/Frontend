@@ -118,6 +118,8 @@
   justify-content: space-between;
   text-align: center;
   position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .services-overlay {
@@ -149,6 +151,8 @@
   justify-content: space-between;
   text-align: center;
   position: relative;
+  overflow: hidden;
+  z-index: 1;
 }
 
 .overlay {
@@ -171,9 +175,14 @@
   color: black;
   margin-top: 20px;
 }
-.popimg{
+
+.banner-container .popimg,
+.services-banner .popimg{
   width: 400px;
+  position: relative;
+  z-index: 2;
 }
+
 @media only screen and (max-width: 600px){
   #home{
     background-position: 80% center;
@@ -212,7 +221,8 @@
     margin-top: 10px;
     font-size: 25px;
   }
-  .popimg{
+  .banner-container .popimg,
+  .services-banner .popimg {
     width: 300px;
   }
 }

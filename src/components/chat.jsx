@@ -15,17 +15,21 @@ const ChatScreen = () => {
   const location = useLocation();
   const userId = location.state?.userId;
   const otherUserName = location.state?.userName;
+  const otherUserImage = location.state?.profile;
+  const message = location.state?.message;
   const adId = location.state?.adId;
   const adName = location.state?.adName;
   const { user, token, isAuthenticated } = useSelector((state) => state.auth);
-
+  console.log(otherUserImage);
+  
   const [chatRooms, setChatRooms] = useState([]);
   const [selectedOtherUser, setSelectedOtherUser] = useState(userId);
   const [selectedOtherUserName, setSelectedOtherUserName] = useState(otherUserName);
+  const [selectedOtherUserImage, setSelectedOtherUserImage] = useState(otherUserImage);
 
   const [chatMessages, setChatMessages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState(message);
   const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
   useEffect(() => {
@@ -47,12 +51,14 @@ const ChatScreen = () => {
   useEffect(() => {
     if (!isAuthenticated || !user) return;
     const socketInstance = socket;
-
+    console.log("Soooo");
+    
     setLoading(true);
     socketInstance.emit("register", user.user_id);
     socketInstance.emit("getChatRooms", user.user_id);
 
     socketInstance.on("chatRooms", (rooms) => {
+      console.log('Rooooo');
       setChatRooms(rooms);
     });
 
@@ -134,7 +140,8 @@ const ChatScreen = () => {
 
   const handleChatRoomClick = (chat) => {
     setSelectedOtherUser(chat.otherUser.user_id);
-    setSelectedOtherUserName(chat.otherUser.name)
+    setSelectedOtherUserName(chat.otherUser.name);
+    setSelectedOtherUserImage(chat.otherUser.profile);
   };
 
   const handleBack = () => {
@@ -188,12 +195,12 @@ const ChatScreen = () => {
                       <button className="btn btn-link d-md-none text-white me-2" onClick={handleBack}>
                         <ArrowLeft size={24} />
                       </button>
-                      <img src={'https://static.vecteezy.com/system/resources/previews/036/280/651/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg'} alt="User" className="rounded-circle me-2" width="40" height="40" />
+                      <img src={selectedOtherUserImage ?? 'https://static.vecteezy.com/system/resources/previews/036/280/651/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg'} alt="User" className="rounded-circle me-2" width="40" height="40" />
                       <div>
                         <strong style={{ color: 'white', fontWeight: 'bold' }}>{selectedOtherUserName}</strong>
                       </div>
                     </div>
-                    <ThreeDotsVertical size={20} className="cursor-pointer" />
+                    <ThreeDotsVertical size={20} style={{color: "white", cursor: 'pointer'}} />
                   </div>
 
                   <div className="flex-grow-1 overflow-auto mb-2" style={{ maxHeight: "530px" }}>

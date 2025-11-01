@@ -11,7 +11,6 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Delete';
 
-<DeleteIcon style={{ color: 'red' }} />
 
 const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {  
   const { user,isAuthenticated } = useSelector(state => state.auth);
@@ -94,6 +93,8 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
       try {
         const data = await getAdDetails(post.ad_id, token);
         if (data) setAdDetails(data);
+        console.log(data);
+        
       } catch (err) {
       }
     };
@@ -205,7 +206,7 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
             sx={{ color: '#4FBBB4', cursor: 'pointer' }}
           />
           {
-            isAuthenticated&&!isMyAd?<ChatIcon onClick={()=>navigate('/chat',{ state: { userId: adDetails.user_id, userName: adDetails.user.name, adId:adDetails.id, adName: adDetails.title } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>:<></>
+            isAuthenticated&&!isMyAd?<ChatIcon onClick={()=>navigate('/chat',{ state: { userId: adDetails.user_id, userName: adDetails.user.name, adId:adDetails.id, adName: adDetails.title,profile: adDetails.user.profile } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>:<></>
           }
           {
             isMyAd?<DeleteIcon onClick={() => deleteAd(adDetails.id)} fontSize="large" sx={{ color: '#ad1616ff', margin: "0 20px", cursor: 'pointer' }}/>:<></>

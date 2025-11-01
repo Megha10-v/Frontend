@@ -5,6 +5,9 @@ import AdminNav from "./AdminNav";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Loader from "../Loader";
+import Swal from "sweetalert2";
+import * as XLSX from "xlsx";
+import { saveAs } from "file-saver";
 
 function AdminAllUsers() {
     const [selectedDate, setSelectedDate] = useState("");
@@ -51,7 +54,33 @@ function AdminAllUsers() {
         }
     };
       
+    const downloadExcel = () => {
+        if (users.length === 0) {
+            Swal.fire({
+                icon: "warn",
+                title: "No Users available to export!",
+                confirmButtonColor: "#3085d6",
+            });
+            return;
+        }
 
+        const data = users.map((user, index) => ({
+            "S No": index + 1,
+            "User ID": user.user_id,
+            "Name": user.name,
+            "Phone Number": user.mobile_number??'-',
+            "Email": user.email??'-',
+            "Date": new Date(user.createdAt).toLocaleDateString(),
+        }));
+
+        const worksheet = XLSX.utils.json_to_sheet(data);
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, "Users");
+
+        const excelBuffer = XLSX.write(workbook, { bookType: "xlsx", type: "array" });
+        const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
+        saveAs(blob, `elk_users_report_${new Date().toISOString().slice(0, 10)}.xlsx`);
+    };
     return (
         <>
             <Sidebar />
@@ -71,6 +100,11 @@ function AdminAllUsers() {
                     <div>
                         <h4>Total: {users.length}</h4>
                     </div>
+                    <div>
+                        <Button variant="success" onClick={downloadExcel}>
+                            Download Excel
+                        </Button>
+                    </div>
                 </div>
                 {loading ? <Loader/> : (
                 <div className="admin-table-container">
@@ -83,6 +117,7 @@ function AdminAllUsers() {
                                     <th>Phone</th>
                                     <th>Email</th>
                                     <th>Profile</th>
+                                    <th>Date</th>
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -100,6 +135,7 @@ function AdminAllUsers() {
                                                     <img src={user.profile} alt="Profile" height="100" />
                                                 ) : "No Image"}
                                             </td>
+                                            <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                                             <td><Button style={{ backgroundColor: "red", color: "white" }} onClick={() => blockUser(user.user_id)}>{(user.block_status===false)?'Block':'UnBlock'}</Button></td>
                                         </tr>
                                     ))
