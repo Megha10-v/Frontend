@@ -110,7 +110,10 @@ export default function ImageUploadForm({ onSubmit, onClose, imageData, setImage
     setImageData(images);
     onSubmit(formData);   
   };
-
+  const handleSkip = () => {
+    const emptyFormData = new FormData();
+    onSubmit(emptyFormData);
+  };
   return (
     <form className="image-upload-form" onSubmit={handleUpload}>
       <div className="form-group">
@@ -145,6 +148,13 @@ export default function ImageUploadForm({ onSubmit, onClose, imageData, setImage
         </button>
         <button type="submit" className="btn-submit" disabled={images.length === 0}>
           Upload
+        </button>
+        <button
+          type="button"
+          className="btn-skip"
+          onClick={handleSkip}
+        >
+          Skip
         </button>
       </div>
     </form>

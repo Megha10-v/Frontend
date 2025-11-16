@@ -92,9 +92,7 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
     const fetchAd = async () => {
       try {
         const data = await getAdDetails(post.ad_id, token);
-        if (data) setAdDetails(data);
-        console.log(data);
-        
+        if (data) setAdDetails(data);        
       } catch (err) {
       }
     };

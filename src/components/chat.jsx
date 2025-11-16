@@ -20,7 +20,6 @@ const ChatScreen = () => {
   const adId = location.state?.adId;
   const adName = location.state?.adName;
   const { user, token, isAuthenticated } = useSelector((state) => state.auth);
-  console.log(otherUserImage);
   
   const [chatRooms, setChatRooms] = useState([]);
   const [selectedOtherUser, setSelectedOtherUser] = useState(userId);
@@ -47,27 +46,36 @@ const ChatScreen = () => {
       chatEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   }, [chatMessages]);
+  useEffect(() => {
+    socket.on("connect", () => {
+      console.log("✅ Connected to socket:", socket.id);
+    });
+    socket.on("disconnect", () => {
+      console.log("❌ Disconnected from socket");
+    });
+    return () => {
+      socket.off("connect");
+      socket.off("disconnect");
+    };
+  }, []);
 
   useEffect(() => {
     if (!isAuthenticated || !user) return;
-    const socketInstance = socket;
-    console.log("Soooo");
-    
-    setLoading(true);
-    socketInstance.emit("register", user.user_id);
-    socketInstance.emit("getChatRooms", user.user_id);
 
-    socketInstance.on("chatRooms", (rooms) => {
-      console.log('Rooooo');
-      setChatRooms(rooms);
-    });
+    setLoading(true);
+    socket.emit("register", user.user_id);
+    socket.emit("getChatRooms", user.user_id);
+
+    const handleChatRooms = (rooms) => setChatRooms(rooms);
+    socket.on("chatRooms", handleChatRooms);
 
     setLoading(false);
 
     return () => {
-      socketInstance.disconnect();
+      socket.off("chatRooms", handleChatRooms);
     };
-  }, [selectedOtherUser, user?.user_id, isAuthenticated, user]);
+  }, [user?.user_id, isAuthenticated]);
+
 
   useEffect(() => {
     const fetchChatMessages = async () => {
@@ -112,7 +120,7 @@ const ChatScreen = () => {
     };
   }, [selectedOtherUser, isAuthenticated, user]);
 
-  const sendMessage = () => {
+  const sendMessage = () => {    
     if (input.trim() && selectedOtherUser) {
       const socketInstance = socket;
 
@@ -128,11 +136,14 @@ const ChatScreen = () => {
         ad_name: adName,
         status: 'send',
       };
-
+      console.log(messageData);
+      
       try {
         socketInstance.emit("sendMessage", messageData);
         setInput("");
       } catch (e) {
+        console.log(e);
+        
         console.error("Socket emit failed:", e);
       }
     }
