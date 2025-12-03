@@ -1,5 +1,5 @@
 import React from 'react'
-import logonew from '../images/logonew.jpg' // Adjust the import paths as necessary
+import logonew from '../images/logo8.gif' // Adjust the import paths as necessary
 import {Image} from 'react-bootstrap'
 import Footer from './Footer'
 

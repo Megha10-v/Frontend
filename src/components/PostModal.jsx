@@ -10,6 +10,7 @@ import ShareIcon from '@mui/icons-material/Share';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Delete';
+import FullscreenImageView from './FullScreenImageView';
 
 
 const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {  
@@ -19,7 +20,8 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
   const [loading, setLoading] = useState(false);
   const token = localStorage.getItem('elk_authorization_token');
   const [error, setError] = useState(false);
-  
+  const [showFullscreen, setShowFullscreen] = useState(false);
+const [fullscreenIndex, setFullscreenIndex] = useState(0);
   
   const handleShare = () => {
     const shareUrl = `https://api.elkcompany.online/ad/${adDetails.id}`;
@@ -156,7 +158,11 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
                   src={image.image}
                   alt={`Slide ${index + 1}`}
                   className="d-block w-100 img-fluid rounded"
-                  style={{ maxHeight: '250px', objectFit: 'cover' }}
+                  style={{ maxHeight: '250px', objectFit: 'cover', cursor: 'pointer' }}
+                  onClick={() => {
+                    setFullscreenIndex(index);
+                    setShowFullscreen(true);
+                  }}
                 />
               </Carousel.Item>
             ))}
@@ -166,10 +172,20 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
               src={adDetails.ad_images[0]?.image}
               alt={adDetails.title}
               className="img-fluid rounded mb-3 w-100"
-              style={{ maxHeight: '250px', objectFit: 'cover' }}
+              style={{ maxHeight: '250px', objectFit: 'cover', cursor: 'pointer' }}
+              onClick={() => {
+                setShowFullscreen(true);
+                setFullscreenIndex(0);
+              }}
             />
           )
         }
+        <FullscreenImageView
+          show={showFullscreen}
+          onClose={() => setShowFullscreen(false)}
+          images={adDetails.ad_images || []}
+          initialIndex={fullscreenIndex}
+        />
         <div className="mt-3">
           <p className="text-muted fs-6" style={{ fontFamily: 'Arial, sans-serif' }}>Post ID: {adDetails.id}</p>
           <p><strong>Category:</strong> {adDetails.category}</p>

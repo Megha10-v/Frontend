@@ -99,7 +99,7 @@ function Home() {
   return (
     <div>
       <Header />
-      <Navbar className="mb-0 pb-0" style={{ background: '#4FBBB4', height: '80px' }}>
+      <Navbar className="mb-0 pb-0" style={{ background: '#4FBBB4', height: '95px' , marginTop : '14px', design:'flex' }}>
       <Container fluid>
         <Nav className="w-100 d-flex justify-content-end align-items-center">
           <Nav className="  d-flex align-items-center " >
