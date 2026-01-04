@@ -5,66 +5,45 @@ import AdminNav from "./AdminNav";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Loader from "../Loader";
-import Swal from "sweetalert2";
+import { errorMessageToast, successMessageToast } from "../common/hooks/common";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useGetUsersListQuery, useBlockUserMutation } from "../../store/services/admin.service";
 
 function AdminAllUsers() {
     const [selectedDate, setSelectedDate] = useState("");
-    const [users, setusers] = useState([]);
-    const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetchusers();
-            setLoading(false);
-        };
-        fetchData();
-    });
+    const {data: userListData, isLoading: userListDataLoading} = useGetUsersListQuery();
+    const [blockUser, {isLoading: blockUserLoading}] = useBlockUserMutation();
 
-
-    const fetchusers = async () => {     
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get-users`);            
-            setusers(response.data.users);
-        } catch (error) {
-            console.error("Error fetching users:", error);
-        }
-    };
-
-    const blockUser = async (userId) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
+    const handleBlockUser = async (userId) => {
+        const confirmDelete = window.confirm("Are you sure you want to block this user?");
         if (!confirmDelete) return;
         try {
-          const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/block_user?id=${userId}`, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json',
-            },
-          });
+        //   const response = await fetch(`${process.env.REACT_APP_API_BASE_URL}/api/block_user?id=${userId}`, {
+        //     method: 'PUT',
+        //     headers: {
+        //       'Content-Type': 'application/json',
+        //     },
+        //   });
+          const response = await blockUser(userId);
           const data = await response.json();
           if (response.ok) {
-            alert('User blocked successfully');
-          } else {
-            alert(`Error: ${data.message}`);
+            successMessageToast("")
           }
         } catch (error) {
           console.error('Error blocking user:', error);
-          alert('Server error');
+        //   alert('Server error');
         }
     };
       
     const downloadExcel = () => {
-        if (users.length === 0) {
-            Swal.fire({
-                icon: "warn",
-                title: "No Users available to export!",
-                confirmButtonColor: "#3085d6",
-            });
+        if (userListData?.length === 0) {
+            errorMessageToast("No Users available to export!");
             return;
         }
 
-        const data = users.map((user, index) => ({
+        const data = userListData?.map((user, index) => ({
             "S No": index + 1,
             "User ID": user.user_id,
             "Name": user.name,
@@ -98,7 +77,7 @@ function AdminAllUsers() {
                         </div>  
                     </div>
                     <div>
-                        <h4>Total: {users.length}</h4>
+                        <h4>Total: {userListData?.length}</h4>
                     </div>
                     <div>
                         <Button variant="success" onClick={downloadExcel}>
@@ -106,7 +85,7 @@ function AdminAllUsers() {
                         </Button>
                     </div>
                 </div>
-                {loading ? <Loader/> : (
+                {userListDataLoading ? <Loader/> : (
                 <div className="admin-table-container">
                         <table className="admin-table">
                             <thead>
@@ -122,8 +101,8 @@ function AdminAllUsers() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.length > 0 ? (
-                                    users.map((user,index) => (
+                                {userListData?.length > 0 ? (
+                                    userListData?.map((user,index) => (
                                         <tr key={user.id}>
                                             <td>{index+1}</td>
                                             <td>{user.user_id}</td>
@@ -136,7 +115,7 @@ function AdminAllUsers() {
                                                 ) : "No Image"}
                                             </td>
                                             <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                                            <td><Button style={{ backgroundColor: "red", color: "white" }} onClick={() => blockUser(user.user_id)}>{(user.block_status===false)?'Block':'UnBlock'}</Button></td>
+                                            <td><Button style={{ backgroundColor: "red", color: "white" }} onClick={() => handleBlockUser(user.user_id)}>{(user.block_status===false)?'Block':'UnBlock'}</Button></td>
                                         </tr>
                                     ))
                                 ) : (

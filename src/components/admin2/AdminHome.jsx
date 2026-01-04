@@ -11,69 +11,100 @@ import ChatIcon from '@mui/icons-material/Chat';
 import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
+import { useGetAdsListQuery, useDeleteAdMutation, useGetAdsLocationListQuery } from "../../store/services/admin.service";
+import { successMessageToast, errorMessageToast } from "../common/hooks/common";
 
 function AdminHome() {
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedLocation, setSelectedLocation] = useState("");
-    const [ads, setAds] = useState([]);
-    const [adLocations, setAdLocations] = useState([]);
-    const [loading, setLoading] = useState(true);
+    // const [ads, setAds] = useState([]);
+    // const [adLocations, setAdLocations] = useState([]);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const fetchData = async () => {
-            await fetchAds();
-            await fetchAdLocations();
-            setLoading(false);
-        };
-        fetchData();
-    }, [selectedDate, selectedLocation]);
+    const { data: adsData, isLoading: adsDataLoading } = useGetAdsListQuery({
+    date: selectedDate,
+    location: selectedLocation,
+  },  {
+    skip: !selectedDate || !selectedLocation,
+  });
 
-    const fetchAdLocations = async () => {
-        try {
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get-ad-locations`);            
-            setAdLocations(["Select","New Delhi", ...response.data.list]);
-        } catch (error) {
-            console.error("Error fetching ads:", error);
-        }
-    };
+  const { data: locationsData } = useGetAdsLocationListQuery();
+  console.log(locationsData)
 
-    const fetchAds = async () => {     
-        try {
-            let query = [];            
-            if (selectedDate) query.push(`date=${selectedDate}`);
-            if (selectedLocation) query.push(`location=${selectedLocation}`);
-            const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get-admin-ads?${query.join("&")}`);            
-            setAds(response.data.ads);
-        } catch (error) {
-            console.error("Error fetching ads:", error);
-        }
-    };
+  // 🔹 Delete mutation
+  const [deleteAd, { isLoading: deleting }] = useDeleteAdMutation();
 
-    const deleteAd = async (id) => {
-        const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
-        if (!confirmDelete) return;
-        try {
-            const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${id}`);
-            if (response.data.success) {
-                alert("Ad deleted successfully!");
-                fetchAds();
-            }else{
-                alert(response?.data?.message || "Failed to delete ad.");
-            }
-        } catch (error) {
-            console.error("Error deleting ad:", error.response?.data || error.message);
-            alert(error.response?.data?.message || "Failed to delete ad.");
-        }
-    };
+  const ads = adsData?.ads || [];
+  const adLocations = ["Select", "New Delhi", ...(locationsData?.data?.list || [])];
+
+  // 🔹 Delete handler
+  const handleDeleteAd = async (id) => {
+    const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
+    if (!confirmDelete) return;
+
+    try {
+      await deleteAd(id).unwrap();
+      successMessageToast("Ad deleted successfully!");
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+    // useEffect(() => {
+    //     const fetchData = async () => {
+    //         await fetchAds();
+    //         await fetchAdLocations();
+    //         setLoading(false);
+    //     };
+    //     fetchData();
+    // }, [selectedDate, selectedLocation]);
+
+    // const fetchAdLocations = async () => {
+    //     try {
+    //         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get-ad-locations`);            
+    //         setAdLocations(["Select","New Delhi", ...response.data.list]);
+    //     } catch (error) {
+    //         console.error("Error fetching ads:", error);
+    //     }
+    // };
+
+    // const fetchAds = async () => {     
+    //     try {
+    //         let query = [];            
+    //         if (selectedDate) query.push(`date=${selectedDate}`);
+    //         if (selectedLocation) query.push(`location=${selectedLocation}`);
+    //         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get-admin-ads?${query.join("&")}`);            
+    //         setAds(response.data.ads);
+    //     } catch (error) {
+    //         console.error("Error fetching ads:", error);
+    //     }
+    // };
+
+    // const deleteAd = async (id) => {
+    //     const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
+    //     if (!confirmDelete) return;
+    //     try {
+    //         const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${id}`);
+    //         if (response.data.success) {
+    //             alert("Ad deleted successfully!");
+    //             fetchAds();
+    //         }else{
+    //             alert(response?.data?.message || "Failed to delete ad.");
+    //         }
+    //     } catch (error) {
+    //         console.error("Error deleting ad:", error.response?.data || error.message);
+    //         // alert(error.response?.data?.message || "Failed to delete ad.");
+    //     }
+    // };
 
     const downloadExcel = () => {
         if (ads.length === 0) {
-            Swal.fire({
-                icon: "warn",
-                title: "No ads available to export!",
-                confirmButtonColor: "#3085d6",
-            });
+            // Swal.fire({
+            //     icon: "warn",
+            //     title: "No ads available to export!",
+            //     confirmButtonColor: "#3085d6",
+            // });
+            errorMessageToast("No ads available to export!")
             return;
         }
 
@@ -163,7 +194,7 @@ function AdminHome() {
                         </Button>
                     </div>
                 </div>
-                {loading ? <Loader/> : (
+                {adsDataLoading ? <Loader/> : (
                 <div className="admin-table-container">
                         <table className="admin-table">
                             <thead>
@@ -214,7 +245,7 @@ function AdminHome() {
                                             <td>{ad.user?.name || "User"}</td>
                                             <td>{new Date(ad.createdAt).toLocaleDateString()}</td>
                                             <td>
-                                                <Button style={{ backgroundColor: "red", color: "white" }} onClick={() => deleteAd(ad.ad_id)}>Delete</Button>
+                                                <Button style={{ backgroundColor: "red", color: "white" }} onClick={() => handleDeleteAd(ad.ad_id)}>Delete</Button>
                                                 <ChatIcon onClick={()=>navigate('/chat',{ state: { userId: ad.user_id, userName: ad.user.name, adName: ad.title, profile: ad.user.profile, message: `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.` } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>
                                                 <WhatsAppIcon style={{ color: 'green', fontSize: 30, cursor: 'pointer' }} onClick={()=>handleWhatsAppClick(ad.user?.mobile_number, `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.`)}/>
                                             </td>
@@ -235,4 +266,5 @@ function AdminHome() {
 }
 
 export default AdminHome;
+
 
