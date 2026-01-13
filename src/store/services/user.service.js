@@ -1,32 +1,74 @@
 import { createApi } from "@reduxjs/toolkit/query/react";
 import axiosBaseQuery from "../../utils/axios/baseQuery";
 
-export const approvalApi = createApi({
-  reducerPath: "approvalApi",
+export const userApi = createApi({
+  reducerPath: "userApi",
   baseQuery: axiosBaseQuery({
-    baseUrl: "/approval",
+    baseUrl: "/user",
   }),
   endpoints: (builder) => ({
-    getApprovalsList: builder.query({
-      query: (payload) => ({
-        url: "/list-for-admin",
+    updateProfilePic: builder.mutation({
+      query: ({ id, payload }) => ({
+        url: `/update_profile_pic?id=${id}`,
         method: "POST",
         data: payload,
       }),
       transformResponse: (res) => res?.data,
-      providesTags: ["ApprovalList"],
+      // invalidatesTags: [""],
     }),
-    RejectApproval: builder.mutation({
+    updateProfile: builder.mutation({
       query: (payload) => ({
-        url: "/reject",
+        url: `/update_profile`,
         method: "POST",
         data: payload,
       }),
       transformResponse: (res) => res?.data,
-      invalidatesTags: ["ApprovalList"],
+      // invalidatesTags: [""],
+    }),
+    sendOtp: builder.mutation({
+      query: (payload) => ({
+        url: `/send_otp`,
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+      // invalidatesTags: [""],
+    }),
+    createUser: builder.mutation({
+      query: (payload) => ({
+        url: `/create_user`,
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+      // invalidatesTags: [""],
+    }),
+    verifyUpdateMobile: builder.mutation({
+      query: (payload) => ({
+        url: `/verify_update_mobile`,
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+      // invalidatesTags: [""],
+    }),
+    updateMobileEmail: builder.mutation({
+      query: (payload) => ({
+        url: `/update_email_or_mobile`,
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+      // invalidatesTags: [""],
     }),
   }),
 });
 
-export const { useGetApprovalsListQuery, useRejectApprovalMutation } =
-  approvalApi;
+export const {
+  useUpdateProfilePicMutation,
+  useUpdateProfileMutation,
+  useSendOtpMutation,
+  useCreateUserMutation,
+  useVerifyUpdateMobileMutation,
+  useUpdateMobileEmailMutation
+} = userApi;

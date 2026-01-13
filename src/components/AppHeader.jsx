@@ -7,22 +7,31 @@ import { clearUser } from '../store/slices/authSlice';
 import ChatIcon from '@mui/icons-material/Chat';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
-import { use } from 'react';
+import { useDeleteAdMutation } from '../store/services/admin.service';
+import { useGetRecentUnsavedAdsQuery } from '../store/services/post.service';
+import { useSelector } from 'react-redux';
 
 function AppHeader({isChat}) {
+  // const token1 = localStorage.getItem('elk_authorization_token');
+  const { token, isAdmin } = useSelector((state) => state.auth);
+
+  const [deleteAd, {isLoading : deleteAdLoading}] = useDeleteAdMutation();
+  const { data: unsavedAds, isLoading } =
+  useGetRecentUnsavedAdsQuery(undefined, { skip: !token })
 
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(state => state.auth);
   const location = useLocation();
-  const token1 = localStorage.getItem('elk_authorization_token');
-  const [unsavedAd, setUnsavedAd] = useState({});
+  
+  // const [unsavedAd, setUnsavedAd] = useState({});
   const [showModal, setShowModal] = useState(false);
   const [searchTerm, setSearchTerm] = useState('');
   const [deleteSuccess, setDeleteSuccess] = useState(false)
-  const deleteAd = async () => {
+  const handleDelete = async () => {
       try {
-          const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${unsavedAd?.id}`);
+          // const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${unsavedAd?.id}`);
+          const response = await deleteAd(unsavedAd?.id);
           if (response.data.success) {
             setDeleteSuccess(true)
             navigate(`/post-ad`);
@@ -45,24 +54,25 @@ function AppHeader({isChat}) {
   //   deleteAd(unsavedAd?.id)
     
   // };
-  useEffect(() => {    
-    const fetchAd = async () => {      
-      try {
-        const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get_recent_unsaved_ad`, { 
-          headers: {
-              'authorization': `Bearer ${token1}`,
-              'Content-Type': 'application/json'
-          }
-        });
-        setUnsavedAd(response.data);
-      } catch (error) {
-        //
-      }
-    };
-    if (token1){
-      fetchAd();
-    }
-  }, [token1]);
+  // useEffect(() => {    
+  //   const fetchAd = async () => {      
+  //     try {
+  //       const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get_recent_unsaved_ad`, { 
+  //         headers: {
+  //             'authorization': `Bearer ${token1}`,
+  //             'Content-Type': 'application/json'
+  //         }
+  //       });
+      
+  //       setUnsavedAd(response.data);
+  //     } catch (error) {
+  //       //
+  //     }
+  //   };
+  //   if (token1){
+  //     fetchAd();
+  //   }
+  // }, [token1]);
 
 
   const handleLogout = () => {
@@ -134,7 +144,7 @@ function AppHeader({isChat}) {
                       whiteSpace: 'nowrap',
                     }}
                     onClick={() =>
-                      !token1
+                      !token
                         ? navigate('/login')
                         : Object.keys(unsavedAd).length !== 0
                         ? setShowModal(true)
@@ -236,7 +246,7 @@ function AppHeader({isChat}) {
                 </div>
                 <div className="modal-footer">
                   <button className="btn btn-success" onClick={handleContinue}>Continue Editing</button>
-                  <button className="btn btn-secondary" onClick={deleteAd}>Discard & Go Home</button>
+                  <button className="btn btn-secondary" onClick={handleDelete}>Discard & Go Home</button>
                 </div>
               </div>
             </div>

@@ -16,10 +16,27 @@ export const postApi = createApi({
       transformResponse: (res) => res?.data,
       providesTags: ["AdCategoryList"],
     }),
-    
+    createPost: builder.mutation({
+      query: (payload) => ({
+        url: "/create_post",
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+    }),
+    getRecentUnsavedAds: builder.query({
+      query: () => ({
+        url: "/get_recent_unsaved_ad",
+        method: "GET",
+      }),
+      transformResponse: (res) => res?.data,
+      providesTags: ["UnsavedAds"],
+    }),
   }),
 });
 
 export const {
-  useGetRentCategoryListQuery
+  useGetRentCategoryListQuery,
+  useCreatePostMutation,
+  useGetRecentUnsavedAdsQuery,
 } = postApi;
