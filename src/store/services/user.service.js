@@ -61,6 +61,21 @@ export const userApi = createApi({
       transformResponse: (res) => res?.data,
       // invalidatesTags: [""],
     }),
+    verifyOtp: builder.mutation({
+      query: (payload) => ({
+        url: `/verify_otp`,
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+      // invalidatesTags: [""],
+    }),
+    deleteAccount: builder.mutation({
+      query: (id) => ({
+        url: `/delete_account?user_id=${id}`,
+        method: "DELETE",
+      }),
+    }),
   }),
 });
 
@@ -70,5 +85,7 @@ export const {
   useSendOtpMutation,
   useCreateUserMutation,
   useVerifyUpdateMobileMutation,
-  useUpdateMobileEmailMutation
+  useUpdateMobileEmailMutation,
+  useVerifyOtpMutation, 
+  useDeleteAccountMutation
 } = userApi;
