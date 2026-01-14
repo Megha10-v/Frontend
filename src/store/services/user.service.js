@@ -76,6 +76,29 @@ export const userApi = createApi({
         method: "DELETE",
       }),
     }),
+    userWithAds: builder.query({
+      query: (payload) => ({
+        url: "/user_with_ads",
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+    }),
+    viewContact: builder.query({
+      query: (payload) => ({
+        url: "/view_contact",
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+    }),
+    wishlistList: builder.query({
+      query: () => ({
+        url: "/user_wishlists",
+        method: "GET",
+      }),
+      transformResponse: (res) => res?.data,
+    }),
   }),
 });
 
@@ -86,6 +109,9 @@ export const {
   useCreateUserMutation,
   useVerifyUpdateMobileMutation,
   useUpdateMobileEmailMutation,
-  useVerifyOtpMutation, 
-  useDeleteAccountMutation
+  useVerifyOtpMutation,
+  useDeleteAccountMutation,
+  useUserWithAdsQuery,
+  useViewContactQuery,
+  useWishlistListQuery
 } = userApi;

@@ -105,6 +105,14 @@ export const postApi = createApi({
       }),
       transformResponse: (res) => res?.data,
     }),
+    bestServiceProvider:  builder.query({
+      query: (payload) => ({
+        url: "/best_service_providers",
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+    }),
 
 
 
@@ -124,5 +132,6 @@ export const {
   useRemoveWishlistMutation,
   useRecommendedPostQuery,
   useGetRentCategoryPostQuery,
-  useSearchAdQuery
+  useSearchAdQuery,
+  useBestServiceProviderQuery
 } = postApi;

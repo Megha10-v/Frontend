@@ -64,28 +64,28 @@ function App() {
         { id: 8, title: 'Helicopter', image: helicopter },
     ];
 
-    useEffect(() => {
-        const token = localStorage.getItem('elk_authorization_token');        
-        if (token && token.split('.').length === 3) {
-            const fetchUserData = async () => {
-                try {
-                    const { id: userId } = jwtDecode(token);
-                    const response = await axios.post(
-                        `${process.env.REACT_APP_API_BASE_URL}/api/get_user?id=${userId}`,
-                        {},
-                        {
-                            headers: { authorization: `Bearer ${token}` }
-                        }
-                    );
-                    const userData = response.data;
-                    dispatch(setUser({ user: userData, token, isAdmin: userData.is_admin }));
-                } catch (error) {
-                    console.error('Failed to fetch user profile:', error);
-                }
-            };
-            fetchUserData();
-        }
-    }, [dispatch]); 
+    // useEffect(() => {
+    //     const token = localStorage.getItem('elk_authorization_token');        
+    //     if (token && token.split('.').length === 3) {
+    //         const fetchUserData = async () => {
+    //             try {
+    //                 const { id: userId } = jwtDecode(token);
+    //                 const response = await axios.post(
+    //                     `${process.env.REACT_APP_API_BASE_URL}/api/get_user?id=${userId}`,
+    //                     {},
+    //                     {
+    //                         headers: { authorization: `Bearer ${token}` }
+    //                     }
+    //                 );
+    //                 const userData = response.data;
+    //                 dispatch(setUser({ user: userData, token, isAdmin: userData.is_admin }));
+    //             } catch (error) {
+    //                 console.error('Failed to fetch user profile:', error);
+    //             }
+    //         };
+    //         fetchUserData();
+    //     }
+    // }, [dispatch]); 
 
     return (
         <>
