@@ -131,7 +131,7 @@ export const {
   useAddWishlistMutation,
   useRemoveWishlistMutation,
   useRecommendedPostQuery,
-  useGetRentCategoryPostQuery,
+  useRentCategoryPostQuery,
   useSearchAdQuery,
   useBestServiceProviderQuery
 } = postApi;

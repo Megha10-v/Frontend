@@ -5,7 +5,6 @@ import { auth, provider, signInWithPopup } from "../firebase";
 import { Button, Modal } from "react-bootstrap";
 import "./EditProfile.css";
 import { setUser, updateUser } from "../store/slices/authSlice";
-import { successMessageToast } from "./common/hooks/common";
 import {
   useUpdateProfilePicMutation,
   useUpdateProfileMutation,

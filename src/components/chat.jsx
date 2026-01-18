@@ -11,6 +11,7 @@ import ChatAudioPlayer from "./AudioPlayer";
 import bgimg from "../assets/bg_chat.jpg";
 import { useLocation } from "react-router-dom";
 import { useGetChatListQuery } from "../store/services/chat.service";
+import { skipToken } from "@reduxjs/toolkit/query";
 
 const ChatScreen = () => {
   // const {data: chatList, isLoading: chatListLoading} = useGetChatListQuery();
@@ -105,7 +106,7 @@ const ChatScreen = () => {
   // }, [selectedOtherUser, user?.user_id, token, isAuthenticated, user]);
 
   const { data: messagesData, isLoading: messagesLoading } =
-    useGetChatMessagesQuery(
+    useGetChatListQuery(
       selectedOtherUser
         ? { authUserId: user.user_id, otherUserId: selectedOtherUser }
         : skipToken

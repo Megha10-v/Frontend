@@ -9,7 +9,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
 import { useDeleteAdMutation } from '../store/services/admin.service';
 import { useGetRecentUnsavedAdsQuery } from '../store/services/post.service';
-import { useSelector } from 'react-redux';
+// import { useSelector } from 'react-redux';
 
 function AppHeader({isChat}) {
   // const token1 = localStorage.getItem('elk_authorization_token');
@@ -31,7 +31,7 @@ function AppHeader({isChat}) {
   const handleDelete = async () => {
       try {
           // const response = await axios.delete(`${process.env.REACT_APP_API_BASE_URL}/api/delete-ad?id=${unsavedAd?.id}`);
-          const response = await deleteAd(unsavedAd?.id);
+          const response = await deleteAd(unsavedAds?.id);
           if (response.data.success) {
             setDeleteSuccess(true)
             navigate(`/post-ad`);
@@ -146,7 +146,7 @@ function AppHeader({isChat}) {
                     onClick={() =>
                       !token
                         ? navigate('/login')
-                        : Object.keys(unsavedAd).length !== 0
+                        : Object.keys(unsavedAds).length !== 0
                         ? setShowModal(true)
                         : navigate('/post-ad')
                     }
@@ -155,7 +155,7 @@ function AppHeader({isChat}) {
                   </Button>
                 )}
 
-                {token1 && (
+                {token && (
                   <>
                     <ChatIcon
                       onClick={() => navigate('/chat')}
@@ -170,7 +170,7 @@ function AppHeader({isChat}) {
                   </>
                 )}
 
-                {token1 ? (
+                {token ? (
                 
                   <NavDropdown
                     title={<span style={{ color: 'white' }}>{user?.name || 'My Account'}</span>}
@@ -201,7 +201,7 @@ function AppHeader({isChat}) {
               </Nav>
               :
               <Nav className="ms-auto d-flex flex-row flex-nowrap align-items-center gap-3 justify-content-end w-100">
-                {token1 ? (
+                {token ? (
                   <NavDropdown
                     title={<span style={{ color: 'white' }}>{user?.name || 'My Account'}</span>}
                     id="basic-nav-dropdown"
@@ -232,7 +232,7 @@ function AppHeader({isChat}) {
             }
           </Navbar.Collapse>
         </Container>
-        {showModal && unsavedAd && (
+        {showModal && unsavedAds && (
           <div className="modal d-block" tabIndex="-1" role="dialog" style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}>
            <div className="modal-dialog modal-dialog-centered modal-sm modal-md modal-lg" role="document">
 
@@ -241,7 +241,7 @@ function AppHeader({isChat}) {
                   <h5 className="modal-title">Continue Editing?</h5>
                 </div>
                 <div className="modal-body">
-                  <p>You have an unsaved ad: <strong>{unsavedAd.title}</strong>.</p>
+                  <p>You have an unsaved ad: <strong>{unsavedAds.title}</strong>.</p>
                   <p>Would you like to continue editing it or discard and go back to home?</p>
                 </div>
                 <div className="modal-footer">

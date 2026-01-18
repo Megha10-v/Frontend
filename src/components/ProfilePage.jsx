@@ -13,6 +13,7 @@ import { successMessageToast } from './common/hooks/common';
 
 const ProfilePage = () => {
     const { user, token } = useSelector((state) => state.auth);
+    console.log("user,,",user)
     const dispatch = useDispatch();
     const [isHovered, setIsHovered] = useState(false);
     const [loading, setLoading] = useState(false);

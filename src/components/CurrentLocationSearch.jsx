@@ -8,24 +8,34 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
   const [locationName, setLocationName] = useState('');
   const [selectedLocation, setSelectedLocation] = useState("");
   const [showSelectLocation, setShowSelectLocation] = useState(false);
-  const [location, setLocation] = useState([]);
+  // const [location, setLocation] = useState([]);
   const [query, setQuery] = useState('');
   const [address, setAddress] = useState({});
+  const [showSuggestions, setShowSuggestions] = useState(false);
+
+  
   const token = localStorage.getItem('elk_authorization_token');
 
-   const {data:locationData, isLoading: locationDataLoading} = useGetPlaceSearchQuery(query, {
-      skip: query.trim() === '',
+  console.log(query)  
+   const {data:locationData, isLoading: locationDataLoading} = useGetPlaceSearchQuery({
+          query: query,
+          limited: false
+        }, {
+      skip: !query || query.trim() === '',
     });
 
+
   const [updateLocation, {isLoading: updateLocationLoading}] = useGetPlaceMutation();
-  useEffect(() => {
-    if (selectedLocation) {
-      const selected = location.find(loc => loc.name === selectedLocation);
-      if (selected) {
-        setAddress(selected);
-      }
-    }
-  }, [selectedLocation, location]);
+  // useEffect(() => {
+  //   if (selectedLocation) {
+  //     const selected = location.find(loc => loc.name === selectedLocation);
+  //     if (selected) {
+  //       setAddress(selected);
+  //     }
+  //   }
+  // }, [selectedLocation, location]);
+
+  console.log("locationData",locationData)
 
   // const fetchAdLocations = async (query) => {
   //   if (query === '') {
@@ -50,12 +60,20 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
   //   }
   // };
 
+  // const handleSelect = (loc) => {
+  //   setSelectedLocation(loc.name);
+  //   setAddress(loc);
+  //   setQuery(loc.name);
+  //   setLocation([]);
+  // };
+
   const handleSelect = (loc) => {
-    setSelectedLocation(loc.name);
-    setAddress(loc);
-    setQuery(loc.name);
-    setLocation([]);
-  };
+  setSelectedLocation(loc.name);
+  setAddress(loc);
+  setQuery(loc.name);
+  setShowSuggestions(false); // 👈 KEY LINE
+};
+
 
   const handleUpload = async (event) => {
     event.preventDefault();
@@ -66,11 +84,19 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
     }
   };
 
+  // const handleChange = (e) => {
+  //   const value = e.target.value;
+  //   setQuery(value);
+  //   // fetchAdLocations(value);
+  // };
+
   const handleChange = (e) => {
-    const value = e.target.value;
-    setQuery(value);
-    // fetchAdLocations(value);
-  };
+  const value = e.target.value;
+  setQuery(value);
+  setShowSuggestions(true);
+};
+
+
 
   const handleGetLocation = () => {
     // setLoading(true);
@@ -137,9 +163,9 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
               onChange={handleChange}
               className="border p-2 rounded w-full"
             />
-            {location.length > 0 && (
+            {showSuggestions && locationData?.length > 0 && (
               <ul className="location-suggestions border rounded bg-white shadow mt-1 max-h-60 overflow-y-auto">
-                {location.map((loc, index) => (
+                {locationData?.map((loc, index) => (
                   <li
                     key={index}
                     onClick={() => handleSelect(loc)}

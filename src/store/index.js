@@ -27,6 +27,9 @@ import {
 } from "redux-persist";
 import { adminApi } from "./services/admin.service";
 import { postApi } from "./services/post.service";
+import {placeApi} from "./services/place.service";
+import { userApi } from "./services/user.service";
+import { chatApi } from "./services/chat.service";
 
 const persistConfig = {
   key: "auth",
@@ -39,6 +42,9 @@ export const store = configureStore({
   reducer: {
     [adminApi.reducerPath]: adminApi.reducer,
     [postApi.reducerPath]: postApi.reducer,
+    [placeApi.reducerPath]: placeApi.reducer,
+    [chatApi.reducerPath]: chatApi.reducer,
+    [userApi.reducerPath]: userApi.reducer,
     auth: persistAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -48,7 +54,10 @@ export const store = configureStore({
       },
     }).concat(
       adminApi.middleware,
-      postApi.middleware
+      postApi.middleware,
+      userApi.middleware,
+      chatApi.middleware,
+      placeApi.middleware
     ),
 });
 

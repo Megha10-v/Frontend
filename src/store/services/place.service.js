@@ -8,13 +8,10 @@ export const placeApi = createApi({
   }),
   endpoints: (builder) => ({
     getPlaceSearch: builder.query({
-      query: (query) => ({
+      query: (payload) => ({
         url: "/place_search",
         method: "POST",
-        body: {
-          query,
-          limited: false,
-        },
+        data: payload
       }),
       transformResponse: (res) => res?.data,
       providesTags: ["LocationList"],

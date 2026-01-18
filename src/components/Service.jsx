@@ -18,7 +18,7 @@ import axios from "axios";
 import Loader from "./Loader";
 import EmptyState from "./EmptyAd";
 import {
-  useGetRentCategoryPostQuery,
+  useRentCategoryPostQuery,
   useBestServiceProviderQuery,
 } from "../store/services/post.service";
 
@@ -303,22 +303,24 @@ const Service = () => {
   const { data: bestProviders, isLoading: bestLoading } =
     useBestServiceProviderQuery(body);
 
-  const { data: cleaning } = useGetRentCategoryPostQuery({
+  console.log("bestLoading",bestLoading)
+
+  const { data: cleaningData } = useRentCategoryPostQuery({
     ad_type: "service",
     category: "cleaning",
   });
 
-  const { data: electrician } = useGetRentCategoryPostQuery({
+  const { data: electricianData } = useRentCategoryPostQuery({
     ad_type: "service",
     category: "electrician",
   });
 
-  const { data: carpentry } = useGetRentCategoryPostQuery({
+  const { data: carpentryData } = useRentCategoryPostQuery({
     ad_type: "service",
     category: "carpentry",
   });
 
-  const { data: painting } = useGetRentCategoryPostQuery({
+  const { data: paintingData } = useRentCategoryPostQuery({
     ad_type: "service",
     category: "painting",
   });
@@ -348,31 +350,31 @@ const Service = () => {
         <EmptyState />
       )}
 
-      {cleaning?.data?.length && (
+      {cleaningData?.data?.length && (
         <>
           <h3 className="ml-5 mb-4">Cleaning</h3>
-          <ScrollRow data={cleaning.data} onClick={handleCardClick} />
+          <ScrollRow data={cleaningData.data} onClick={handleCardClick} />
         </>
       )}
 
-      {electrician?.data?.length && (
+      {electricianData?.data?.length && (
         <>
           <h3 className="ml-5 mb-4">Electrician</h3>
-          <ScrollRow data={electrician.data} onClick={handleCardClick} />
+          <ScrollRow data={electricianData.data} onClick={handleCardClick} />
         </>
       )}
 
-      {carpentry?.data?.length && (
+      {carpentryData?.data?.length && (
         <>
           <h3 className="ml-5 mb-4">Carpentry</h3>
-          <ScrollRow data={carpentry.data} onClick={handleCardClick} />
+          <ScrollRow data={carpentryData.data} onClick={handleCardClick} />
         </>
       )}
 
-      {painting?.data?.length && (
+      {paintingData?.data?.length && (
         <>
           <h3 className="ml-5 mb-4">Painting</h3>
-          <ScrollRow data={painting.data} onClick={handleCardClick} />
+          <ScrollRow data={paintingData.data} onClick={handleCardClick} />
         </>
       )}
 

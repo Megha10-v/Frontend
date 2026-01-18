@@ -17,7 +17,7 @@ import EmptyState from "./EmptyAd";
 import { useSelector } from "react-redux";
 import {
   useRecommendedPostQuery,
-  useGetRentCategoryPostQuery,
+  useRentCategoryPostQuery
 } from "../store/services/post.service";
 
 const Rental = () => {
@@ -86,16 +86,16 @@ const Rental = () => {
     useRecommendedPostQuery(recommendedPayload);
 
   const { data: carsData, isLoading: carsLoading } =
-    useGetRentCategoryPostQuery({ category: "car" });
+    useRentCategoryPostQuery({ ad_type: 'rent',category: "car" });
 
   const { data: propertyData, isLoading: propertyLoading } =
-    useGetRentCategoryPostQuery({ category: "property" });
+    useRentCategoryPostQuery({ ad_type: 'rent',category: "property" });
 
   const { data: electronicsData, isLoading: electronicsLoading } =
-    useGetRentCategoryPostQuery({ category: "electronics" });
+    useRentCategoryPostQuery({ ad_type: 'rent',category: "electronics" });
 
   const { data: bikesData, isLoading: bikesLoading } =
-    useGetRentCategoryPostQuery({ category: "bike" });
+    useRentCategoryPostQuery({ ad_type: 'rent', category: "bike" });
 
   const ads = recommendedData?.data ?? [];
   const cars = carsData?.data ?? [];

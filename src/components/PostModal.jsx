@@ -155,10 +155,10 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
         res = await addWishlist({ ad_id: adDetails.id });
       }
       successMessageToast(res?.message);
-      setAdDetails((prev) => ({
-        ...prev,
-        wishListed: !prev.wishListed,
-      }));
+      // setAdDetails((prev) => ({
+      //   ...prev,
+      //   wishListed: !prev.wishListed,
+      // }));
     } catch (error) {
       console.error(
         "Wishlist update error:",

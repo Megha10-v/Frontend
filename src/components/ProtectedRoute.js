@@ -2,7 +2,6 @@ import React from 'react';
 import { useSelector } from 'react-redux';
 import { Navigate } from 'react-router-dom';
 // import { useCookies } from 'react-cookie';
-import { useSelector } from 'react-redux';
 
 const ProtectedRoute = ({ children }) => {
     const { user } = useSelector((state) => state.auth);
