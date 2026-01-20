@@ -99,6 +99,14 @@ export const userApi = createApi({
       }),
       transformResponse: (res) => res?.data,
     }),
+    removeWishlist: builder.mutation({
+      query: (payload) => ({
+        url: "/remove_wishlist",
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+    }),
   }),
 });
 
@@ -113,5 +121,6 @@ export const {
   useDeleteAccountMutation,
   useUserWithAdsQuery,
   useViewContactQuery,
-  useWishlistListQuery
+  useWishlistListQuery,
+  useRemoveWishlistMutation
 } = userApi;

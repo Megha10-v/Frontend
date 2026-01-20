@@ -91,8 +91,8 @@ import NotLoggedIn from "./NotLoggedIn";
 import { useWishlistListQuery } from "../store/services/user.service";
 
 const MyWishList = () => {
-  const { isAuthenticated } = useSelector((state) => state.auth);
-  const token = localStorage.getItem("elk_authorization_token");
+  const { token, isAuthenticated } = useSelector((state) => state.auth);
+  // const token = localStorage.getItem("elk_authorization_token");
 
   const {
     data: wishlist = [],

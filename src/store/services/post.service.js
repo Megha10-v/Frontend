@@ -73,14 +73,7 @@ export const postApi = createApi({
       }),
       transformResponse: (res) => res?.data,
     }),
-    removeWishlist: builder.mutation({
-      query: (payload) => ({
-        url: "/remove_wishlist",
-        method: "POST",
-        data: payload,
-      }),
-      transformResponse: (res) => res?.data,
-    }),
+    
      recommendedPost: builder.query({
       query: (payload) => ({
         url: "/recomented_posts",
@@ -129,7 +122,6 @@ export const {
   useUpdateAdAddressMutation,
   useGetAdDetailsQuery,
   useAddWishlistMutation,
-  useRemoveWishlistMutation,
   useRecommendedPostQuery,
   useRentCategoryPostQuery,
   useSearchAdQuery,

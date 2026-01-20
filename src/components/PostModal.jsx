@@ -15,9 +15,9 @@ import { useDeleteAdMutation } from "../store/services/admin.service";
 import { successMessageToast } from "./common/hooks/common";
 import {
   useAddWishlistMutation,
-  useRemoveWishlistMutation,
   useGetAdDetailsQuery,
 } from "../store/services/post.service";
+import { useRemoveWishlistMutation } from "../store/services/user.service";
 
 const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
   const { user, isAuthenticated } = useSelector((state) => state.auth);
@@ -34,7 +34,7 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
   const [removeWishlist, { isLoading: removeWishlistLoading }] =
     useRemoveWishlistMutation();
 
-  const { data: adDetails, isLoading: adDetailLoading } = useGetAdDetailsQuery(
+  const { data: adDetails, isLoading: adDetailLoading,refetch  } = useGetAdDetailsQuery(
     { ad_id: post?.ad_id, 
       user_id: user?.user_id },
     {
@@ -134,9 +134,9 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
   const toggleWishlist = async () => {
     if (!adDetails || !token) return;
 
-    const url = adDetails.wishListed
-      ? `${process.env.REACT_APP_API_BASE_URL}/api/remove_wishlist`
-      : `${process.env.REACT_APP_API_BASE_URL}/api/add_to_wishlist`;
+    // const url = adDetails.wishListed
+    //   ? `${process.env.REACT_APP_API_BASE_URL}/api/remove_wishlist`
+    //   : `${process.env.REACT_APP_API_BASE_URL}/api/add_to_wishlist`;
 
     try {
       // await axios.post(
@@ -155,6 +155,8 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
       } else {
         res = await addWishlist({ ad_id: adDetails.id });
       }
+      console.log("res..",res)
+      refetch();
       successMessageToast(res?.message);
       // setAdDetails((prev) => ({
       //   ...prev,
