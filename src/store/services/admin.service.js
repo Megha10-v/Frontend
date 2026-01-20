@@ -39,7 +39,7 @@ export const adminApi = createApi({
     }),
     deleteAd: builder.mutation({
       query: (id) => ({
-        url: `/delete-ad/${id}`,
+        url: `/delete-ad?id=${id}`,
         method: "DELETE",
       }),
       invalidatesTags: ["AdsList"],

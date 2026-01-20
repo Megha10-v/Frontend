@@ -149,14 +149,14 @@ const UserProfilePage = () => {
   const {
     data: userData,
     isLoading: userLoading,
-  } = useUserWithAdsQuery(id, {
+  } = useUserWithAdsQuery({user_id: id}, {
     skip: !token,
   });
 
   const {
     data: contact,
     isLoading: contactLoading,
-  } = useViewContactQuery(id, {
+  } = useViewContactQuery({userId: id}, {
     skip: !token,
   });
 

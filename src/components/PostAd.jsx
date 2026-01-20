@@ -194,20 +194,21 @@ const PostAdForm = () => {
   const handleImageUpload = async (data) => {
     setLoading(true);
     try {
-      await axios.post(
-        `${process.env.REACT_APP_API_BASE_URL}/api/upload_ad_image?ad_id=${adId}&ad_stage=2&ad_status=offline`,
-        data,
-        {
-          headers: {
-            authorization: `Bearer ${token}`,
-            "Content-Type": "multipart/form-data",
-          },
-        }
-      );
-      await uploadImage({ad_Id: adId, ad_stage: 2, ad_status: "offline", data});
+      // await axios.post(
+      //   `${process.env.REACT_APP_API_BASE_URL}/api/upload_ad_image?ad_id=${adId}&ad_stage=2&ad_status=offline`,
+      //   data,
+      //   {
+      //     headers: {
+      //       authorization: `Bearer ${token}`,
+      //       "Content-Type": "multipart/form-data",
+      //     },
+      //   }
+      // );
+      console.log("adId",adId)
+      await uploadImage({ad_id: adId, ad_stage: 2, ad_status: "offline", data});
       setStep(3);
     } catch (err) {
-      alert("Image upload failed");
+      console.error("Image upload failed: ",err);
     } finally {
       setLoading(false);
     }

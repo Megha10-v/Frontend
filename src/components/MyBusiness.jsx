@@ -19,11 +19,11 @@ const MyBusiness = () => {
     setSelectedPost(post);
     setShowModal(true);
   };
-  const handleAdDeleted = (deletedAdId) => {
-    setWishlist((prev) => prev.filter((ad) => ad.ad_id !== deletedAdId));
-  };
+  // const handleAdDeleted = (deletedAdId) => {
+  //   setWishlist((prev) => prev.filter((ad) => ad.ad_id !== deletedAdId));
+  // };
 
-  const { data: myAds, isLoading: myAdsLoading } = useGetMyAdsQuery();
+  const { data: myAds, isLoading: myAdsLoading, refetch } = useGetMyAdsQuery();
 
   // useEffect(() => {
   //   const fetchWishlist = async () => {
@@ -81,7 +81,9 @@ const MyBusiness = () => {
         isMyAd={true}
         onHide={() => setShowModal(false)}
         post={selectedPost}
-        onAdDeleted={handleAdDeleted}
+        onAdDeleted={() => {
+          refetch(); 
+        }}
       />
     </>
   );

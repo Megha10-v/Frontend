@@ -35,7 +35,8 @@ const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {
     useRemoveWishlistMutation();
 
   const { data: adDetails, isLoading: adDetailLoading } = useGetAdDetailsQuery(
-    { adId: post?.ad_id, userId: user?.user_id },
+    { ad_id: post?.ad_id, 
+      user_id: user?.user_id },
     {
       skip: !post?.ad_id,
     }
