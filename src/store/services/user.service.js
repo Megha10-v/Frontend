@@ -98,6 +98,7 @@ export const userApi = createApi({
         method: "GET",
       }),
       transformResponse: (res) => res?.data,
+      providesTags: ["Wishlist"]
     }),
     removeWishlist: builder.mutation({
       query: (payload) => ({
@@ -106,6 +107,7 @@ export const userApi = createApi({
         data: payload,
       }),
       transformResponse: (res) => res?.data,
+      invalidatesTags: ["Wishlist"]
     }),
   }),
 });

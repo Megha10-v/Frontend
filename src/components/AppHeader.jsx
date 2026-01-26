@@ -76,12 +76,12 @@ function AppHeader({isChat}) {
 
 
   const handleLogout = () => {
-    localStorage.removeItem('elk_authorization_token');
+    // localStorage.removeItem('elk_authorization_token');
     // localStorage.removeItem('elk_is_admin');
     // localStorage.removeItem('elk_user_id');
     dispatch(clearUser)
     navigate('/home');
-    window.location.reload();
+    // window.location.reload();
   };
   
   return (

@@ -153,13 +153,15 @@ const UserProfilePage = () => {
     skip: !token,
   });
 
+  console.log("userData", userData)
+
   const {
     data: contact,
     isLoading: contactLoading,
   } = useViewContactQuery({userId: id}, {
     skip: !token,
   });
-
+   console.log("contact", contact)
   const [selectedPost, setSelectedPost] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -182,7 +184,7 @@ const UserProfilePage = () => {
             <div className="d-flex align-items-center border-bottom pb-4 mb-4">
               <img
                 src={
-                  contact.data.profile ??
+                  contact?.profile ??
                   'https://static.vecteezy.com/system/resources/previews/036/280/651/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg'
                 }
                 alt="Profile"
@@ -192,14 +194,14 @@ const UserProfilePage = () => {
                 style={{ objectFit: 'cover' }}
               />
               <div className="ms-3">
-                <h2 className="h4 mb-1">{contact.data.name}</h2>
-                <p className="text-muted mb-0">{contact.data.description}</p>
-                <p className="text-muted mb-0">{contact.data.email}</p>
-                <p className="text-muted mb-0">{contact.data.mobile_number}</p>
+                <h2 className="h4 mb-1">{contact?.name}</h2>
+                <p className="text-muted mb-0">{contact?.description}</p>
+                <p className="text-muted mb-0">{contact?.email}</p>
+                <p className="text-muted mb-0">{contact?.mobile_number}</p>
               </div>
             </div>
 
-            <h3 className="mb-5">{contact.data.name}&apos;s Ads</h3>
+            <h3 className="mb-5">{contact?.name}&apos;s Ads</h3>
 
             <div style={{ display: 'flex', gap: '1rem', flexWrap: 'wrap' }}>
               {userData.ads?.length === 0 ? (

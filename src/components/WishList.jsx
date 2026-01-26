@@ -98,8 +98,10 @@ const MyWishList = () => {
     data: wishlist = [],
     isLoading,
     isError,
+    refetch
   } = useWishlistListQuery(undefined, {
     skip: !token,
+    refetchOnMountOrArgChange: true,
   });
 
   const [selectedPost, setSelectedPost] = useState(null);

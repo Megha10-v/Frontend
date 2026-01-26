@@ -105,37 +105,39 @@ const ChatScreen = () => {
   //   fetchChatMessages();
   // }, [selectedOtherUser, user?.user_id, token, isAuthenticated, user]);
 
-  const { data: messagesData, isLoading: messagesLoading } =
+  const { data: messagesData, isLoading: messagesLoading, refetch } =
     useGetChatListQuery(
       selectedOtherUser
         ? { authUserId: user.user_id, otherUserId: selectedOtherUser }
         : skipToken
     );
 
-  useEffect(() => {
-    if (messagesData?.data?.chatMessages) {
-      setChatMessages(messagesData.data.chatMessages);
-    }
-  }, [messagesData]);
+  console.log(messagesData)
 
-  useEffect(() => {
-    if (!isAuthenticated || !user) return;
-    const socketInstance = socket;
+  // useEffect(() => {
+  //   if (messagesData?.chatMessages) {
+  //     setChatMessages(messagesData.chatMessages);
+  //   }
+  // }, [messagesData]);
 
-    const handleNewMessage = (newMsg) => {
-      if (
-        selectedOtherUser &&
-        (newMsg.sender_id === selectedOtherUser ||
-          newMsg.reciever_id === selectedOtherUser)
-      ) {
-        setChatMessages((prev) => [...prev, newMsg]);
-      }
-    };
-    socketInstance.on("newMessage", handleNewMessage);
-    return () => {
-      socketInstance.off("newMessage", handleNewMessage);
-    };
-  }, [selectedOtherUser, isAuthenticated, user]);
+  // useEffect(() => {
+  //   if (!isAuthenticated || !user) return;
+  //   const socketInstance = socket;
+
+  //   const handleNewMessage = (newMsg) => {
+  //     if (
+  //       selectedOtherUser &&
+  //       (newMsg.sender_id === selectedOtherUser ||
+  //         newMsg.reciever_id === selectedOtherUser)
+  //     ) {
+  //       setChatMessages((prev) => [...prev, newMsg]);
+  //     }
+  //   };
+  //   socketInstance.on("newMessage", handleNewMessage);
+  //   return () => {
+  //     socketInstance.off("newMessage", handleNewMessage);
+  //   };
+  // }, [selectedOtherUser, isAuthenticated, user]);
 
   const sendMessage = () => {
     if (input.trim() && selectedOtherUser) {
@@ -157,7 +159,9 @@ const ChatScreen = () => {
 
       try {
         socketInstance.emit("sendMessage", messageData);
+       
         setInput("");
+         setTimeout(() => refetch(), 100);
       } catch (e) {
         console.log(e);
 
@@ -287,7 +291,7 @@ const ChatScreen = () => {
                     className="flex-grow-1 overflow-auto mb-2"
                     style={{ maxHeight: "530px" }}
                   >
-                    {chatMessages.map((msg) => {
+                    {messagesData?.chatMessages?.map((msg) => {
                       const isSentByUser = msg.sender_id === user.user_id;
                       return (
                         <div

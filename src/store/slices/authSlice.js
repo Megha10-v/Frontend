@@ -17,12 +17,13 @@ const authSlice = createSlice({
       state.token = action.payload.token;
       state.isAdmin = action.payload.isAdmin;
     },
-    clearUser: (state) => {
-      state.isAuthenticated = false;
-      state.user = null;
-      state.token = null;
-      state.isAdmin = false;
-    },
+    // clearUser: (state) => {
+    //   state.isAuthenticated = false;
+    //   state.user = null;
+    //   state.token = null;
+    //   state.isAdmin = false;
+    // },
+    clearUser: () => initialState,
     updateUser: (state, action) => {
       state.user = { ...state.user, ...action.payload };
     },

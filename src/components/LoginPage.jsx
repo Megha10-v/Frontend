@@ -63,12 +63,13 @@ const LoginPage = () => {
         email,
       });
       //   localStorage.setItem("elk_authorization_token", response.data.data.token);
+      console.log("res..",response)
 
       dispatch(
         setUser({
-          user: response.data.data,
-          token: response.data.data.token,
-          isAdmin: response.data.data.is_admin,
+          user: response?.data,
+          token: response?.data?.token,
+          isAdmin: response?.data?.is_admin,
         })
       );
       navigate("/home");
