@@ -40,6 +40,7 @@ import Home from './components/Home';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import SearchResult from './components/SearchResult';
+import AccountCreateForm from "./components/admin2/AccountCreateForm";
 
 function App() {
     const dispatch = useDispatch();
@@ -120,6 +121,7 @@ function App() {
                 <Route path="/admin" element={<AdminRoute><AdminHome /></AdminRoute>} />
                 <Route path='/admin/notification' element={<AdminRoute><AdminNotificationForm/></AdminRoute>}/>
                 <Route path="/admin/accounts" element={<AdminRoute><AdminAllUsers /></AdminRoute>} />
+                <Route path="/admin/accounts/create" element={<AdminRoute><AccountCreateForm /></AdminRoute>} />
                 <Route path="*" element={<Error/>}/>
             </Routes>
         </>

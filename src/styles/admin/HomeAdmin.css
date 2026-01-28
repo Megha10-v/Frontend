@@ -160,6 +160,42 @@
     background-color: rgba(79, 187, 180, 0.2);
 }
 
+.form-row {
+  display: flex;
+  align-items: center;
+  gap: 15px; /* space between fields */
+  margin-bottom: 15px;
+  flex-wrap: wrap; /* wraps on smaller screens */
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 16px;
+}
+
+.styled-input {
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.error-text {
+  color: #e53935; /* red */
+  font-size: 12px;
+  margin-top: 4px;
+}
+
+
+.styled-input:focus {
+  border-color: #4FBBB4;
+  box-shadow: 0 0 5px rgba(79, 187, 180, 0.5);
+}
+
+
+
+
 @media only screen and (max-width: 600px) {
     .homeadmin {
         margin-left: 0;

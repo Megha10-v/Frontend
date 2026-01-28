@@ -8,11 +8,14 @@ import Loader from "../Loader";
 import Swal from "sweetalert2";
 import * as XLSX from "xlsx";
 import { saveAs } from "file-saver";
+import { useNavigate } from "react-router-dom";
+
 
 function AdminAllUsers() {
     const [selectedDate, setSelectedDate] = useState("");
     const [users, setusers] = useState([]);
     const [loading, setLoading] = useState(true);
+      const navigate = useNavigate();
 
     useEffect(() => {
         const fetchData = async () => {
@@ -100,11 +103,15 @@ function AdminAllUsers() {
                     <div>
                         <h4>Total: {users.length}</h4>
                     </div>
-                    <div>
+                    <div  style={{ display: 'flex', gap: '10px' }}>
                         <Button variant="success" onClick={downloadExcel}>
                             Download Excel
                         </Button>
+                        <Button variant="success" onClick={()=> navigate("/admin/accounts/create")}>
+                            Create User
+                        </Button>
                     </div>
+                      
                 </div>
                 {loading ? <Loader/> : (
                 <div className="admin-table-container">
