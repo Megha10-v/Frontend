@@ -70,6 +70,8 @@ export default function AccountCreateForm() {
     name: "",
     phone: "",
     location: "",
+    latitude: "",
+    longitude: "",
     ads: [],
   };
   const handleUseCurrentLocation = async (setFieldValue) => {
@@ -85,6 +87,8 @@ export default function AccountCreateForm() {
           );
           const placeName = response.data.place;
           setFieldValue("location", placeName);
+          setFieldValue("latitude", latitude);
+          setFieldValue("longitude", longitude);
         } catch (err) {
           console.error("Error reverse geocoding:", err);
           alert("Could not fetch location");
@@ -158,6 +162,8 @@ export default function AccountCreateForm() {
                   component="div"
                   className="error-text"
                 />
+                <Field type="hidden" name="latitude" />
+                <Field type="hidden" name="longitude" />
               </div>
 
               <FieldArray name="ads">
@@ -507,7 +513,7 @@ export default function AccountCreateForm() {
                 )}
               </FieldArray>
             </div>
-            
+
             <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
               <Button
                 type="submit"
@@ -531,7 +537,7 @@ export default function AccountCreateForm() {
                   backgroundColor: "#fefdfdff",
                   borderColor: "#ccc",
                   whiteSpace: "nowrap",
-                  color: "black"
+                  color: "black",
                 }}
                 onClick={() => navigate("/admin/accounts")}
               >
