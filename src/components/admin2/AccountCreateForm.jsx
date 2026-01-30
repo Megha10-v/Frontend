@@ -45,7 +45,7 @@ const validationSchema = Yup.object({
         title: Yup.string().required("Title required"),
         description: Yup.string().required("Description required"),
 
-        images: Yup.array().nullable,
+        images: Yup.array().nullable(),
 
         prices: Yup.array()
           .of(
