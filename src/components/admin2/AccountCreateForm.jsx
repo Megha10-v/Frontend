@@ -45,7 +45,7 @@ const validationSchema = Yup.object({
         title: Yup.string().required("Title required"),
         description: Yup.string().required("Description required"),
 
-        images: Yup.array().min(1, "At least one image"),
+        images: Yup.array().nullable,
 
         prices: Yup.array()
           .of(
@@ -149,12 +149,12 @@ export default function AccountCreateForm() {
                     readOnly
                   />
                   <Button
-                    type="button"
+                    type="outline-primary"
                     onClick={() => handleUseCurrentLocation(setFieldValue)}
                     disabled={locationLoading}
                     style={{ whiteSpace: "nowrap" }}
                   >
-                    {locationLoading ? "Fetching..." : "Use Current Location"}
+                    {locationLoading ? "Fetching..." : "📍 Set Current"}
                   </Button>
                 </div>
                 <ErrorMessage
