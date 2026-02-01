@@ -1,118 +1,175 @@
-import React from "react";
-import { Formik, Form, Field, FieldArray, ErrorMessage } from "formik";
-import * as Yup from "yup";
-import "../../styles/admin/HomeAdmin.css";
-import { IoCloseCircleOutline } from "react-icons/io5";
-import { Button } from "react-bootstrap";
-import { useState } from "react";
-import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import { Formik, Form, Field, FieldArray, ErrorMessage } from 'formik'
+import * as Yup from 'yup'
+import '../../styles/admin/HomeAdmin.css'
+import { IoCloseCircleOutline } from 'react-icons/io5'
+import { Button } from 'react-bootstrap'
+import { useState } from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
 const categories = {
   rent: [
-    "Car",
-    "Property",
-    "Electronics",
-    "Furniture",
-    "Bike",
-    "Cloth",
-    "Tools",
-    "Helicopter",
-    "Other",
+    'Cars',
+    'Properties',
+    'Electronics',
+    'Furnitures',
+    'Bikes',
+    'Clothes',
+    'Tools',
+    'Helicopters',
+    'Others',
   ],
   service: [
-    "Cleaning",
-    "Repair",
-    "Plumbing",
-    "Electrician",
-    "Carpentry",
-    "Laundry",
-    "Plumbing",
-    "Saloon",
-    "Other",
+    'Cleaning',
+    'Repairing',
+    'Plumbing',
+    'Electrician',
+    'Carpentry',
+    'Laundry',
+    'Plumbing',
+    'Saloon',
+    'Others',
   ],
-};
+}
 
 const validationSchema = Yup.object({
-  name: Yup.string().required("Name required"),
+  name: Yup.string().required('Name required'),
   phone: Yup.string()
-    .matches(/^[0-9]{10}$/, "10 digit phone")
-    .required("Phone required"),
-  location: Yup.string().required("Location required"),
+    .matches(/^[0-9]{10}$/, '10 digit phone')
+    .required('Phone required'),
+  location: Yup.object({
+    place: Yup.string().required('Location is required'),
+  }).required(),
   ads: Yup.array()
     .of(
       Yup.object({
-        title: Yup.string().required("Title required"),
-        description: Yup.string().required("Description required"),
+        title: Yup.string().required('Title required'),
+        description: Yup.string().required('Description required'),
 
         images: Yup.array().nullable(),
 
         prices: Yup.array()
           .of(
             Yup.object({
-              category: Yup.string().required("Category Required"),
-              unit: Yup.string().required("Unit required"),
+              category: Yup.string().required('Category Required'),
+              unit: Yup.string().required('Unit required'),
               price: Yup.number()
-                .typeError("Price must be number")
-                .required("Price required"),
+                .typeError('Price must be number')
+                .required('Price required'),
             }),
           )
-          .min(1, "At least one price option"),
+          .min(1, 'At least one price option'),
       }),
     )
-    .min(1, "At least one ad required"),
-});
+    .min(1, 'At least one ad required'),
+})
 
 export default function AccountCreateForm() {
-  const navigate = useNavigate();
-  const [locationLoading, setLocationLoading] = useState(false);
+  const navigate = useNavigate()
+  const [locationLoading, setLocationLoading] = useState(false)
   const initialValues = {
-    name: "",
-    phone: "",
-    location: "",
-    latitude: "",
-    longitude: "",
+    name: '',
+    phone: '',
+    location: {
+      place: '',
+      locality: '',
+      state: '',
+      country: '',
+      latitude: '',
+      longitude: '',
+    },
     ads: [],
-  };
+  }
   const handleUseCurrentLocation = async (setFieldValue) => {
-    setLocationLoading(true);
+    setLocationLoading(true)
     navigator.geolocation.getCurrentPosition(
       async (position) => {
         try {
-          const { latitude, longitude } = position.coords;
-          const payload = { latitude, longitude };
+          const { latitude, longitude } = position.coords
+          const payload = { latitude, longitude }
           const response = await axios.post(
             `${process.env.REACT_APP_API_BASE_URL}/api/get_place`,
             payload,
-          );
-          const placeName = response.data.place;
-          setFieldValue("location", placeName);
-          setFieldValue("latitude", latitude);
-          setFieldValue("longitude", longitude);
+          )
+          const place = response.data
+          // Store entire place object
+
+          setFieldValue('location.place', place?.place)
+          setFieldValue('location.districe', place?.district)
+          setFieldValue('location.state', place?.state)
+          setFieldValue('location.country', place?.country)
+          setFieldValue('location.latitude', place?.latitude)
+          setFieldValue('location.longitude', place?.longitude)
         } catch (err) {
-          console.error("Error reverse geocoding:", err);
-          alert("Could not fetch location");
+          console.error('Error reverse geocoding:', err)
+          alert('Could not fetch location')
         } finally {
-          setLocationLoading(false);
+          setLocationLoading(false)
         }
       },
       (err) => {
-        console.error(err);
-        alert("Location permission denied");
-        setLocationLoading(false);
+        console.error(err)
+        alert('Location permission denied')
+        setLocationLoading(false)
       },
-    );
-  };
+    )
+  }
+  const onSubmit = async (values, { setSubmitting }) => {
+    try {
+      const formData = new FormData()
+      console.log('values.location', values.location)
+
+      // Top-level fields
+      formData.append('name', values.name)
+      formData.append('phone', values.phone)
+      formData.append('location', JSON.stringify(values.location))
+
+      // Ads (without images)
+      const adsPayload = values.ads.map((ad, adIndex) => {
+        // append images separately
+        ad.images?.forEach((file) => {
+          formData.append(`ads[${adIndex}][images]`, file)
+        })
+
+        return {
+          type: ad.type,
+          category: ad.category,
+          title: ad.title,
+          description: ad.description,
+          prices: ad.prices,
+        }
+      })
+
+      // append ads JSON
+      formData.append('ads', JSON.stringify(adsPayload))
+
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/admin-ad-create`,
+        formData,
+        {
+          headers: {
+            'Content-Type': 'multipart/form-data',
+          },
+        },
+      )
+
+      alert(res?.data?.message)
+      navigate('/admin/accounts')
+    } catch (error) {
+      console.error('Submit error:', error)
+      alert('Failed to submit form ❌')
+    }
+  }
+
   return (
     <Formik
       initialValues={initialValues}
       validationSchema={validationSchema}
-      onSubmit={(values) => {
-        console.log("Form submitted values:", values);
-      }}
+      onSubmit={onSubmit}
     >
       {({ values, setFieldValue, errors }) => {
-        console.log(errors);
+        console.log(errors)
         return (
           <Form className="offer-form">
             <div className="form-row">
@@ -141,47 +198,46 @@ export default function AccountCreateForm() {
                 />
               </div>
               <div className="form-group">
-                <div style={{ display: "flex", gap: "5px", height: "40px" }}>
+                <div style={{ display: 'flex', gap: '5px', height: '40px' }}>
                   <Field
-                    name="location"
+                    name="location.place"
                     placeholder="Location"
                     className="styled-input"
                     readOnly
                   />
+
                   <Button
                     type="outline-primary"
                     onClick={() => handleUseCurrentLocation(setFieldValue)}
                     disabled={locationLoading}
-                    style={{ whiteSpace: "nowrap" }}
+                    style={{ whiteSpace: 'nowrap' }}
                   >
-                    {locationLoading ? "Fetching..." : "📍 Set Current"}
+                    {locationLoading ? 'Fetching...' : '📍 Set Current'}
                   </Button>
                 </div>
                 <ErrorMessage
-                  name="location"
+                  name="location.place"
                   component="div"
                   className="error-text"
                 />
-                <Field type="hidden" name="latitude" />
-                <Field type="hidden" name="longitude" />
               </div>
 
               <FieldArray name="ads">
                 {({ push, remove }) => (
                   <>
-                    {errors.ads && typeof errors.ads === "string" && (
+                    {errors.ads && typeof errors.ads === 'string' && (
                       <div className="error-text w-100">{errors.ads}</div>
                     )}
                     {values.ads.map((ad, adIndex) => (
                       <div
                         key={adIndex}
                         style={{
-                          border: "1px solid #ddd",
-                          padding: "15px",
-                          borderRadius: "10px",
-                          marginBottom: "15px",
-                          backgroundColor: "#f9f9f9",
-                          width: "800px",
+                          border: '1px solid #ddd',
+                          padding: '15px',
+                          borderRadius: '10px',
+                          marginBottom: '15px',
+                          backgroundColor: '#f9f9f9',
+                          width: '800px',
                         }}
                       >
                         <h3>Ad {adIndex + 1}</h3>
@@ -256,11 +312,11 @@ export default function AccountCreateForm() {
                                 <div
                                   key={priceIndex}
                                   style={{
-                                    border: "1px solid #ddd",
-                                    padding: "15px",
-                                    borderRadius: "10px",
-                                    marginBottom: "15px",
-                                    backgroundColor: "white",
+                                    border: '1px solid #ddd',
+                                    padding: '15px',
+                                    borderRadius: '10px',
+                                    marginBottom: '15px',
+                                    backgroundColor: 'white',
                                   }}
                                 >
                                   <div className="form-group">
@@ -281,7 +337,7 @@ export default function AccountCreateForm() {
                                     />
                                   </div>
                                   {values.ads[adIndex].prices[priceIndex]
-                                    .category === "custom" && (
+                                    .category === 'custom' && (
                                     <div className="form-group">
                                       <Field
                                         name={`ads.${adIndex}.prices.${priceIndex}.unit`}
@@ -297,7 +353,7 @@ export default function AccountCreateForm() {
                                     </div>
                                   )}
                                   {values.ads[adIndex].prices[priceIndex]
-                                    .category === "size" && (
+                                    .category === 'size' && (
                                     <div className="form-group">
                                       <Field
                                         name={`ads.${adIndex}.prices.${priceIndex}.unit`}
@@ -305,8 +361,10 @@ export default function AccountCreateForm() {
                                         className="styled-input"
                                       >
                                         <option value="">Unit</option>
-                                        <option value="hour">Inch</option>
-                                        <option value="day">Centimeter</option>
+                                        <option value="Inch">Inch</option>
+                                        <option value="Centimeter">
+                                          Centimeter
+                                        </option>
                                       </Field>
                                       <ErrorMessage
                                         name={`ads.${adIndex}.prices.${priceIndex}.unit`}
@@ -316,7 +374,7 @@ export default function AccountCreateForm() {
                                     </div>
                                   )}
                                   {values.ads[adIndex].prices[priceIndex]
-                                    .category === "duration" && (
+                                    .category === 'duration' && (
                                     <div className="form-group">
                                       <Field
                                         name={`ads.${adIndex}.prices.${priceIndex}.unit`}
@@ -324,10 +382,10 @@ export default function AccountCreateForm() {
                                         className="styled-input"
                                       >
                                         <option value="">Unit</option>
-                                        <option value="hour">Hour</option>
-                                        <option value="day">Day</option>
-                                        <option value="week">Week</option>
-                                        <option value="week">Month</option>
+                                        <option value="Hour">Hour</option>
+                                        <option value="Day">Day</option>
+                                        <option value="Week">Week</option>
+                                        <option value="Month">Month</option>
                                       </Field>
                                       <ErrorMessage
                                         name={`ads.${adIndex}.prices.${priceIndex}.unit`}
@@ -363,15 +421,15 @@ export default function AccountCreateForm() {
 
                               <Button
                                 style={{
-                                  gap: "10px",
-                                  borderRadius: "15px",
-                                  backgroundColor: "#4FBBB4",
-                                  borderColor: "#4FBBB4",
-                                  whiteSpace: "nowrap",
-                                  marginTop: "10px",
+                                  gap: '10px',
+                                  borderRadius: '15px',
+                                  backgroundColor: '#4FBBB4',
+                                  borderColor: '#4FBBB4',
+                                  whiteSpace: 'nowrap',
+                                  marginTop: '10px',
                                 }}
                                 onClick={() =>
-                                  push({ category: "", unit: "", price: "" })
+                                  push({ category: '', unit: '', price: '' })
                                 }
                               >
                                 + Add Price Option
@@ -406,27 +464,27 @@ export default function AccountCreateForm() {
                             multiple
                             accept="image/*"
                             onChange={(e) => {
-                              const newFiles = Array.from(e.target.files);
+                              const newFiles = Array.from(e.target.files)
 
                               const existingFiles =
-                                values.ads[adIndex].images || [];
+                                values.ads[adIndex].images || []
                               const existingPreviews =
-                                values.ads[adIndex].imagePreviews || [];
+                                values.ads[adIndex].imagePreviews || []
 
                               const newPreviews = newFiles.map((file) =>
                                 URL.createObjectURL(file),
-                              );
+                              )
 
                               setFieldValue(`ads.${adIndex}.images`, [
                                 ...existingFiles,
                                 ...newFiles,
-                              ]);
+                              ])
 
                               setFieldValue(`ads.${adIndex}.imagePreviews`, [
                                 ...existingPreviews,
                                 ...newPreviews,
-                              ]);
-                              e.target.value = "";
+                              ])
+                              e.target.value = ''
                             }}
                           />
 
@@ -444,20 +502,20 @@ export default function AccountCreateForm() {
                                       // Remove the image
                                       const newFiles = values.ads[
                                         adIndex
-                                      ].images.filter((_, idx) => idx !== i);
+                                      ].images.filter((_, idx) => idx !== i)
                                       const newPreviews = values.ads[
                                         adIndex
                                       ].imagePreviews.filter(
                                         (_, idx) => idx !== i,
-                                      );
+                                      )
                                       setFieldValue(
                                         `ads.${adIndex}.images`,
                                         newFiles,
-                                      );
+                                      )
                                       setFieldValue(
                                         `ads.${adIndex}.imagePreviews`,
                                         newPreviews,
-                                      );
+                                      )
                                     }}
                                   >
                                     <IoCloseCircleOutline />
@@ -471,12 +529,12 @@ export default function AccountCreateForm() {
                         {values.ads.length > 1 && (
                           <Button
                             style={{
-                              gap: "10px",
-                              borderRadius: "15px",
-                              backgroundColor: "#4FBBB4",
-                              borderColor: "#4FBBB4",
-                              whiteSpace: "nowrap",
-                              marginTop: "10px",
+                              gap: '10px',
+                              borderRadius: '15px',
+                              backgroundColor: '#4FBBB4',
+                              borderColor: '#4FBBB4',
+                              whiteSpace: 'nowrap',
+                              marginTop: '10px',
                             }}
                             onClick={() => remove(adIndex)}
                           >
@@ -489,20 +547,20 @@ export default function AccountCreateForm() {
                     <div className="w-100">
                       <Button
                         style={{
-                          gap: "10px",
-                          borderRadius: "15px",
-                          backgroundColor: "#4FBBB4",
-                          borderColor: "#4FBBB4",
-                          whiteSpace: "nowrap",
-                          marginTop: "10px",
+                          gap: '10px',
+                          borderRadius: '15px',
+                          backgroundColor: '#4FBBB4',
+                          borderColor: '#4FBBB4',
+                          whiteSpace: 'nowrap',
+                          marginTop: '10px',
                         }}
                         onClick={() =>
                           push({
-                            title: "",
-                            description: "",
-                            location: "",
+                            title: '',
+                            description: '',
+                            location: '',
                             images: [],
-                            prices: [{ category: "", unit: "", price: "" }],
+                            prices: [{ category: '', unit: '', price: '' }],
                           })
                         }
                       >
@@ -514,15 +572,15 @@ export default function AccountCreateForm() {
               </FieldArray>
             </div>
 
-            <div style={{ display: "flex", gap: "10px", marginTop: "10px" }}>
+            <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
               <Button
                 type="submit"
                 style={{
-                  gap: "10px",
-                  borderRadius: "15px",
-                  backgroundColor: "#4FBBB4",
-                  borderColor: "#4FBBB4",
-                  whiteSpace: "nowrap",
+                  gap: '10px',
+                  borderRadius: '15px',
+                  backgroundColor: '#4FBBB4',
+                  borderColor: '#4FBBB4',
+                  whiteSpace: 'nowrap',
                 }}
                 className="btn-secondary"
               >
@@ -532,21 +590,21 @@ export default function AccountCreateForm() {
               <Button
                 type="button"
                 style={{
-                  gap: "10px",
-                  borderRadius: "15px",
-                  backgroundColor: "#fefdfdff",
-                  borderColor: "#ccc",
-                  whiteSpace: "nowrap",
-                  color: "black",
+                  gap: '10px',
+                  borderRadius: '15px',
+                  backgroundColor: '#fefdfdff',
+                  borderColor: '#ccc',
+                  whiteSpace: 'nowrap',
+                  color: 'black',
                 }}
-                onClick={() => navigate("/admin/accounts")}
+                onClick={() => navigate('/admin/accounts')}
               >
                 Cancel
               </Button>
             </div>
           </Form>
-        );
+        )
       }}
     </Formik>
-  );
+  )
 }

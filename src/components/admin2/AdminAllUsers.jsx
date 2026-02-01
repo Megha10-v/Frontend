@@ -23,7 +23,7 @@ function AdminAllUsers() {
             setLoading(false);
         };
         fetchData();
-    });
+    },[selectedDate]);
 
 
     const fetchusers = async () => {     
@@ -124,7 +124,9 @@ function AdminAllUsers() {
                                     <th>Phone</th>
                                     <th>Email</th>
                                     <th>Profile</th>
+                                    <th>Logged In</th>
                                     <th>Date</th>
+                                    
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -142,6 +144,7 @@ function AdminAllUsers() {
                                                     <img src={user.profile} alt="Profile" height="100" />
                                                 ) : "No Image"}
                                             </td>
+                                            <td>{user?.is_logged? "Yes": "No"}</td>
                                             <td>{new Date(user.createdAt).toLocaleDateString()}</td>
                                             <td><Button style={{ backgroundColor: "red", color: "white" }} onClick={() => blockUser(user.user_id)}>{(user.block_status===false)?'Block':'UnBlock'}</Button></td>
                                         </tr>
