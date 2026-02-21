@@ -190,7 +190,18 @@ const [fullscreenIndex, setFullscreenIndex] = useState(0);
           <p className="text-muted fs-6" style={{ fontFamily: 'Arial, sans-serif' }}>Post ID: {adDetails.id}</p>
           <p><strong>Category:</strong> {adDetails.category}</p>
           <p><strong>Description:</strong> {adDetails.description}</p>
-          <p><strong>Price:</strong> {adDetails.ad_price_details[0]?.rent_price || 'N/A'} per {adDetails.ad_price_details[0]?.rent_duration || ''}</p>
+          {adDetails?.ad_price_details?.[0]?.rent_price > 0 ? (
+            <p>
+              <strong>Price:</strong>{" "}
+              {adDetails.ad_price_details[0].rent_price} per{" "}
+              {adDetails.ad_price_details[0]?.rent_duration || ""}
+            </p>
+          ) : (
+            <p className="contact-btn">
+              <strong>Price:</strong>{" "}Contact User
+            </p>
+          )}
+          {/* <p><strong>Price:</strong> {adDetails.ad_price_details[0]?.rent_price || 'N/A'} per {adDetails.ad_price_details[0]?.rent_duration || ''}</p> */}
           <p><i className="fa-solid fa-location-dot"></i> {`${adDetails.ad_location.locality ? adDetails.ad_location.locality + ',' : ''} ${adDetails.ad_location.district}, ${adDetails.ad_location.state}, ${adDetails.ad_location.country}`}</p>
         </div>
         <div className="d-flex flex-row justify-content-between align-items-center mt-4 flex-wrap">

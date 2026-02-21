@@ -4,7 +4,8 @@ const initialState = {
     isAuthenticated: false,
     user: null,
     token: null,
-    isAdmin: false
+    isAdmin: false,
+    role:'user'
 };
 
 const authSlice = createSlice({
@@ -16,17 +17,18 @@ const authSlice = createSlice({
             state.user = action.payload.user;   
             state.token = action.payload.token;
             state.isAdmin = action.payload.isAdmin;
+            state.role = action.payload.role;
         },
         clearUser: (state) => {
             state.isAuthenticated = false;
             state.user = null;
             state.token = null;
             state.isAdmin = false;
+            state.role = 'user';
         },
         updateUser: (state, action) => {
             state.user = { ...state.user, ...action.payload };
         }
-
     }
 });
 

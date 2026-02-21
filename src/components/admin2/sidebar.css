@@ -1,0 +1,152 @@
+/* ===== Sidebar Base ===== */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    min-height: 100vh;
+    background-color: #ffffff;
+    color: black;
+    box-shadow: 0 1px 10px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease-in-out;
+    z-index: 1050;
+
+    /* Default Desktop Visible */
+    transform: translateX(0);
+}
+
+/* ===== Mobile Behavior ===== */
+@media (max-width: 800px) {
+
+    .sidebar {
+        transform: translateX(-100%);
+    }
+
+    .sidebar.open {
+        transform: translateX(0);
+    }
+}
+
+/* ===== Overlay ===== */
+.sidebar-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.4);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.3s;
+    z-index: 1040;
+}
+
+.sidebar-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+@media (min-width: 801px) {
+    .sidebar-overlay {
+        display: none;
+    }
+}
+
+/* ===== Logo ===== */
+.sidebar .logo {
+    width: 60%;
+    margin: 20px auto;
+    display: flex;
+    justify-content: center;
+}
+
+.sidebar .logo img {
+    width: 100%;
+    object-fit: contain;
+}
+
+/* ===== Links ===== */
+.sidebar .links {
+    width: 85%;
+    margin: 30px auto;
+}
+
+.listitem {
+    display: block;
+    text-decoration: none;
+    color: black;
+    margin-bottom: 8px;
+    padding: 10px 8px;
+    border-radius: 6px;
+    transition: 0.2s;
+}
+
+.listitem:hover {
+    background-color: #f2f2f2;
+}
+
+.listitem.active {
+    background-color: #e6f0ff;
+    font-weight: 600;
+}
+
+.listitemhead {
+    display: flex;
+    align-items: center;
+}
+
+.icon {
+    width: 30%;
+    display: flex;
+    justify-content: center;
+    font-size: 1.4rem;
+}
+
+.title {
+    width: 70%;
+    font-size: 15px;
+}
+
+/* ===== Mobile Toggle Header ===== */
+.togglebtn {
+    display: none;
+}
+
+@media (max-width: 800px) {
+    .togglebtn {
+        display: flex;
+        width: 100%;
+        height: 55px;
+        background: white;
+        position: fixed;
+        top: 0;
+        left: 0;
+        z-index: 1100;
+        align-items: center;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    }
+
+    .togglebtn .btn {
+        width: 20%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+
+    .togglebtn .logo {
+        width: 80%;
+        display: flex;
+        justify-content: center;
+    }
+
+    .togglebtn .logo img {
+        width: 60%;
+        object-fit: contain;
+    }
+
+    /* Push page content below header */
+    body {
+        padding-top: 55px;
+    }
+}

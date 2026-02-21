@@ -1,0 +1,156 @@
+.mobile-container {
+  max-width: 480px;
+  margin: auto;
+  padding: 15px;
+  padding-bottom: 100px;
+  /* background: #f5f7fa; */
+  min-height: 100vh;
+}
+
+.fullscreen-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+.loader-box {
+  text-align: center;
+}
+
+.primary-btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+.header {
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.card-box {
+  background: white;
+  padding: 16px;
+  border-radius: 18px;
+  margin-bottom: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+}
+
+.card-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.styled-input {
+  width: 100%;
+  height: 45px;
+  padding: 10px;
+  margin-bottom: 10px;
+  border-radius: 12px;
+  border: 1px solid #ddd;
+  font-size: 14px;
+}
+
+textarea.styled-input {
+  height: 90px;
+}
+
+.error-text {
+  font-size: 12px;
+  color: red;
+  margin-bottom: 5px;
+}
+
+.location-row {
+  display: flex;
+  gap: 8px;
+}
+
+.location-btn {
+  width: 45px;
+  border-radius: 12px;
+  background: #4FBBB4;
+  border: none;
+  color: white;
+}
+
+.price-box {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.add-small-btn {
+  background: none;
+  border: none;
+  color: #4FBBB4;
+  font-weight: 500;
+  margin-top: 5px;
+}
+
+.upload-box {
+  border: 2px dashed #ddd;
+  border-radius: 12px;
+  padding: 15px;
+  text-align: center;
+  font-size: 13px;
+  color: #777;
+}
+
+.image-preview-container {
+  display: flex;
+  gap: 8px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.image-preview-container img {
+  width: 70px;
+  height: 70px;
+  object-fit: cover;
+  border-radius: 12px;
+}
+
+.add-ad-btn {
+  width: 100%;
+  height: 45px;
+  border-radius: 12px;
+  border: 1px dashed #4FBBB4;
+  background: none;
+  color: #4FBBB4;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.bottom-bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 480px;   /* same as .mobile-container */
+  padding: 12px;
+  background: white;
+  box-shadow: 0 -4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.primary-btn {
+  width: 100%;
+  height: 50px;
+  border-radius: 14px;
+  background: #4FBBB4;
+  border: none;
+  font-weight: bold;
+}
+.primary-btn:hover{
+  background: #FFB300;
+}

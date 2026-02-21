@@ -1,31 +1,16 @@
-import React from 'react';
-// import { MdAccountCircle } from 'react-icons/md';
-import '../../styles/admin/AdminNav.css';
+import React from "react";
+import { FaBars } from "react-icons/fa";
+import "./sidebar.css";
 
-function AdminNav() {
-  // const [showMenu, setShowMenu] = useState(false);
-  // const date = new Date();
-  // const handleAccountClick = () => {
-  //   setShowMenu(prevShowMenu => !prevShowMenu);
-  // };
-  // const handleLogout = async (e) => {
-  //   e.preventDefault();
-  // };
+const Navbar = ({ toggleSidebar }) => {
   return (
-    <div className="adminnavbar">
-      <div className="date">
-        {/* {date.toDateString()} {date.toTimeString()} */}
-        </div>
-      {/* <div className="account" onClick={handleAccountClick}>
-        <MdAccountCircle />
-        {showMenu && (
-          <div className="account-menu">
-            <button onClick={handleLogout}>Logout</button>
-          </div>
-        )}
-      </div> */}
-    </div>
+    <nav className="navbar navbar-light bg-light px-3">
+      <button className="btn btn-outline" style={{color:'red'}} onClick={toggleSidebar}>
+        <FaBars />
+      </button>
+      <span className="navbar-brand ms-3"></span>
+    </nav>
   );
-}
+};
 
-export default AdminNav;
+export default Navbar;

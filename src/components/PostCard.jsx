@@ -25,7 +25,13 @@ const PostCard = ({ post, onClick, isMyAd }) => {
           <h6 className="card-title post-title">{post.title}</h6>
           
           <div className="d-flex flex-column text-truncate" style={{ overflow: 'hidden', whiteSpace: 'nowrap' }}>
-            <span className="card-text me-2">₹{post.ad_price_details[0]?.rent_price || 'N/A'} per {post.ad_price_details[0]?.rent_duration || ''}</span>
+            {Number(post?.ad_price_details?.[0]?.rent_price) > 0 ? (
+              <span className="card-text me-2">
+                ₹{post.ad_price_details[0].rent_price} per{" "}
+                {post.ad_price_details[0]?.rent_duration || ""}
+              </span>
+            ):<span>Contact User for price</span>}
+            {/* <span className="card-text me-2">₹{post.ad_price_details[0]?.rent_price || 'N/A'} per {post.ad_price_details[0]?.rent_duration || ''}</span> */}
             <span className="card-text text-truncate">
               <i className="fa-solid fa-location-dot me-1"></i>
               {`${post.ad_location.locality ? post.ad_location.locality + ',' : ''} ${post.ad_location.place ? post.ad_location.place + ',' : ''} ${post.ad_location.district ? post.ad_location.district + ',' : ''} ${post.ad_location.state ? post.ad_location.state + ',' : ''} ${post.ad_location.country ? post.ad_location.country : ''}`}

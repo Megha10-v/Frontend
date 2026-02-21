@@ -120,8 +120,8 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
             dispatch(setUser({
                 user:response.data.data,
                 token: response.data.data.token,
-                isAdmin: response.data.data.is_admin
-
+                isAdmin: response.data.data.is_admin,
+                role:'admin'
             }))
             alert("Email updated");
             setLoading(false);

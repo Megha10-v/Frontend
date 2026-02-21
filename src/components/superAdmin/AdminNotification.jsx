@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "../../styles/admin/AdminNotificationForm.css";
-import Sidebar from "./SideBar";
+import SSidebar from "./SideBar";
 import AdminNav from "./AdminNav";
 
-function AdminNotificationForm() {
+function SAdminNotificationForm() {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [notificationContent, setNotificationContent] = useState("");
     const handleSubmit = (event) => {
@@ -23,7 +23,7 @@ function AdminNotificationForm() {
 
     return (
         <>
-            <Sidebar/>
+            <SSidebar/>
             <AdminNav/>
             <div className="homeadmin">                
                 <div className="notification-form">
@@ -45,4 +45,4 @@ function AdminNotificationForm() {
     );
 }
 
-export default AdminNotificationForm;
+export default SAdminNotificationForm;

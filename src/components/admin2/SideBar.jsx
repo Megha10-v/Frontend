@@ -1,95 +1,86 @@
 import '../../styles/admin/Sidebar.css';
-import React, { useState, useRef, useEffect } from 'react';
-import { MdHome, MdArrowRight, MdArrowDropDown, MdList, MdBook} from 'react-icons/md';
+import React, { useState, useEffect } from 'react';
+import { MdHome, MdList, MdPersonAdd, MdPerson } from 'react-icons/md';
 import { FaUser } from "react-icons/fa";
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import img from '../../assets/logo.png';
 
 function Sidebar() {
-  const [openIndex, setOpenIndex] = useState(null);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
-  const handleItemClick = (index) => {
-    setOpenIndex(index === openIndex ? null : index);
-  };
+  const location = useLocation();
+
   const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+    setIsSidebarOpen(prev => !prev);
   };
+
+  const closeSidebar = () => {
+    setIsSidebarOpen(false);
+  };
+
+  // Auto close on route change (mobile)
+  useEffect(() => {
+    setIsSidebarOpen(false);
+  }, [location]);
+
   return (
     <>
+      {/* Overlay */}
+      <div
+        className={`sidebar-overlay ${isSidebarOpen ? 'show' : ''}`}
+        onClick={closeSidebar}
+      ></div>
+
+      {/* Mobile Header */}
       <div className="togglebtn">
-        <div className="btn" onClick={toggleSidebar}><MdList size={30}/></div>
-        <div className="logo"><img src={img} alt="logo" /></div>
+        <div className="btn" onClick={toggleSidebar}>
+          <MdList size={28} />
+        </div>
+        {/* <div className="logo">
+          <img src={img} alt="logo" />
+        </div> */}
       </div>
+
+      {/* Sidebar */}
       <div className={`sidebar ${isSidebarOpen ? 'open' : ''}`}>
-        <div className="logo"><img src={img} alt="logo" /></div>
+        <div className="logo">
+          <img src={img} alt="logo" />
+        </div>
+
         <div className="links">
-          <div className="listitem">
-            <Link to='/admin' className='nolistitems'>
-              <div className='listitemhead' >
-                <div className='icon'><MdHome/></div>
-                <div className='title'>Ads</div>
-                <div className="arrow"></div>
-              </div>
-            </Link>
-          </div>
-          <div className="listitem">
-            <Link to='/admin/accounts' className='nolistitems'>
-              <div className='listitemhead' >
-                <div className='icon'><FaUser/></div>
-                <div className='title'>Accounts</div>
-                <div className="arrow"></div>
-              </div>
-            </Link>
-          </div>
-          <ListItem 
-            title='Notification' 
-            icon={<MdBook/>}
-            arrow={<MdArrowRight/>}
-            isOpen={openIndex === 6}
-            onClick={() => handleItemClick(6)}
+          <Link
+            to="/sales"
+            className={`listitem ${location.pathname === '/sales' ? 'active' : ''}`}
+            onClick={closeSidebar}
           >
-            <div>
-              <ListItem title="Send Notification" path='/admin/notification'/>
+            <div className="listitemhead">
+              <div className="icon"><MdPerson/></div>
+              <div className="title">Accounts</div>
             </div>
-          </ListItem>
+          </Link>
+          <Link
+            to="/sales/ads"
+            className={`listitem ${location.pathname === '/sales/ads' ? 'active' : ''}`}
+            onClick={closeSidebar}
+          >
+            <div className="listitemhead">
+              <div className="icon"><MdHome/></div>
+              <div className="title">Ads</div>
+            </div>
+          </Link>
+          <Link
+            to="/sales/create"
+            className={`listitem ${location.pathname === '/sales/create' ? 'active' : ''}`}
+            onClick={closeSidebar}
+          >
+            <div className="listitemhead">
+              <div className="icon"><MdPersonAdd/></div>
+              <div className="title">Create Account</div>
+            </div>
+          </Link>
         </div>
       </div>
     </>
   );
 }
-
-const ListItem = ({ title, children, icon, arrow, isOpen, onClick, path }) => {
-  const childrenRef = useRef(null);
-  const [maxHeight, setMaxHeight] = useState('0px');
-
-  useEffect(() => {
-    setMaxHeight(isOpen ? `${childrenRef.current.scrollHeight}px` : '0px');
-  }, [isOpen]);
-
-  return (
-    <Link to={path} className='listitem'>
-      <div onClick={onClick}>
-        <ListItemHead title={title} icon={icon} arrow={isOpen ? <MdArrowDropDown/> : arrow}/>
-      </div>
-      <div
-        className={`children ${isOpen ? 'open' : ''}`}
-        style={{ maxHeight }}
-        ref={childrenRef}
-      >
-        {children}
-      </div>
-    </Link>
-  );
-};
-
-const ListItemHead = ({ title, icon, arrow }) => {
-  return (
-    <div className='listitemhead'>
-      <div className='icon'>{icon}</div>
-      <div className='title'>{title}</div>
-      <div className="arrow">{arrow}</div>
-    </div>
-  );
-};
 
 export default Sidebar;
