@@ -37,15 +37,15 @@ const PostAdForm = () => {
   const [loading, setLoading] = useState(false);
   const categories = {
     rent: [
-      { name: "Car", image: car },
-      { name: "Property", image: property },
+      { name: "Cars", image: car },
+      { name: "Properties", image: property },
       { name: "Electronics", image: electronics },
-      { name: "Furniture", image: furniture },
-      { name: "Bike", image: bike },
-      { name: "Cloth", image: cloth },
+      { name: "Furnitures", image: furniture },
+      { name: "Bikes", image: bike },
+      { name: "Clothes", image: cloth },
       { name: "Tools", image: tools },
-      { name: "Helicopter", image: helicopter },
-      { name: "Other", image: others },
+      { name: "Helicopters", image: helicopter },
+      { name: "Others", image: others },
     ],
     service: [
       { name: "Cleaning", image: cleaning },
@@ -56,7 +56,7 @@ const PostAdForm = () => {
       { name: "Laundry", image: laundry },
       { name: "Plumbing", image: plumbing },
       { name: "Salon", image: haircut },
-      { name: "Other", image: others },
+      { name: "Others", image: others },
     ],
   };
   const [step, setStep] = useState();

@@ -13,7 +13,6 @@ import { successMessageToast } from './common/hooks/common';
 
 const ProfilePage = () => {
     const { user, token } = useSelector((state) => state.auth);
-    console.log("user,,",user)
     const dispatch = useDispatch();
     const [isHovered, setIsHovered] = useState(false);
     const [loading, setLoading] = useState(false);
@@ -91,7 +90,7 @@ const ProfilePage = () => {
                     <div className="container py-4">
                         <div className="d-flex align-items-center border-bottom pb-4 mb-4 flex-wrap">
                             <img 
-                                src={user.profile ?? 'https://static.vecteezy.com/system/resources/previews/036/280/651/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg'} 
+                                src={user?.profile ?? 'https://static.vecteezy.com/system/resources/previews/036/280/651/non_2x/default-avatar-profile-icon-social-media-user-image-gray-avatar-icon-blank-profile-silhouette-illustration-vector.jpg'} 
                                 alt="Profile" 
                                 className="rounded-circle border border-primary shadow" 
                                 height="100"

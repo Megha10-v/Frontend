@@ -1,6 +1,6 @@
 import React from "react";
 import Carousel from "./Carousel";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback, useRef } from "react";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import cleaning from "../assets/ic_cleaning_service.png";
@@ -21,267 +21,11 @@ import {
   useRentCategoryPostQuery,
   useBestServiceProviderQuery,
 } from "../store/services/post.service";
+import "./Rental.css";
 
-// const Service = () => {
-//   const serviceCategories = [
-//     { id: 1, title: "Cleaning", image: cleaning },
-//     { id: 2, title: "Repairing", image: repairing },
-//     { id: 3, title: "Painting", image: painting },
-//     { id: 4, title: "Plumbing", image: plumbing },
-//     { id: 5, title: "Electrician", image: electricain },
-//     { id: 6, title: "Carpentry", image: carpentry },
-//     { id: 7, title: "Laundry", image: laundry },
-//     { id: 8, title: "Salon", image: salon },
-//   ];
-//   const navigate = useNavigate();
-//   const { user } = useSelector((state) => state.auth);
-//   const handleCategoryClick = (category) => {
-//     const path = `/services/${category.title.toLowerCase()}`;
-//     navigate(path);
-//   };
-//   const [bestProvidersPosts, setBestProvidersPosts] = useState([]);
-//   const [cars, setCars] = useState([]);
-//   const [properties, setProperties] = useState([]);
-//   const [electronicses, setElectronicses] = useState([]);
-//   const [bikes, setBikes] = useState([]);
-//   const [selectedPost, setSelectedPost] = useState(null);
-//   const [showModal, setShowModal] = useState(false);
-//   const token = localStorage.getItem("elk_authorization_token");
-//   const userId = user?.user_id;
-//   const [loading, setLoading] = useState(true);
-//   let body = {};
-//   if (token) {
-//     body = { page: 1, user_id: userId };
-//   } else {
-//     body = { page: 1 };
-//   }
-//   useEffect(
-//     () => {
-//       const fetchBestProviders = async () => {
-//         try {
-//           const response = await axios.post(
-//             `${process.env.REACT_APP_API_BASE_URL}/api/best_service_providers`,
-//             body,
-//             {
-//               headers: {
-//                 Authorization: `Bearer ${token}`,
-//               },
-//             }
-//           );
-//           const car_res = await axios.post(
-//             `${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`,
-//             {
-//               ad_type: "service",
-//               category: "cleaning",
-//             },
-//             {
-//               headers: {
-//                 Authorization: `Bearer ${token}`,
-//               },
-//             }
-//           );
-//           const prop_res = await axios.post(
-//             `${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`,
-//             {
-//               ad_type: "service",
-//               category: "electrician",
-//             },
-//             {
-//               headers: {
-//                 Authorization: `Bearer ${token}`,
-//               },
-//             }
-//           );
-//           const electro_res = await axios.post(
-//             `${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`,
-//             {
-//               ad_type: "service",
-//               category: "carpentry",
-//             },
-//             {
-//               headers: {
-//                 Authorization: `Bearer ${token}`,
-//               },
-//             }
-//           );
-//           const bikes_res = await axios.post(
-//             `${process.env.REACT_APP_API_BASE_URL}/api/rent_category_posts`,
-//             {
-//               ad_type: "service",
-//               category: "painting",
-//             },
-//             {
-//               headers: {
-//                 Authorization: `Bearer ${token}`,
-//               },
-//             }
-//           );
-//           setCars(car_res.data.data);
-//           setElectronicses(electro_res.data.data);
-//           setBikes(bikes_res.data.data);
-//           setProperties(prop_res.data.data);
-//           setBestProvidersPosts(response.data.data);
-//         } catch (error) {
-//           console.error("Error fetching best service providers:", error);
-//         } finally {
-//           setLoading(false);
-//         }
-//       };
 
-//       fetchBestProviders();
-//     },
-//     [token],
-//     user
-//   );
 
-//   const handleCardClick = (post) => {
-//     setSelectedPost(post);
-//     setShowModal(true);
-//   };
-//   return (
-//     <div className="container p-4" style={{ minHeight: "80vh" }}>
-//       <Carousel
-//         categories={serviceCategories}
-//         onCategoryClick={handleCategoryClick}
-//       />
-//       <h3 className="ml-5 mb-4">Best Service Providers</h3>
-//       {loading ? (
-//         <Loader />
-//       ) : bestProvidersPosts.length > 0 ? (
-//         <div
-//           className="d-flex overflow-auto gap-3 scroll-row-rent"
-//           style={{
-//             scrollSnapType: "x mandatory",
-//             scrollBehavior: "smooth",
-//             paddingBottom: "1rem",
-//           }}
-//         >
-//           {bestProvidersPosts.map((post) => (
-//             <div key={post.id} style={{ flex: "0 0 auto" }}>
-//               <PostCard post={post} onClick={handleCardClick} isMyAd={false} />
-//             </div>
-//           ))}
-//         </div>
-//       ) : (
-//         <EmptyState />
-//       )}
-//       {loading ? (
-//         <Loader />
-//       ) : cars.length > 0 ? (
-//         <>
-//           <h3 className="ml-5 mb-4">Cleaning</h3>
-//           <div
-//             className="d-flex overflow-auto gap-3 scroll-row-rent"
-//             style={{
-//               scrollSnapType: "x mandatory",
-//               scrollBehavior: "smooth",
-//               paddingBottom: "1rem",
-//             }}
-//           >
-//             {cars.map((post) => (
-//               <div key={post.id} style={{ flex: "0 0 auto" }}>
-//                 <PostCard
-//                   post={post}
-//                   onClick={handleCardClick}
-//                   isMyAd={false}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </>
-//       ) : (
-//         <></>
-//       )}
-//       {loading ? (
-//         <Loader />
-//       ) : properties.length > 0 ? (
-//         <>
-//           <h3 className="ml-5 mb-4">Electrician</h3>
-//           <div
-//             className="d-flex overflow-auto gap-3 scroll-row-rent"
-//             style={{
-//               scrollSnapType: "x mandatory",
-//               scrollBehavior: "smooth",
-//               paddingBottom: "1rem",
-//             }}
-//           >
-//             {properties.map((post) => (
-//               <div key={post.id} style={{ flex: "0 0 auto" }}>
-//                 <PostCard
-//                   post={post}
-//                   onClick={handleCardClick}
-//                   isMyAd={false}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </>
-//       ) : (
-//         <></>
-//       )}
-//       {loading ? (
-//         <Loader />
-//       ) : electronicses.length > 0 ? (
-//         <>
-//           <h3 className="ml-5 mb-4">Carpentry</h3>
-//           <div
-//             className="d-flex overflow-auto gap-3 scroll-row-rent"
-//             style={{
-//               scrollSnapType: "x mandatory",
-//               scrollBehavior: "smooth",
-//               paddingBottom: "1rem",
-//             }}
-//           >
-//             {electronicses.map((post) => (
-//               <div key={post.id} style={{ flex: "0 0 auto" }}>
-//                 <PostCard
-//                   post={post}
-//                   onClick={handleCardClick}
-//                   isMyAd={false}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </>
-//       ) : (
-//         <></>
-//       )}
-//       {loading ? (
-//         <Loader />
-//       ) : bikes.length > 0 ? (
-//         <>
-//           <h3 className="ml-5 mb-4">Painting</h3>
-//           <div
-//             className="d-flex overflow-auto gap-3 scroll-row-rent"
-//             style={{
-//               scrollSnapType: "x mandatory",
-//               scrollBehavior: "smooth",
-//               paddingBottom: "1rem",
-//             }}
-//           >
-//             {bikes.map((post) => (
-//               <div key={post.id} style={{ flex: "0 0 auto" }}>
-//                 <PostCard
-//                   post={post}
-//                   onClick={handleCardClick}
-//                   isMyAd={false}
-//                 />
-//               </div>
-//             ))}
-//           </div>
-//         </>
-//       ) : (
-//         <></>
-//       )}
-//       <PostModal
-//         isMyAd={false}
-//         show={showModal}
-//         onHide={() => setShowModal(false)}
-//         post={selectedPost}
-//       />
-//     </div>
-//   );
-// };
+const LIMIT = 10;
 
 const Service = () => {
   const serviceCategories = [
@@ -294,39 +38,70 @@ const Service = () => {
     { id: 7, title: "Laundry", image: laundry },
     { id: 8, title: "Salon", image: salon },
   ];
+
   const navigate = useNavigate();
   const { user, token } = useSelector((state) => state.auth);
-  // const token = localStorage.getItem("elk_authorization_token");
 
-  const body = token ? { page: 1, user_id: user?.user_id } : { page: 1 };
-
-  const { data: bestProviders, isLoading: bestLoading } =
-    useBestServiceProviderQuery(body);
-
-  console.log("bestLoading",bestLoading)
-
-  const { data: cleaningData } = useRentCategoryPostQuery({
-    ad_type: "service",
-    category: "cleaning",
-  });
-
-  const { data: electricianData } = useRentCategoryPostQuery({
-    ad_type: "service",
-    category: "electrician",
-  });
-
-  const { data: carpentryData } = useRentCategoryPostQuery({
-    ad_type: "service",
-    category: "carpentry",
-  });
-
-  const { data: paintingData } = useRentCategoryPostQuery({
-    ad_type: "service",
-    category: "painting",
-  });
+  // --- Infinite scroll state ---
+  const [offset, setOffset] = useState(0);
+  const [allProviders, setAllProviders] = useState([]);
+  const [hasMore, setHasMore] = useState(true);
+  const observerRef = useRef(null);
+  const prevDataRef = useRef(null);
 
   const [selectedPost, setSelectedPost] = useState(null);
   const [showModal, setShowModal] = useState(false);
+
+  // Best providers query with offset/limit
+  const bestProvidersPayload = React.useMemo(
+    () =>
+      token
+        ? { user_id: user?.user_id, limit: LIMIT, offset }
+        : { limit: LIMIT, offset },
+    [token, user?.user_id, offset]
+  );
+
+  const { data: bestProvidersData, isLoading: bestLoading, isFetching: bestFetching } =
+    useBestServiceProviderQuery(bestProvidersPayload);
+
+  // Accumulate best providers
+  React.useEffect(() => {
+    if (!bestProvidersData) return;
+    if (prevDataRef.current === bestProvidersData) return;
+    prevDataRef.current = bestProvidersData;
+
+    const newProviders = bestProvidersData?.data ?? [];
+    const totalCount = bestProvidersData?.totalCount ?? 0;
+
+    setAllProviders((prev) => {
+      const existingIds = new Set(prev.map((p) => p.id));
+      const unique = newProviders.filter((p) => !existingIds.has(p.id));
+      return [...prev, ...unique];
+    });
+
+    setHasMore(offset + LIMIT < totalCount);
+  }, [bestProvidersData]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Intersection Observer sentinel
+  const sentinelRef = useCallback(
+    (node) => {
+      if (bestFetching) return;
+      if (observerRef.current) observerRef.current.disconnect();
+      observerRef.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasMore && !bestFetching) {
+          setOffset((prev) => prev + LIMIT);
+        }
+      });
+      if (node) observerRef.current.observe(node);
+    },
+    [bestFetching, hasMore]
+  );
+
+  // Category horizontal scroll queries (unchanged)
+  const { data: cleaningData } = useRentCategoryPostQuery({ ad_type: "service", category: "cleaning" });
+  const { data: electricianData } = useRentCategoryPostQuery({ ad_type: "service", category: "electrician" });
+  const { data: carpentryData } = useRentCategoryPostQuery({ ad_type: "service", category: "carpentry" });
+  const { data: paintingData } = useRentCategoryPostQuery({ ad_type: "service", category: "painting" });
 
   const handleCardClick = (post) => {
     setSelectedPost(post);
@@ -340,43 +115,41 @@ const Service = () => {
         onCategoryClick={(c) => navigate(`/services/${c.title.toLowerCase()}`)}
       />
 
+      {/* ── Best Service Providers (infinite scroll grid) ── */}
       <h3 className="ml-5 mb-4">Best Service Providers</h3>
 
-      {bestLoading ? (
+      {bestLoading && offset === 0 ? (
         <Loader />
-      ) : bestProviders?.data?.length ? (
-        <ScrollRow data={bestProviders.data} onClick={handleCardClick} />
+      ) : allProviders.length > 0 ? (
+        <>
+          <div className="posts-grid">
+            {allProviders.map((post) => (
+              <div key={post.id}>
+                <PostCard post={post} onClick={handleCardClick} isMyAd={false} />
+              </div>
+            ))}
+          </div>
+
+          {/* Sentinel */}
+          {hasMore && <div ref={sentinelRef} style={{ height: "1px" }} />}
+
+          {/* Loading spinner for page 2+ */}
+          {bestFetching && offset > 0 && (
+            <div style={{ textAlign: "center", padding: "1rem" }}>
+              <Loader />
+            </div>
+          )}
+
+          {!hasMore && (
+            <p style={{ textAlign: "center", color: "#888", padding: "1.5rem 0" }}>
+              You've seen all providers!
+            </p>
+          )}
+        </>
       ) : (
-        <EmptyState />
+        !bestFetching && <EmptyState />
       )}
 
-      {cleaningData?.data?.length && (
-        <>
-          <h3 className="ml-5 mb-4">Cleaning</h3>
-          <ScrollRow data={cleaningData.data} onClick={handleCardClick} />
-        </>
-      )}
-
-      {electricianData?.data?.length && (
-        <>
-          <h3 className="ml-5 mb-4">Electrician</h3>
-          <ScrollRow data={electricianData.data} onClick={handleCardClick} />
-        </>
-      )}
-
-      {carpentryData?.data?.length && (
-        <>
-          <h3 className="ml-5 mb-4">Carpentry</h3>
-          <ScrollRow data={carpentryData.data} onClick={handleCardClick} />
-        </>
-      )}
-
-      {paintingData?.data?.length && (
-        <>
-          <h3 className="ml-5 mb-4">Painting</h3>
-          <ScrollRow data={paintingData.data} onClick={handleCardClick} />
-        </>
-      )}
 
       <PostModal
         isMyAd={false}
@@ -387,16 +160,6 @@ const Service = () => {
     </div>
   );
 };
-
-const ScrollRow = ({ data, onClick }) => (
-  <div className="d-flex overflow-auto gap-3 scroll-row-rent">
-    {data.map((post) => (
-      <div key={post.id} style={{ flex: '0 0 auto' }}>
-        <PostCard post={post} onClick={onClick} isMyAd={false} />
-      </div>
-    ))}
-  </div>
-);
 
 
 export default Service;
