@@ -111,7 +111,7 @@ function Home() {
       </Container>
     </Navbar>
       
-    <Container fluid className="position-relative " style={{ maxWidth: "100%", height: "100%",minHeight:'100vh' }} >
+    <Container fluid className="position-relative " style={{ width: "100%", height: "100vh", overflow: "hidden" }} >
   {/* <div className="position-absolute top-0 start-0 end-0 bottom-0 " style={{backgroundImage: `url(${imgs[currentImage]})`}} id='home' >
   </div> */}
     <div
