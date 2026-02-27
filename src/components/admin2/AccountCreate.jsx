@@ -322,19 +322,50 @@ export default function AccountCreateMobile() {
                               multiple
                               accept="image/*"
                               onChange={(e) => {
-                                const files = Array.from(e.target.files);
-                                const previews = files.map((file) =>
+                                const newFiles = Array.from(e.target.files);
+                              
+                                const existingFiles = values.ads[adIndex].images || [];
+                                const existingPreviews = values.ads[adIndex].imagePreviews || [];
+                              
+                                const newPreviews = newFiles.map((file) =>
                                   URL.createObjectURL(file)
                                 );
-                                setFieldValue(`ads.${adIndex}.images`, files);
-                                setFieldValue(`ads.${adIndex}.imagePreviews`, previews);
+                              
+                                setFieldValue(
+                                  `ads.${adIndex}.images`,
+                                  [...existingFiles, ...newFiles]
+                                );
+                              
+                                setFieldValue(
+                                  `ads.${adIndex}.imagePreviews`,
+                                  [...existingPreviews, ...newPreviews]
+                                );
+                              
+                                e.target.value = null;
                               }}
                             />
                           </div>
 
                           <div className="image-preview-container">
                             {ad.imagePreviews?.map((src, i) => (
-                              <img key={i} src={src} alt="preview" />
+                              <div key={i} className="preview-box">
+                                <img src={src} alt="preview" />
+
+                                <IoCloseCircleOutline
+                                  size={20}
+                                  color="red"
+                                  onClick={() => {
+                                    const updatedFiles = [...values.ads[adIndex].images];
+                                    const updatedPreviews = [...values.ads[adIndex].imagePreviews];
+
+                                    updatedFiles.splice(i, 1);
+                                    updatedPreviews.splice(i, 1);
+
+                                    setFieldValue(`ads.${adIndex}.images`, updatedFiles);
+                                    setFieldValue(`ads.${adIndex}.imagePreviews`, updatedPreviews);
+                                  }}
+                                />
+                              </div>
                             ))}
                           </div>
                         </div>
@@ -351,6 +382,7 @@ export default function AccountCreateMobile() {
                             description: "",
                             prices: [{ category: "", unit: "", price: "" }],
                             images: [],
+                            imagePreviews: [],
                           })
                         }
                       >
