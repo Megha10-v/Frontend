@@ -1,7 +1,7 @@
-import SSidebar from "./SideBar";
+import SSidebar from "./SuperAdminSideBar";
 import '../../styles/admin/HomeAdmin.css';
 import { useState, useEffect } from "react";
-import AdminNav from "./AdminNav";
+import AdminNav from "./SuperAdminNav";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Loader from "../Loader";
@@ -12,14 +12,19 @@ import WhatsAppIcon from '@mui/icons-material/WhatsApp';
 import { useNavigate } from 'react-router-dom';
 import Swal from "sweetalert2";
 
-function SAdminHome() {
+function SuperAdminHome() {
     const [selectedDate, setSelectedDate] = useState("");
     const [selectedLocation, setSelectedLocation] = useState("");
     const [ads, setAds] = useState([]);
     const [adLocations, setAdLocations] = useState([]);
     const [loading, setLoading] = useState(true);
     const navigate = useNavigate();
+    const [sliderIndex, setSliderIndex] = useState({});
 
+    const handleEdit = (adId) => {
+        navigate(`/admin/edit-ad/${adId}`);
+    };
+    
     useEffect(() => {
         const fetchData = async () => {
             await fetchAds();
@@ -154,7 +159,7 @@ function SAdminHome() {
                             </select>
                         </div>
                     </div>
-                    <div>
+                    <div style={{marginLeft:"20px"}}>
                         <h4>Total: {ads.length}</h4>
                     </div>
                     <div>
@@ -197,23 +202,72 @@ function SAdminHome() {
                                             <td>{ad.user?.email??'-'}</td>
                                             <td>{ad.ad_status}</td>
                                             <td>
-                                                {ad.ad_location
-                                                    ? `${ad.ad_location.place??''}${ad.ad_location.place?',':''} ${ad.ad_location.district}, ${ad.ad_location.state}`
+                                                {
+                                                    ad.ad_location
+                                                        ? [
+                                                            ad.ad_location.place,
+                                                            ad.ad_location.district,
+                                                            ad.ad_location.state
+                                                        ]
+                                                            .filter(value => value)
+                                                            .join(", ")
+                                                        : "N/A"
+                                                }
+                                            </td>
+                                            <td>
+                                                {ad.ad_price_details && ad.ad_price_details.length > 0
+                                                    ? ad.ad_price_details
+                                                        .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
+                                                        .join(", ")
                                                     : "N/A"}
                                             </td>
                                             <td>
-                                                {ad.ad_price_details?.[0]?.rent_price
-                                                    ? `₹${ad.ad_price_details[0].rent_price} / ${ad.ad_price_details[0].rent_duration}`
-                                                    : "N/A"}
-                                            </td>
-                                            <td>
-                                                {ad.ad_images?.length > 0 ? (
-                                                    <img src={ad.ad_images[0].image} alt="Ad" height="100" />
-                                                ) : "No Image"}
+                                                {ad.ad_images?.length > 0 && (
+                                                    <div className="ad-slider">
+                                                        <img
+                                                            src={ad.ad_images[sliderIndex[ad.id] || 0]?.image}
+                                                            alt="Ad"
+                                                            className="ad-card-img"
+                                                        />
+
+                                                        {ad.ad_images.length > 1 && (
+                                                            <>
+                                                                <button
+                                                                className="nav-btn left"
+                                                                onClick={() =>
+                                                                    setSliderIndex((prev) => {
+                                                                    const current = prev[ad.id] || 0;
+                                                                    const newIndex =
+                                                                        current === 0 ? ad.ad_images.length - 1 : current - 1;
+                                                                    return { ...prev, [ad.id]: newIndex };
+                                                                    })
+                                                                }
+                                                                >
+                                                                ‹
+                                                                </button>
+
+                                                                <button
+                                                                className="nav-btn right"
+                                                                onClick={() =>
+                                                                    setSliderIndex((prev) => {
+                                                                    const current = prev[ad.id] || 0;
+                                                                    const newIndex =
+                                                                        current === ad.ad_images.length - 1 ? 0 : current + 1;
+                                                                    return { ...prev, [ad.id]: newIndex };
+                                                                    })
+                                                                }
+                                                                >
+                                                                ›
+                                                                </button>
+                                                            </>
+                                                        )}
+                                                    </div>
+                                                )}
                                             </td>
                                             <td>{ad.user?.name || "User"}</td>
                                             <td>{new Date(ad.createdAt).toLocaleDateString()}</td>
                                             <td>
+                                                <Button style={{ backgroundColor: "blue", color: "white", marginRight:'15px' }} onClick={() => handleEdit(ad.id)}>Edit</Button>
                                                 <Button style={{ backgroundColor: "red", color: "white" }} onClick={() => deleteAd(ad.ad_id)}>Delete</Button>
                                                 <ChatIcon onClick={()=>navigate('/chat',{ state: { userId: ad.user_id, userName: ad.user.name, adName: ad.title, profile: ad.user.profile, message: `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.` } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>
                                                 <WhatsAppIcon style={{ color: 'green', fontSize: 30, cursor: 'pointer' }} onClick={()=>handleWhatsAppClick(ad.user?.mobile_number, `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.`)}/>
@@ -234,5 +288,5 @@ function SAdminHome() {
     );
 }
 
-export default SAdminHome;
+export default SuperAdminHome;
 

@@ -275,7 +275,40 @@
   align-items: center;
   margin-top: 10px;
 }
+.ad-slider {
+  position: relative;
+  width: 200px;
+  height: 150px;
+  overflow: hidden;
+}
 
+.ad-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 10px;
+}
+
+.nav-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(0, 0, 0, 0.5);
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  font-size: 20px;
+  border-radius: 50%;
+}
+
+.nav-btn.left {
+  left: 10px;
+}
+
+.nav-btn.right {
+  right: 10px;
+}
 @media (max-width: 767px) {
     .homeadmin {
         margin-left: 0;

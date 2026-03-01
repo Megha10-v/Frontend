@@ -9,7 +9,7 @@ function AdminHome() {
     const [ads, setAds] = useState([]);
     const [loading, setLoading] = useState(true);
     const token = localStorage.getItem('elk_authorization_token');
-
+    const [sliderIndex, setSliderIndex] = useState({});
     useEffect(() => {
         const fetchData = async () => {
             await fetchAds();
@@ -27,7 +27,6 @@ function AdminHome() {
                 }
             );
             setAds(response.data.data || []);
-            console.log(response.data.data);
         } catch (error) {
             console.error("Error fetching ads:", error);
         }
@@ -51,7 +50,7 @@ function AdminHome() {
                             <table className="admin-table">
                                 <thead>
                                     <tr>
-                                        <th>S No:{ads.length}</th>
+                                        <th>S No:</th>
                                         <th>Title</th>
                                         <th>Category</th>
                                         <th>Type</th>
@@ -77,18 +76,61 @@ function AdminHome() {
                                                     : "N/A"}
                                                 </td>
                                                 <td>
-                                                    {ad.ad_price_details?.[0]?.rent_price
-                                                        ? `₹${ad.ad_price_details[0].rent_price}`
+                                                    {ad.ad_price_details && ad.ad_price_details.length > 0
+                                                        ? ad.ad_price_details
+                                                            .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
+                                                            .join(", ")
                                                         : "N/A"}
                                                 </td>
                                                 <td>
-                                                    {ad.ad_images?.length > 0 ? (
+                                                    {ad.ad_images?.length > 0 && (
+                                                        <div className="ad-slider">
+                                                            <img
+                                                                src={ad.ad_images[sliderIndex[ad.id] || 0]?.image}
+                                                                alt="Ad"
+                                                                className="ad-card-img"
+                                                            />
+
+                                                            {ad.ad_images.length > 1 && (
+                                                                <>
+                                                                    <button
+                                                                    className="nav-btn left"
+                                                                    onClick={() =>
+                                                                        setSliderIndex((prev) => {
+                                                                        const current = prev[ad.id] || 0;
+                                                                        const newIndex =
+                                                                            current === 0 ? ad.ad_images.length - 1 : current - 1;
+                                                                        return { ...prev, [ad.id]: newIndex };
+                                                                        })
+                                                                    }
+                                                                    >
+                                                                    ‹
+                                                                    </button>
+
+                                                                    <button
+                                                                    className="nav-btn right"
+                                                                    onClick={() =>
+                                                                        setSliderIndex((prev) => {
+                                                                        const current = prev[ad.id] || 0;
+                                                                        const newIndex =
+                                                                            current === ad.ad_images.length - 1 ? 0 : current + 1;
+                                                                        return { ...prev, [ad.id]: newIndex };
+                                                                        })
+                                                                    }
+                                                                    >
+                                                                    ›
+                                                                    </button>
+                                                                </>
+                                                            )}
+                                                        </div>
+                                                    )}
+                                                    {/* {ad.ad_images?.length > 0 ? (
                                                         <img
                                                             src={ad.ad_images[0].image}
                                                             alt="Ad"
                                                             height="60"
                                                         />
-                                                    ) : "No Image"}
+                                                    ) : "No Image"} */}
                                                 </td>
                                                 <td>{ad.user?.name || "User"}</td>
                                                 <td>
@@ -118,23 +160,62 @@ function AdminHome() {
 
                                         <div className="ad-card-body">
                                             {ad.ad_images?.length > 0 && (
-                                                <img
-                                                    src={ad.ad_images[0].image}
+                                                <div className="ad-slider">
+                                                    <img
+                                                    src={ad.ad_images[sliderIndex[ad.id] || 0]?.image}
                                                     alt="Ad"
                                                     className="ad-card-img"
-                                                />
+                                                    />
+
+                                                    {ad.ad_images.length > 1 && (
+                                                    <>
+                                                        <button
+                                                        className="nav-btn left"
+                                                        onClick={() =>
+                                                            setSliderIndex((prev) => {
+                                                            const current = prev[ad.id] || 0;
+                                                            const newIndex =
+                                                                current === 0 ? ad.ad_images.length - 1 : current - 1;
+                                                            return { ...prev, [ad.id]: newIndex };
+                                                            })
+                                                        }
+                                                        >
+                                                        ‹
+                                                        </button>
+
+                                                        <button
+                                                        className="nav-btn right"
+                                                        onClick={() =>
+                                                            setSliderIndex((prev) => {
+                                                            const current = prev[ad.id] || 0;
+                                                            const newIndex =
+                                                                current === ad.ad_images.length - 1 ? 0 : current + 1;
+                                                            return { ...prev, [ad.id]: newIndex };
+                                                            })
+                                                        }
+                                                        >
+                                                        ›
+                                                        </button>
+                                                    </>
+                                                    )}
+                                                </div>
                                             )}
-                                            <p><b>ID:</b> {ad.ad_id}</p>
                                             <p><b>Category:</b> {ad.category}</p>
                                             <p><b>Type:</b> {ad.ad_type}</p>
-                                            <p><b>Status:</b> {ad.ad_status}</p>
                                             <p>
                                                 <b>Location:</b>{" "}
                                                 {ad.ad_location
                                                     ? `${ad.ad_location.place ? ad.ad_location.place + ", " : ""}${ad.ad_location.state ?? ""}`
                                                     : "N/A"}
                                             </p>
-                                            <p><b>Price:</b> ₹{ad.ad_price_details?.[0]?.rent_price ?? "N/A"}</p>
+                                            <p>
+                                                <b>Price:</b>{" "}
+                                                {ad.ad_price_details && ad.ad_price_details.length > 0
+                                                    ? ad.ad_price_details
+                                                        .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
+                                                        .join(", ")
+                                                    : "N/A"}
+                                            </p>
                                             <p><b>Posted By:</b> {ad.user?.name}</p>
                                             <p><b>Date:</b> {new Date(ad.createdAt).toLocaleDateString()}</p>
                                         </div>

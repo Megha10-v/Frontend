@@ -135,15 +135,11 @@ const ChatScreen = () => {
         ad_id: adId,
         ad_name: adName,
         status: 'send',
-      };
-      console.log(messageData);
-      
+      };      
       try {
         socketInstance.emit("sendMessage", messageData);
         setInput("");
-      } catch (e) {
-        console.log(e);
-        
+      } catch (e) {        
         console.error("Socket emit failed:", e);
       }
     }

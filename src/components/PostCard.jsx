@@ -1,4 +1,5 @@
 import { Carousel } from 'react-bootstrap';
+import { Link } from "react-router-dom";
 
 
 const PostCard = ({ post, onClick, isMyAd }) => {
@@ -30,7 +31,14 @@ const PostCard = ({ post, onClick, isMyAd }) => {
                 ₹{post.ad_price_details[0].rent_price} per{" "}
                 {post.ad_price_details[0]?.rent_duration || ""}
               </span>
-            ):<span>Contact User for price</span>}
+            ):
+              <div className="contact-btn">
+                <strong>Price:</strong>{" "}
+                <Link to="/profile" className="price-link">
+                  Get price
+                </Link>
+              </div>
+            }
             {/* <span className="card-text me-2">₹{post.ad_price_details[0]?.rent_price || 'N/A'} per {post.ad_price_details[0]?.rent_duration || ''}</span> */}
             <span className="card-text text-truncate">
               <i className="fa-solid fa-location-dot me-1"></i>

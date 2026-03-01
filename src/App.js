@@ -37,14 +37,16 @@ import Home from './components/Home';
 import Privacy from './components/Privacy';
 import Terms from './components/Terms';
 import SearchResult from './components/SearchResult';
-import AccountCreateForm from "./components/admin2/AccountCreateForm";
-import AccountCreateMobile from "./components/admin2/AccountCreate";
+import AccountCreate from "./components/admin2/AccountCreate";
 import SuperAdminRoute from "./components/SuperAdminRoute";
-import SAdminNotificationForm from "./components/superAdmin/AdminNotification";
-import SAdminHome from './components/superAdmin/AdminHome';
-import SAdminAllUsers from './components/superAdmin/AdminAllUsers';
+import SuperAdminNotification from "./components/superAdmin/SuperAdminNotification";
+import SuperAdminHome from './components/superAdmin/SuperAdminHome';
+import SuperAdminAllUsers from './components/superAdmin/SuperAdminAllUsers';
 import AdminAllUsers from './components/admin2/AdminAllUsers';
 import AdminHome from './components/admin2/AdminHome';
+import SuperAdminSalesUsers from './components/superAdmin/SuperAdminSalesUsers';
+import SuperAdminSalesUserView from './components/superAdmin/SuperAdminSalesUserView';
+import SuperAdminEditAd from './components/superAdmin/SuperAdminEditAd';
 
 function App() {
     const dispatch = useDispatch();
@@ -83,7 +85,7 @@ function App() {
                         }
                     );
                     const userData = response.data;
-                    dispatch(setUser({ user: userData, token, isAdmin: userData.is_admin,role:'admin' }));
+                    dispatch(setUser({ user: userData, token, isAdmin: userData.is_admin, role:userData.role }));
                 } catch (error) {
                     console.error('Failed to fetch user profile:', error);
                 }
@@ -123,16 +125,17 @@ function App() {
                 ))}
                 <Route path='/search/:query' element={<SearchResult/>}/>
 
-                <Route path="/admin" element={<SuperAdminRoute><SAdminHome /></SuperAdminRoute>} />
-                <Route path='/admin/notification' element={<SuperAdminRoute><SAdminNotificationForm/></SuperAdminRoute>}/>
-                <Route path="/admin/accounts" element={<SuperAdminRoute><SAdminAllUsers /></SuperAdminRoute>} />
+                <Route path="/admin" element={<SuperAdminRoute><SuperAdminHome /></SuperAdminRoute>} />
+                <Route path='/admin/notification' element={<SuperAdminRoute><SuperAdminNotification/></SuperAdminRoute>}/>
+                <Route path='/admin/notification-view' element={<SuperAdminRoute><SuperAdminNotification/></SuperAdminRoute>}/>
+                <Route path="/admin/accounts" element={<SuperAdminRoute><SuperAdminAllUsers /></SuperAdminRoute>} />
+                <Route path="/admin/sales-users" element={<SuperAdminRoute><SuperAdminSalesUsers /></SuperAdminRoute>} />
+                <Route path="/admin/sales-user/:id" element={<SuperAdminSalesUserView />} />
+                <Route path="/admin/edit-ad/:id" element={<SuperAdminEditAd />} />
 
                 <Route path="/sales" element={<AdminRoute><AdminAllUsers /></AdminRoute>} />
-                <Route path="/sales/create" element={<AdminRoute><AccountCreateMobile /></AdminRoute>} />
+                <Route path="/sales/create" element={<AdminRoute><AccountCreate /></AdminRoute>} />
                 <Route path="/sales/ads" element={<AdminRoute><AdminHome /></AdminRoute>} />
-
-                {/* <Route path="/sales/accounts" element={<AdminRoute><AdminAllUsers /></AdminRoute>} /> */}
-                {/* <Route path="/sales/accounts/create" element={<AdminRoute><AccountCreateForm /></AdminRoute>} /> */}
 
                 <Route path="*" element={<Error/>}/>
             </Routes>

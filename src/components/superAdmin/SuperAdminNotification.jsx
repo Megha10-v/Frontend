@@ -1,9 +1,9 @@
 import { useState } from "react";
 import "../../styles/admin/AdminNotificationForm.css";
-import SSidebar from "./SideBar";
-import AdminNav from "./AdminNav";
+import SSidebar from "./SuperAdminSideBar";
+import AdminNav from "./SuperAdminNav";
 
-function SAdminNotificationForm() {
+function SuperAdminNotification() {
     const [selectedUsers, setSelectedUsers] = useState([]);
     const [notificationContent, setNotificationContent] = useState("");
     const handleSubmit = (event) => {
@@ -45,4 +45,5 @@ function SAdminNotificationForm() {
     );
 }
 
-export default SAdminNotificationForm;
+export default SuperAdminNotification;
+

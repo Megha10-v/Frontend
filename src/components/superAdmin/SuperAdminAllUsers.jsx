@@ -1,7 +1,7 @@
-import SSidebar from "./SideBar";
+import SSidebar from "./SuperAdminSideBar";
 import '../../styles/admin/HomeAdmin.css';
 import { useState, useEffect } from "react";
-import AdminNav from "./AdminNav";
+import AdminNav from "./SuperAdminNav";
 import axios from "axios";
 import { Button } from "react-bootstrap";
 import Loader from "../Loader";
@@ -11,19 +11,30 @@ import { saveAs } from "file-saver";
 import { useNavigate } from "react-router-dom";
 
 
-function SAdminAllUsers() {
+function SuperAdminAllUsers() {
     const [selectedDate, setSelectedDate] = useState("");
     const [users, setusers] = useState([]);
     const [loading, setLoading] = useState(true);
-      const navigate = useNavigate();
-
+    const navigate = useNavigate();
+    const [searchTerm, setSearchTerm] = useState("");
+    const filteredUsers = users.filter((user) => {
+        const search = searchTerm.toLowerCase();
+        const matchesSearch =
+            user.name?.toLowerCase().includes(search) ||
+            user.mobile_number?.toLowerCase().includes(search) ||
+            user.email?.toLowerCase().includes(search);
+        const matchesDate = selectedDate
+            ? new Date(user.createdAt).toISOString().slice(0, 10) === selectedDate
+            : true;
+        return matchesSearch && matchesDate;
+    });
     useEffect(() => {
         const fetchData = async () => {
             await fetchusers();
             setLoading(false);
         };
         fetchData();
-    },[selectedDate]);
+    },[]);
 
 
     const fetchusers = async () => {     
@@ -34,7 +45,32 @@ function SAdminAllUsers() {
             console.error("Error fetching users:", error);
         }
     };
+    const makeAdmin = async (userId, role) => {
+        const confirm = window.confirm("Are you sure you want to change the role of this user?");
+        if (!confirm) return;
 
+        try {
+            const response = await axios.post(
+                `${process.env.REACT_APP_API_BASE_URL}/api/make_admin`,
+                { user_id: userId,role:role }
+            );
+
+            if (response.data.success) {
+                alert("User role changed successfully");
+                setusers(prev =>
+                    prev.map(user =>
+                        user.user_id === userId
+                            ? { ...user, role: role }
+                            : user
+                    )
+                );
+            }
+
+        } catch (error) {
+            console.error("Make Admin Error:", error);
+            alert(error.response?.data?.message || "Server error");
+        }
+    };
     const blockUser = async (userId) => {
         const confirmDelete = window.confirm("Are you sure you want to delete this ad?");
         if (!confirmDelete) return;
@@ -58,7 +94,7 @@ function SAdminAllUsers() {
     };
       
     const downloadExcel = () => {
-        if (users.length === 0) {
+        if (filteredUsers.length === 0) {
             Swal.fire({
                 icon: "warn",
                 title: "No Users available to export!",
@@ -67,7 +103,7 @@ function SAdminAllUsers() {
             return;
         }
 
-        const data = users.map((user, index) => ({
+        const data = filteredUsers.map((user, index) => ({
             "S No": index + 1,
             "User ID": user.user_id,
             "Name": user.name,
@@ -100,8 +136,19 @@ function SAdminAllUsers() {
                                 onClick={(e) => e.target.showPicker()} />
                         </div>  
                     </div>
-                    <div>
-                        <h4>Total: {users.length}</h4>
+                    <div className="fields">
+                        <div className="label">Search:</div>
+                        <div className="input">
+                            <input
+                                type="text"
+                                placeholder="Search by Name, Phone or Email"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                            />
+                        </div>
+                    </div>
+                    <div style={{marginLeft:"20px"}}>
+                        <h4>Total: {filteredUsers.length}</h4>
                     </div>
                     <div  style={{ display: 'flex', gap: '10px' }}>
                         <Button variant="success" onClick={downloadExcel}>
@@ -131,8 +178,8 @@ function SAdminAllUsers() {
                                 </tr>
                             </thead>
                             <tbody>
-                                {users.length > 0 ? (
-                                    users.map((user,index) => (
+                                {filteredUsers.length > 0 ? (
+                                    filteredUsers.map((user,index) => (
                                         <tr key={user.id}>
                                             <td>{index+1}</td>
                                             <td>{user.user_id}</td>
@@ -146,7 +193,31 @@ function SAdminAllUsers() {
                                             </td>
                                             <td>{user?.is_logged? "Yes": "No"}</td>
                                             <td>{new Date(user.createdAt).toLocaleDateString()}</td>
-                                            <td><Button style={{ backgroundColor: "red", color: "white" }} onClick={() => blockUser(user.user_id)}>{(user.block_status===false)?'Block':'UnBlock'}</Button></td>
+                                            <td>
+                                                <Button
+                                                    style={{ backgroundColor: "red", color: "white", marginRight: "5px" }}
+                                                    onClick={() => blockUser(user.user_id)}
+                                                >
+                                                    {user.block_status === false ? 'Block' : 'UnBlock'}
+                                                </Button>
+
+                                                {(user.role !== "superadmin" && user.role !== "admin") && (
+                                                    <Button
+                                                        variant="primary"
+                                                        onClick={() => makeAdmin(user.user_id, 'admin')}
+                                                    >
+                                                        Make Sales
+                                                    </Button>
+                                                )}
+                                                {(user.role === "superadmin" || user.role === "admin") && (
+                                                    <Button
+                                                        variant="primary"
+                                                        onClick={() => makeAdmin(user.user_id, 'user')}
+                                                    >
+                                                        Change to User
+                                                    </Button>
+                                                )}
+                                            </td>
                                         </tr>
                                     ))
                                 ) : (
@@ -164,5 +235,5 @@ function SAdminAllUsers() {
     );
 }
 
-export default SAdminAllUsers;
+export default SuperAdminAllUsers;
 

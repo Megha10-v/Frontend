@@ -10,7 +10,7 @@ import axios from 'axios';
 import { use } from 'react';
 
 function AppHeader({isChat}) {
-
+  const { role } = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const { user } = useSelector(state => state.auth);
@@ -45,7 +45,8 @@ function AppHeader({isChat}) {
   //   deleteAd(unsavedAd?.id)
     
   // };
-  useEffect(() => {    
+  useEffect(() => {   
+     
     const fetchAd = async () => {      
       try {
         const response = await axios.get(`${process.env.REACT_APP_API_BASE_URL}/api/get_recent_unsaved_ad`, { 
@@ -187,6 +188,21 @@ function AppHeader({isChat}) {
                   >
                     <strong>Login</strong>
                   </Button>
+                )}
+                {(token1&&role=="admin") && (
+                  <>
+                    <Button
+                      style={{
+                        all: 'unset',
+                        color: '#4FBBB4',
+                        margin: '0px 20px',
+                        cursor: 'pointer',
+                      }}
+                      onClick={() => navigate('/sales')}
+                    >
+                      <strong>Sales</strong>
+                    </Button>
+                  </>
                 )}
               </Nav>
               :

@@ -28,17 +28,19 @@ const validationSchema = Yup.object({
         category: Yup.string().required("Category required"),
         title: Yup.string().required("Title required"),
         description: Yup.string().required("Description required"),
-        prices: Yup.array()
-          .of(
-            Yup.object({
-              category: Yup.string().required("Category required"),
-              unit: Yup.string().required("Unit required"),
-              price: Yup.number()
-                .typeError("Must be number")
-                .required("Price required"),
-            })
-          )
-          .min(1, "Add at least one price"),
+        prices: Yup.array().of(
+          Yup.object().shape({
+            category: Yup.string().nullable(),
+            unit: Yup.string().nullable(),
+            price: Yup.number()
+              .nullable()
+              .transform((value, originalValue) =>
+                originalValue === "" ? null : value
+              )
+              .positive("Must be positive"),
+          })
+        )
+        .nullable()
       })
     )
     .min(1, "Add at least one ad"),
@@ -80,7 +82,7 @@ export default function AccountCreateMobile() {
     );
   };
 
-  const onSubmit = async (values, { setSubmitting }) => {
+  const onSubmit = async (values, { setSubmitting }) => {    
     try {
       const formData = new FormData();
       formData.append("name", values.name);
@@ -97,25 +99,24 @@ export default function AccountCreateMobile() {
           category: ad.category,
           title: ad.title,
           description: ad.description,
-          prices: ad.prices,
+          prices: Array.isArray(ad.prices) ? ad.prices : [],
         };
       });
 
       formData.append("ads", JSON.stringify(adsPayload));
 
-      await axios.post(
+      const res = await axios.post(
         `${process.env.REACT_APP_API_BASE_URL}/api/admin-ad-create`,
         formData,
         {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         }
       );
-
-      alert("Submitted successfully");
+      alert(res.message??"Submitted successfully");
       navigate("/sales");
-    } catch (err) {
+    } catch (err) {      
       alert("Submit failed: "+err);
-    } finally {
+    } finally {      
       setSubmitting(false);
     }
   };
@@ -125,7 +126,7 @@ export default function AccountCreateMobile() {
       <Sidebar />
       <br />
       <div className="mobile-container">
-        <div className="header">Create Account</div>
+        <div className="header">Create Accountt</div>
 
         <Formik
           initialValues={initialValues}
@@ -146,7 +147,7 @@ export default function AccountCreateMobile() {
 
               <Form>
                 <div className="card-box">
-                  <h5>Basic Details</h5>
+                  <h5>Profile Details</h5>
 
                   <Field name="name" placeholder="Name" className="styled-input" />
                   <ErrorMessage name="name" component="div" className="error-text" />
@@ -380,7 +381,7 @@ export default function AccountCreateMobile() {
                             category: "",
                             title: "",
                             description: "",
-                            prices: [{ category: "", unit: "", price: "" }],
+                            prices: [],
                             images: [],
                             imagePreviews: [],
                           })

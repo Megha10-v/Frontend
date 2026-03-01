@@ -2,7 +2,7 @@ import React from 'react';
 // import { MdAccountCircle } from 'react-icons/md';
 import '../../styles/admin/AdminNav.css';
 
-function SAdminNav() {
+function SuperAdminNav() {
   // const [showMenu, setShowMenu] = useState(false);
   // const date = new Date();
   // const handleAccountClick = () => {
@@ -13,9 +13,9 @@ function SAdminNav() {
   // };
   return (
     <div className="adminnavbar">
-      <div className="date">
+      {/* <div className="date"> */}
         {/* {date.toDateString()} {date.toTimeString()} */}
-        </div>
+        {/* </div> */}
       {/* <div className="account" onClick={handleAccountClick}>
         <MdAccountCircle />
         {showMenu && (
@@ -28,4 +28,4 @@ function SAdminNav() {
   );
 }
 
-export default SAdminNav;
+export default SuperAdminNav;

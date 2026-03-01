@@ -25,8 +25,6 @@ function AdminAllUsers() {
                     headers: token ? { Authorization: `Bearer ${token}` } : {},
                 }
             );
-            console.log(response.data.data);
-            
             setUsers(response.data.data || []);
         } catch (error) {
             console.error("Error fetching users:", error);
@@ -42,7 +40,6 @@ function AdminAllUsers() {
                         <h4>Total: {users.length}</h4>
                     </div>
                 </div>
-
                 {loading ? (
                     <Loader />
                 ) : (
@@ -57,13 +54,12 @@ function AdminAllUsers() {
                                         <th>Date</th>
                                     </tr>
                                 </thead>
-
                                 <tbody>
                                     {users.length > 0 ? (
                                         users.map((user, index) => (
                                             <tr key={user.login_user.id}>
                                                 <td>{index + 1}</td>
-                                                <td>{user.login_user.name}</td>                                        
+                                                <td>{user.login_user.name}</td> 
                                                 <td>
                                                     {user.login_user.profile ? (
                                                         <img
@@ -97,30 +93,21 @@ function AdminAllUsers() {
                                 </tbody>
                             </table>
                         </div>
-
                         <div className="d-block d-md-none">
                             {users.length > 0 ? (
                                 users.map((user, index) => (
                                 <div key={user.id} className="user-card">
-
                                     <div className="user-card-row">
-                                    
-                                    {/* LEFT SIDE (Details) */}
-                                    <div className="user-card-content">
+                                        <div className="user-card-content">
                                         <div className="user-card-header">
                                         <strong>{index + 1}. {user.name}</strong>
                                         </div>
-
-                                        <p><b>ID:</b> {user.user_id}</p>
-                                        <p><b>Phone:</b> {user.mobile_number ?? "-"}</p>
-                                        <p><b>Email:</b> {user.email ?? "-"}</p>
+                                        <p><b>Name:</b> {user.login_user.name ?? "User"}</p>
                                         <p>
-                                        <b>Date:</b>{" "}
-                                        {new Date(user.createdAt).toLocaleDateString()}
+                                            <b>Date:</b>{" "}
+                                            {new Date(user.createdAt).toLocaleDateString()}
                                         </p>
                                     </div>
-
-                                    {/* RIGHT SIDE (Image) */}
                                     {user.profile && (
                                         <div className="user-card-image">
                                         <img
@@ -130,16 +117,13 @@ function AdminAllUsers() {
                                         />
                                         </div>
                                     )}
-
                                     </div>
-
                                 </div>
                                 ))
                             ) : (
                                 <p style={{ textAlign: "center" }}>No users found</p>
                             )}
                         </div>
-
                     </>
                 )}
             </div>

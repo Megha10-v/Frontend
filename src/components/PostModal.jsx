@@ -11,7 +11,7 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import DeleteIcon from '@mui/icons-material/Delete';
 import FullscreenImageView from './FullScreenImageView';
-
+import { Link } from "react-router-dom";
 
 const PostModal = ({ show, onHide, post, isMyAd, onAdDeleted }) => {  
   const { user,isAuthenticated } = useSelector(state => state.auth);
@@ -197,9 +197,12 @@ const [fullscreenIndex, setFullscreenIndex] = useState(0);
               {adDetails.ad_price_details[0]?.rent_duration || ""}
             </p>
           ) : (
-            <p className="contact-btn">
-              <strong>Price:</strong>{" "}Contact User
-            </p>
+            <div className="contact-btn">
+              <strong>Price:</strong>{" "}
+              <Link to="/profile" className="price-link">
+                Get price
+              </Link>
+            </div>
           )}
           {/* <p><strong>Price:</strong> {adDetails.ad_price_details[0]?.rent_price || 'N/A'} per {adDetails.ad_price_details[0]?.rent_duration || ''}</p> */}
           <p><i className="fa-solid fa-location-dot"></i> {`${adDetails.ad_location.locality ? adDetails.ad_location.locality + ',' : ''} ${adDetails.ad_location.district}, ${adDetails.ad_location.state}, ${adDetails.ad_location.country}`}</p>

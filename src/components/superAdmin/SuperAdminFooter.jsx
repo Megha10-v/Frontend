@@ -1,4 +1,4 @@
-function SAdminFooter() {
+function SuperAdminFooter() {
   return (
     <div className="adminfooter">
       Copyright ©2025 ELK Business Solutions
@@ -6,4 +6,4 @@ function SAdminFooter() {
   );
 }
 
-export default SAdminFooter;
+export default SuperAdminFooter;
