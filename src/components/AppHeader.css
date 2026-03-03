@@ -1,0 +1,78 @@
+.main-navbar {
+  background-color: #ffda3f;
+  min-height: 80px;
+  padding: 0.5rem 1rem;
+  z-index: 1000;
+}
+
+.nav-logo {
+  height: 60px;
+  width: 60px;
+}
+
+.search-bar {
+  flex: 1;
+  max-width: 500px;
+  margin: 0 20px;
+}
+
+.search-bar input {
+  border-radius: 20px;
+}
+
+.nav-items {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.post-btn {
+  background-color: #4fbbb4 !important;
+  border: none !important;
+  border-radius: 20px;
+  padding: 6px 15px;
+}
+
+.nav-icon {
+  cursor: pointer;
+  color: #4fbbb4;
+  font-size: 28px !important;
+}
+
+.account-btn {
+  background: transparent !important;
+  border: 2px solid #4fbbb4 !important;
+  border-radius: 10px !important;
+  color: rgb(255, 255, 255) !important;
+}
+
+.account-menu {
+  border-radius: 12px;
+  background-color: white !important;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.15);
+}
+
+.login-btn {
+  background: transparent;
+  border: none;
+  font-weight: 600;
+}
+
+/* Mobile Optimization */
+@media (max-width: 991px) {
+  .search-bar {
+    width: 100%;
+    margin: 10px 0;
+  }
+
+  .nav-items {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 15px;
+    padding-top: 10px;
+  }
+
+  .post-btn {
+    width: 100%;
+  }
+}

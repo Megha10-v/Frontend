@@ -186,9 +186,4 @@
         width: 60%;
         object-fit: contain;
     }
-
-    /* Push content below header */
-    body {
-        padding-top: 55px;
-    }
 }

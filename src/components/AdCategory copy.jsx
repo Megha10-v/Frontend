@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppHeader from "./AppHeader";
+import AppHeader from "./AppNav";
 import Footer from "./AppFooter";
 import axios from "axios";
 import PostCard from "./PostCard";

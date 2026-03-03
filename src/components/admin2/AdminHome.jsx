@@ -52,6 +52,7 @@ function AdminHome() {
                                     <tr>
                                         <th>S No:</th>
                                         <th>Title</th>
+                                        <th>Description</th>
                                         <th>Category</th>
                                         <th>Type</th>
                                         <th>Location</th>
@@ -66,22 +67,74 @@ function AdminHome() {
                                     {ads.length > 0 ? (
                                         ads.map((ad, index) => (
                                             <tr key={ad.id}>
-                                                <td>{index + 1}</td>
-                                                <td>{ad.title}</td>
-                                                <td>{ad.category}</td>
-                                                <td>{ad.ad_type}</td>
-                                                <td>
-                                                    {ad.ad_location
-                                                    ? `${ad.ad_location.place ? ad.ad_location.place + ", " : ""}${ad.ad_location.state ?? ""}`
+                                                <td className="table-cell-small">{index + 1}</td>
+
+                                                <td className="table-cell-limit" title={ad.ad_id}>
+                                                {ad.ad_id}
+                                                </td>
+
+                                                <td className="table-cell-limit" title={ad.title}>
+                                                {ad.title}
+                                                </td>
+
+                                                <td className="table-cell-limit" title={ad.description}>
+                                                {ad.description}
+                                                </td>
+
+                                                <td className="table-cell-limit" title={ad.category}>
+                                                {ad.category}
+                                                </td>
+
+                                                <td className="table-cell-limit" title={ad.ad_type}>
+                                                {ad.ad_type}
+                                                </td>
+
+                                                <td className="table-cell-limit" title={ad.user?.mobile_number}>
+                                                {ad.user?.mobile_number ?? "-"}
+                                                </td>
+
+                                                <td className="table-cell-limit" title={ad.user?.email}>
+                                                {ad.user?.email ?? "-"}
+                                                </td>
+
+                                                <td className="table-cell-limit" title={ad.ad_status}>
+                                                {ad.ad_status}
+                                                </td>
+
+                                                <td
+                                                className="table-cell-limit"
+                                                title={
+                                                    ad.ad_location
+                                                    ? [ad.ad_location.place, ad.ad_location.district, ad.ad_location.state]
+                                                        .filter(Boolean)
+                                                        .join(", ")
+                                                    : "N/A"
+                                                }
+                                                >
+                                                {ad.ad_location
+                                                    ? [ad.ad_location.place, ad.ad_location.district, ad.ad_location.state]
+                                                        .filter(Boolean)
+                                                        .join(", ")
                                                     : "N/A"}
                                                 </td>
-                                                <td>
-                                                    {ad.ad_price_details && ad.ad_price_details.length > 0
-                                                        ? ad.ad_price_details
-                                                            .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
-                                                            .join(", ")
-                                                        : "N/A"}
+
+                                                <td
+                                                className="table-cell-limit"
+                                                title={
+                                                    ad.ad_price_details?.length > 0
+                                                    ? ad.ad_price_details
+                                                        .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
+                                                        .join(", ")
+                                                    : "N/A"
+                                                }
+                                                >
+                                                {ad.ad_price_details?.length > 0
+                                                    ? ad.ad_price_details
+                                                        .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
+                                                        .join(", ")
+                                                    : "N/A"}
                                                 </td>
+
                                                 <td>
                                                     {ad.ad_images?.length > 0 && (
                                                         <div className="ad-slider">
@@ -124,17 +177,14 @@ function AdminHome() {
                                                             )}
                                                         </div>
                                                     )}
-                                                    {/* {ad.ad_images?.length > 0 ? (
-                                                        <img
-                                                            src={ad.ad_images[0].image}
-                                                            alt="Ad"
-                                                            height="60"
-                                                        />
-                                                    ) : "No Image"} */}
                                                 </td>
-                                                <td>{ad.user?.name || "User"}</td>
-                                                <td>
-                                                    {new Date(ad.createdAt).toLocaleDateString()}
+
+                                                <td className="table-cell-limit" title={ad.user?.name}>
+                                                {ad.user?.name || "User"}
+                                                </td>
+
+                                                <td className="table-cell-date">
+                                                {new Date(ad.createdAt).toLocaleDateString()}
                                                 </td>
                                             </tr>
                                         ))
@@ -200,6 +250,7 @@ function AdminHome() {
                                                     )}
                                                 </div>
                                             )}
+                                            <p><b>Description:</b> {ad.description}</p>
                                             <p><b>Category:</b> {ad.category}</p>
                                             <p><b>Type:</b> {ad.ad_type}</p>
                                             <p>

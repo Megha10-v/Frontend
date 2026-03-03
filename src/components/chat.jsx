@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "bootstrap/dist/css/bootstrap.min.css";
-import AppHeader from './AppHeader';
+import AppHeader from "./AppNav";
 import { ThreeDotsVertical, ArrowLeft } from "react-bootstrap-icons";
 import socket from "../utils/socket";
 import { useSelector } from 'react-redux';

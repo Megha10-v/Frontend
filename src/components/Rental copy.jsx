@@ -15,7 +15,7 @@ import { useNavigate } from 'react-router-dom';
 import Loader from './Loader';
 import EmptyState from './EmptyAd';
 import { useSelector } from 'react-redux';
-import AppHeader from './AppHeader';
+import AppHeader from "./AppNav";
 import Footer from './AppFooter';
 
 const Rental = () => {

@@ -18,7 +18,7 @@ import repair from '../assets/repair.png';
 import haircut from '../assets/haircut.png';
 import laundry from '../assets/laundry.png';
 import electrician from '../assets/electrician.png';
-import AppHeader from './AppHeader';
+import AppHeader from "./AppNav";
 import Footer from './AppFooter';
 import OfferForm from './OfferForm';
 

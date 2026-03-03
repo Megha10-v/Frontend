@@ -4,7 +4,7 @@ import Rental from './Rental';
 import Service from './Service';
 import MyBusiness from './MyBusiness';
 import './Tabs.css';
-import AppHeader from './AppHeader';
+import AppHeader from "./AppNav";
 import Footer from './AppFooter';
 
 export default function Tabs() {

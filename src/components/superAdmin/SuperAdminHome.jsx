@@ -86,6 +86,7 @@ function SuperAdminHome() {
             "S No": index + 1,
             "Ad ID": ad.ad_id,
             "Title": ad.title,
+            "Description":ad.description,
             "Category": ad.category,
             "Type": ad.ad_type,
             "Phone": ad.user?.mobile_number ?? "-",
@@ -176,6 +177,7 @@ function SuperAdminHome() {
                                     <th>S No:</th>
                                     <th>ID</th>
                                     <th>Title</th>
+                                    <th>Description</th>
                                     <th>Category</th>
                                     <th>Type</th>
                                     <th>Phone</th>
@@ -193,34 +195,74 @@ function SuperAdminHome() {
                                 {ads.length > 0 ? (
                                     ads.map((ad,index) => (
                                         <tr key={ad.id}>
-                                            <td>{index+1}</td>
-                                            <td>{ad.ad_id}</td>
-                                            <td>{ad.title}</td>
-                                            <td>{ad.category}</td>
-                                            <td>{ad.ad_type}</td>
-                                            <td>{ad.user?.mobile_number??'-'}</td>
-                                            <td>{ad.user?.email??'-'}</td>
-                                            <td>{ad.ad_status}</td>
-                                            <td>
-                                                {
-                                                    ad.ad_location
-                                                        ? [
-                                                            ad.ad_location.place,
-                                                            ad.ad_location.district,
-                                                            ad.ad_location.state
-                                                        ]
-                                                            .filter(value => value)
-                                                            .join(", ")
-                                                        : "N/A"
-                                                }
+                                            <td className="table-cell-small">{index + 1}</td>
+
+                                            <td className="table-cell-limit" title={ad.ad_id}>
+                                            {ad.ad_id}
                                             </td>
-                                            <td>
-                                                {ad.ad_price_details && ad.ad_price_details.length > 0
-                                                    ? ad.ad_price_details
-                                                        .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
-                                                        .join(", ")
-                                                    : "N/A"}
+
+                                            <td className="table-cell-limit" title={ad.title}>
+                                            {ad.title}
                                             </td>
+
+                                            <td className="table-cell-limit" title={ad.description}>
+                                            {ad.description}
+                                            </td>
+
+                                            <td className="table-cell-limit" title={ad.category}>
+                                            {ad.category}
+                                            </td>
+
+                                            <td className="table-cell-limit" title={ad.ad_type}>
+                                            {ad.ad_type}
+                                            </td>
+
+                                            <td className="table-cell-limit" title={ad.user?.mobile_number}>
+                                            {ad.user?.mobile_number ?? "-"}
+                                            </td>
+
+                                            <td className="table-cell-limit" title={ad.user?.email}>
+                                            {ad.user?.email ?? "-"}
+                                            </td>
+
+                                            <td className="table-cell-limit" title={ad.ad_status}>
+                                            {ad.ad_status}
+                                            </td>
+
+                                            <td
+                                            className="table-cell-limit"
+                                            title={
+                                                ad.ad_location
+                                                ? [ad.ad_location.place, ad.ad_location.district, ad.ad_location.state]
+                                                    .filter(Boolean)
+                                                    .join(", ")
+                                                : "N/A"
+                                            }
+                                            >
+                                            {ad.ad_location
+                                                ? [ad.ad_location.place, ad.ad_location.district, ad.ad_location.state]
+                                                    .filter(Boolean)
+                                                    .join(", ")
+                                                : "N/A"}
+                                            </td>
+
+                                            <td
+                                            className="table-cell-limit"
+                                            title={
+                                                ad.ad_price_details?.length > 0
+                                                ? ad.ad_price_details
+                                                    .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
+                                                    .join(", ")
+                                                : "N/A"
+                                            }
+                                            >
+                                            {ad.ad_price_details?.length > 0
+                                                ? ad.ad_price_details
+                                                    .map((p) => `₹${p.rent_price}/${p.rent_duration}`)
+                                                    .join(", ")
+                                                : "N/A"}
+                                            </td>
+
                                             <td>
                                                 {ad.ad_images?.length > 0 && (
                                                     <div className="ad-slider">
@@ -264,15 +306,21 @@ function SuperAdminHome() {
                                                     </div>
                                                 )}
                                             </td>
-                                            <td>{ad.user?.name || "User"}</td>
-                                            <td>{new Date(ad.createdAt).toLocaleDateString()}</td>
-                                            <td>
+
+                                            <td className="table-cell-limit" title={ad.user?.name}>
+                                            {ad.user?.name || "User"}
+                                            </td>
+
+                                            <td className="table-cell-date">
+                                            {new Date(ad.createdAt).toLocaleDateString()}
+                                            </td>
+                                            <td className="">
                                                 <Button style={{ backgroundColor: "blue", color: "white", marginRight:'15px' }} onClick={() => handleEdit(ad.id)}>Edit</Button>
                                                 <Button style={{ backgroundColor: "red", color: "white" }} onClick={() => deleteAd(ad.ad_id)}>Delete</Button>
                                                 <ChatIcon onClick={()=>navigate('/chat',{ state: { userId: ad.user_id, userName: ad.user.name, adName: ad.title, profile: ad.user.profile, message: `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.` } })} fontSize="large" sx={{ color: '#4FBBB4', margin: "0 20px", cursor: 'pointer' }}/>
                                                 <WhatsAppIcon style={{ color: 'green', fontSize: 30, cursor: 'pointer' }} onClick={()=>handleWhatsAppClick(ad.user?.mobile_number, `Hey ${ad.user.name}! Your ad "${ad.title}" is almost ready to go! Just complete it to make it live.`)}/>
                                             </td>
-                                        </tr>
+                                        </tr>      
                                     ))
                                 ) : (
                                     <tr>

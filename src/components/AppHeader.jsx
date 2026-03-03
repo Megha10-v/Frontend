@@ -9,7 +9,7 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import axios from 'axios';
 import { use } from 'react';
 
-function AppHeader({isChat}) {
+function AppHeader1({isChat}) {
   const { role } = useSelector((state) => state.auth)
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -263,4 +263,4 @@ function AppHeader({isChat}) {
   );
 }
 
-export default AppHeader;
+export default 1;

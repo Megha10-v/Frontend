@@ -146,7 +146,7 @@ function SuperAdminEditAd() {
             <div className="edit-ad-container">
                 <div className="edit-card">
 
-                    <h2>Edit Advertisement</h2>
+                    <h2>Edit Ads</h2>
 
                     <div className="form-grid">
 

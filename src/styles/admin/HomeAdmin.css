@@ -1,3 +1,20 @@
+.table-cell-limit {
+  max-width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-cell-small {
+  max-width: 100px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.table-cell-date {
+  white-space: nowrap;
+}
 .homeadmin {
     margin-left: 250px;
     background-color: rgba(206, 206, 206, 0.315);

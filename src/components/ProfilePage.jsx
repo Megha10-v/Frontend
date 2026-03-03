@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import AppHeader from './AppHeader';
+import AppHeader from "./AppNav";
 import Footer from './AppFooter';
 import { useSelector, useDispatch } from 'react-redux';
 import EditProfile from './EditProfile';
