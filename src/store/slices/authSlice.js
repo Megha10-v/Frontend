@@ -4,7 +4,7 @@ const initialState = {
   isAuthenticated: false,
   user: null,
   token: null,
-  isAdmin: false,
+  role: false,
 };
 
 const authSlice = createSlice({
@@ -15,7 +15,7 @@ const authSlice = createSlice({
       state.isAuthenticated = true;
       state.user = action.payload.user;
       state.token = action.payload.token;
-      state.isAdmin = action.payload.isAdmin;
+      state.role = action.payload.role;
     },
     // clearUser: (state) => {
     //   state.isAuthenticated = false;
