@@ -7,50 +7,38 @@ export const adminApi = createApi({
     baseUrl: "/admin",
   }),
   endpoints: (builder) => ({
-    getUsersList: builder.query({
+    createAd: builder.mutation({
+      query: (payload) => ({
+        url: "/admin-ad-create",
+        method: "POST",
+        data: payload,
+      }),
+      transformResponse: (res) => res?.data,
+    }),
+     getSalesUsersList: builder.query({
       query: () => ({
-        url: "/get-users",
+        url: "/get_sales_users",
         method: "GET",
       }),
       transformResponse: (res) => res?.data,
-      providesTags: ["UserList"],
+      providesTags: ["SalesUserList"],
     }),
-    blockUser: builder.mutation({
-      query: (id) => ({
-        url: "/block_user",
-        method: "PUT",
-        params: { id },
+    getSalesAdsList: builder.query({
+      query: () => ({
+        url: "/get_sales_ads",
+        method: "GET",
       }),
       transformResponse: (res) => res?.data,
-      invalidatesTags: ["UserList"],
-    }),
-    getAdsList: builder.query({
-      query: ({ date, location }) => ({
-        url: `/get-admin-ads?date=${date}&location=${location}`,
-        method: "GET",
-      }),
-      providesTags: ["AdsList"],
-    }),
-    getAdsLocationList: builder.query({
-      query: () => ({
-        url: `/get-ad-locations`,
-        method: "GET",
-      }),
-    }),
-    deleteAd: builder.mutation({
-      query: (id) => ({
-        url: `/delete-ad?id=${id}`,
-        method: "DELETE",
-      }),
-      invalidatesTags: ["AdsList"],
+      providesTags: ["SalesAdsList"],
     }),
   }),
 });
 
 export const {
-  useGetUsersListQuery,
-  useBlockUserMutation,
   useGetAdsListQuery,
   useGetAdsLocationListQuery,
   useDeleteAdMutation,
+  useCreateAdMutation,
+  useGetSalesUsersListQuery,
+  useGetSalesAdsListQuery
 } = adminApi;
