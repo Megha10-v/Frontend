@@ -15,13 +15,13 @@ import { clearUser } from '../store/slices/authSlice'
 import ChatIcon from '@mui/icons-material/Chat'
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder'
 import axios from 'axios'
-import { useDeleteAdMutation } from '../store/services/admin.service'
+import { useDeleteAdMutation } from '../store/services/superadmin.service'
 import { useGetRecentUnsavedAdsQuery } from '../store/services/post.service'
 // import { useSelector } from 'react-redux';
 
 function AppHeader({ isChat }) {
   // const token1 = localStorage.getItem('elk_authorization_token');
-  const { token, isAdmin } = useSelector((state) => state.auth)
+  const { token, role } = useSelector((state) => state.auth)
 
   const [deleteAd, { isLoading: deleteAdLoading }] = useDeleteAdMutation()
   const { data: unsavedAds, isLoading } = useGetRecentUnsavedAdsQuery(
@@ -59,6 +59,8 @@ function AppHeader({ isChat }) {
     navigate(`/post-ad`)
   }
 
+  console.log('unsavedads', unsavedAds)
+
   // const handleDiscard = () => {
   //   setShowModal(false);
   //   deleteAd(unsavedAd?.id)
@@ -88,7 +90,7 @@ function AppHeader({ isChat }) {
     // localStorage.removeItem('elk_authorization_token');
     // localStorage.removeItem('elk_is_admin');
     // localStorage.removeItem('elk_user_id');
-    dispatch(clearUser)
+    dispatch(clearUser())
     navigate('/home')
     // window.location.reload();
   }
@@ -163,10 +165,17 @@ function AppHeader({ isChat }) {
                       borderColor: '#4FBBB4',
                       whiteSpace: 'nowrap',
                     }}
+                    // onClick={() =>
+                    //   !token
+                    //     ? navigate('/login')
+                    //     : Object.keys(unsavedAds).length !== 0
+                    //       ? setShowModal(true)
+                    //       : navigate('/post-ad')
+                    // }
                     onClick={() =>
                       !token
                         ? navigate('/login')
-                        : Object.keys(unsavedAds).length !== 0
+                        : unsavedAds?.id
                           ? setShowModal(true)
                           : navigate('/post-ad')
                     }

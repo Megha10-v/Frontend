@@ -6,7 +6,8 @@ import { clearUser } from "../../store/slices/authSlice";
 const baseUrl = process.env.REACT_APP_API_BASE_URL;
 console.log("baseUrl", baseUrl);
 const axiosInstance = axios.create({
-  baseURL: baseUrl,
+  baseURL: `${baseUrl}/v1`,
+  
 });
 
 axiosInstance.interceptors.response.use(
@@ -17,7 +18,7 @@ axiosInstance.interceptors.response.use(
         toastId: "error",
       });
       if (error.response?.status === 401) {
-        store.dispatch(clearUser);
+        store.dispatch(clearUser());
       }
       // if (error.response?.status === 403) {
       //   window.location.reload();

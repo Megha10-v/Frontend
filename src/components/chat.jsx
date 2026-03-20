@@ -81,29 +81,36 @@ const ChatScreen = () => {
     };
   }, [user?.user_id, isAuthenticated]);
 
-  // useEffect(() => {
-  //   const fetchChatMessages = async () => {
-  //     if (!user?.user_id || !selectedOtherUser) return;
-  //     try {
-  //       const response = await fetch(
-  //         `${process.env.REACT_APP_API_BASE_URL}/api/get_chat?authUserId=${user.user_id}&otherUserId=${selectedOtherUser}`,
-  //         {
-  //           method: 'GET',
-  //           headers: {
-  //             'Authorization': `Bearer ${token}`,
-  //             'Content-Type': 'application/json',
-  //           },
-  //         }
-  //       );
-  //       const result = await response.json();
-  //       setChatMessages(response.ok ? result.data.chatMessages : []);
-  //     } catch (err) {
-  //       setChatMessages([]);
-  //     } finally {
-  //     }
-  //   };
-  //   fetchChatMessages();
-  // }, [selectedOtherUser, user?.user_id, token, isAuthenticated, user]);
+  useEffect(() => {
+  if (!isAuthenticated || !user) return;
+
+  setLoading(true);
+
+  socket.emit("register", user.user_id, () => {
+    // ✅ only fetch rooms after register is acknowledged
+    socket.emit("getChatRooms", user.user_id);
+  });
+
+  const handleChatRooms = (rooms) => {
+    setChatRooms(rooms);
+    setLoading(false); // ✅ move loading false here
+  };
+
+  socket.on("chatRooms", handleChatRooms);
+
+  // ✅ also re-fetch rooms when socket reconnects
+  socket.on("connect", () => {
+    socket.emit("register", user.user_id, () => {
+      socket.emit("getChatRooms", user.user_id);
+    });
+  });
+
+  return () => {
+    socket.off("chatRooms", handleChatRooms);
+    socket.off("connect");
+  };
+}, [user?.user_id, isAuthenticated]);
+
 
   const { data: messagesData, isLoading: messagesLoading, refetch } =
     useGetChatListQuery(

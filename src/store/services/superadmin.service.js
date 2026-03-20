@@ -4,7 +4,7 @@ import axiosBaseQuery from '../../utils/axios/baseQuery'
 export const superadminApi = createApi({
   reducerPath: 'superadminApi',
   baseQuery: axiosBaseQuery({
-    baseUrl: '/superadmin',
+    baseUrl: '/super-admin',
   }),
   endpoints: (builder) => ({
     getUsersList: builder.query({

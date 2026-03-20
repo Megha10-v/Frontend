@@ -13,9 +13,6 @@ const CurrentLocationButton = ({ onSubmit, onClose }) => {
   const [address, setAddress] = useState({});
   const [showSuggestions, setShowSuggestions] = useState(false);
 
-  
-  const token = localStorage.getItem('elk_authorization_token');
-
   console.log(query)  
    const {data:locationData, isLoading: locationDataLoading} = useGetPlaceSearchQuery({
           query: query,

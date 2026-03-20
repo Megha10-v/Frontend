@@ -7,7 +7,7 @@ import axios from 'axios';
 import LoginPage from './components/LoginPage';
 import Tabs from './components/Tabs';
 import AdminHome from './components/admin2/AdminHome';
-import AdminNotificationForm from './components/admin2/AdminNotification';
+// import AdminNotificationForm from './components/admin2/AdminNotification';
 import ChatScreen from './components/chat';
 import MyWishList from './components/WishList';
 import AdminAllUsers from './components/admin2/AdminAllUsers';
@@ -95,7 +95,7 @@ function App() {
                 ))}
                 <Route path='/search/:query' element={<SearchResult/>}/>
                 <Route path="/admin" element={<AdminRoute><AdminHome /></AdminRoute>} />
-                <Route path='/admin/notification' element={<AdminRoute><AdminNotificationForm/></AdminRoute>}/>
+                {/* <Route path='/admin/notification' element={<AdminRoute><AdminNotificationForm/></AdminRoute>}/> */}
                 <Route path="/admin/accounts" element={<AdminRoute><AdminAllUsers /></AdminRoute>} />
                 <Route path="*" element={<Error/>}/>
             </Routes>

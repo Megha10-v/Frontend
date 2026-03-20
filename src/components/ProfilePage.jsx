@@ -47,7 +47,7 @@ const ProfilePage = () => {
                 // localStorage.removeItem('elk_authorization_token');
                 // localStorage.removeItem('elk_is_admin');
                 // localStorage.removeItem('elk_user_id');
-                dispatch(clearUser)
+                dispatch(clearUser())
                 navigate('/home');
             } 
             // else {

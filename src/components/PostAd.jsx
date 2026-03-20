@@ -204,8 +204,11 @@ const PostAdForm = () => {
       //     },
       //   }
       // );
-      console.log("adId",adId)
-      await uploadImage({ad_id: adId, ad_stage: 2, ad_status: "offline", data});
+      const res = await uploadImage({ad_id: adId, ad_stage: 2, ad_status: "offline", data});
+      console.log("res...",res)
+      if (!res) {
+        return;
+      }
       setStep(3);
     } catch (err) {
       console.error("Image upload failed: ",err);
@@ -234,7 +237,11 @@ const PostAdForm = () => {
     //     payload,
     //     { headers }
     //   );
-    await updateAddresss(payload);
+    let res = await updateAddresss(payload);
+    if(!res){
+      return;
+    }
+
       setShowSuccessModal(true);
     } catch (err) {
       alert("Address update failed");

@@ -35,10 +35,7 @@ export const adminApi = createApi({
 });
 
 export const {
-  useGetAdsListQuery,
-  useGetAdsLocationListQuery,
-  useDeleteAdMutation,
-  useCreateAdMutation,
-  useGetSalesUsersListQuery,
-  useGetSalesAdsListQuery
+ useCreateAdMutation,
+ useGetSalesAdsListQuery,
+ useGetSalesUsersListQuery
 } = adminApi;
