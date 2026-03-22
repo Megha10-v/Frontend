@@ -71,8 +71,9 @@ const EditProfile = ({ user, onClose, onProfileUpdated, token, show }) => {
       })
       // alert("Profile picture updated");
       // set Loading(false);
+      console.log("res,,",response)
       successMessageToast(response?.message)
-      dispatch(updateUser({ profile: formData.profile }))
+      dispatch(updateUser({ profile: response?.data }))
       onClose()
       onProfileUpdated()
     } catch (error) {

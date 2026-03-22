@@ -7,8 +7,8 @@ import axios from 'axios'
 import { useNavigate } from 'react-router-dom'
 import './create.css'
 import Sidebar from './SideBar'
-import { useGetPlaceMutation } from '../../store/services/place.service';
-import { useCreateAdMutation } from '../../store/services/admin.service';
+import { useGetPlaceMutation } from '../../store/services/place.service'
+import { useCreateAdMutation } from '../../store/services/admin.service'
 import { successMessageToast } from '../common/hooks/common'
 
 const categories = {
@@ -71,8 +71,8 @@ const validationSchema = Yup.object({
 export default function AccountCreateMobile() {
   const navigate = useNavigate()
   const [locationLoading, setLocationLoading] = useState(false)
-  const [getPlace, { isLoading: getPlaceLoading }] = useGetPlaceMutation();
-  const [createAd, {isLoading: createAdLoading}] = useCreateAdMutation();
+  const [getPlace, { isLoading: getPlaceLoading }] = useGetPlaceMutation()
+  const [createAd, { isLoading: createAdLoading }] = useCreateAdMutation()
 
   const initialValues = {
     name: '',
@@ -136,10 +136,12 @@ export default function AccountCreateMobile() {
       //     headers: token ? { Authorization: `Bearer ${token}` } : {},
       //   },
       // )
-      const res = await createAd(formData);
-
-      successMessageToast(res.message ?? 'Submitted successfully')
-      navigate('/sales')
+      const res = await createAd(formData)
+      console.log("res..",res)
+      if (res?.data?.success) {
+        successMessageToast(res.message ?? 'Submitted successfully')
+        navigate('/sales')
+      }
     } catch (err) {
       console.log('Submit failed: ' + err)
     } finally {

@@ -17,14 +17,15 @@ function SuperAdminEditAd() {
   const [ad, setAd] = useState(null);
   const [newImages, setNewImages] = useState([]);
 
-  const { data, isLoading } = useGetAdbyIdQuery(id);
+  const { data, isLoading: dataLoading } = useGetAdbyIdQuery(id);
   const [updateAd, { isLoading: updating }] = useUpdateAdMutation();
+  console.log("updating",data)
 
   // Populate local state once data is fetched
   useEffect(() => {
-    if (!data?.ad) return;
+    if (!data) return;
 
-    const adData = data.ad;
+    const adData = data;
     const convertedPrices =
       adData.ad_price_details?.map((price) => ({
         id: price.id,
@@ -92,7 +93,9 @@ function SuperAdminEditAd() {
     }
   };
 
-  if (isLoading || !ad) return <Loader />;
+  if (dataLoading || !ad ) return <Loader />;
+
+  console.log("aadddd", ad)
 
   return (
     <>

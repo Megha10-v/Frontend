@@ -70,6 +70,7 @@ const LoginPage = () => {
           user: response?.data,
           token: response?.data?.token,
           isAdmin: response?.data?.is_admin,
+          role: response?.data?.role
         })
       );
       navigate("/home");
@@ -137,6 +138,7 @@ const LoginPage = () => {
           user: response.data.data,
           token: response.data.data.token,
           isAdmin: response.data.data.is_admin,
+          role: response.data.data.role
         })
       );
       navigate("/home");

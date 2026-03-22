@@ -8,8 +8,8 @@ export const superadminApi = createApi({
   }),
   endpoints: (builder) => ({
     getUsersList: builder.query({
-      query: () => ({
-        url: '/get-users',
+      query: ({limit, offset}) => ({
+        url: `/get-users?limit=${limit}&offset=${offset}`,
         method: 'GET',
       }),
       transformResponse: (res) => res?.data,
@@ -17,7 +17,7 @@ export const superadminApi = createApi({
     }),
     getAdbyId: builder.query({
       query: (id) => ({
-        url: `/get-ad-by-id/${id}`,
+        url: `/get-ad-by-id?id=${id}`,
         method: 'GET',
       }),
       transformResponse: (res) => res?.data,
@@ -43,8 +43,8 @@ export const superadminApi = createApi({
       invalidatesTags: ['UserList'],
     }),
     getAdsList: builder.query({
-      query: ({ date, location }) => ({
-        url: `/get-admin-ads?date=${date}&location=${location}`,
+      query: ({ date, location, limit, offset }) => ({
+        url: `/get-admin-ads?date=${date}&location=${location}&limit=${limit}&offset=${offset}`,
         method: 'GET',
       }),
       providesTags: ['AdsList'],
@@ -72,8 +72,8 @@ export const superadminApi = createApi({
       invalidatesTags: ['UserList'],
     }),
     getSalesUsersList: builder.query({
-      query: () => ({
-        url: '/get-sales-users',
+      query: ({limit, offset}) => ({
+        url: `/get-sales-users?limit=${limit}&offset=${offset}`,
         method: 'GET',
       }),
       transformResponse: (res) => res?.data,
@@ -89,7 +89,7 @@ export const superadminApi = createApi({
     }),
     getSalesUsersById: builder.query({
       query: (id) => ({
-        url: `/get-sales-user-by-id/${id}`,
+        url: `/get-sales-user-by-id?id=${id}`,
         method: 'GET',
       }),
       transformResponse: (res) => res?.data,

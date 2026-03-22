@@ -160,6 +160,35 @@
     background-color: rgba(79, 187, 180, 0.2);
 }
 
+.ad-card-img {
+    width: 80px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+.ad-slider {
+    position: relative;
+    width: 80px;
+}
+
+.nav-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0,0,0,0.4);
+    color: white;
+    border: none;
+    cursor: pointer;
+    padding: 0 4px;
+    font-size: 14px;
+    border-radius: 2px;
+    line-height: 1.5;
+}
+
+.nav-btn.left { left: 0; }
+.nav-btn.right { right: 0; }
+
 @media only screen and (max-width: 600px) {
     .homeadmin {
         margin-left: 0;

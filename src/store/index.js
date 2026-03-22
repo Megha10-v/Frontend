@@ -1,17 +1,3 @@
-// import { configureStore } from '@reduxjs/toolkit';
-// import authReducer from './slices/authSlice';
-
-
-// const store = configureStore({
-//     reducer: {
-//         auth: authReducer
-//     },
-// });
-
-// export default store;
-
-
-
 import { configureStore } from "@reduxjs/toolkit";
 import authReducer from "./slices/authSlice"
 import storage from "redux-persist/lib/storage";
@@ -30,6 +16,7 @@ import { postApi } from "./services/post.service";
 import {placeApi} from "./services/place.service";
 import { userApi } from "./services/user.service";
 import { chatApi } from "./services/chat.service";
+import { superadminApi } from "./services/superadmin.service";
 
 const persistConfig = {
   key: "auth",
@@ -45,6 +32,7 @@ export const store = configureStore({
     [placeApi.reducerPath]: placeApi.reducer,
     [chatApi.reducerPath]: chatApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
+    [superadminApi.reducerPath]: superadminApi.reducer,
     auth: persistAuthReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -57,7 +45,8 @@ export const store = configureStore({
       postApi.middleware,
       userApi.middleware,
       chatApi.middleware,
-      placeApi.middleware
+      placeApi.middleware,
+      superadminApi.middleware
     ),
 });
 

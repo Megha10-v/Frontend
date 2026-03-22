@@ -13,19 +13,19 @@ export const adminApi = createApi({
         method: "POST",
         data: payload,
       }),
-      transformResponse: (res) => res?.data,
+       invalidatesTags: ["SalesUserList","SalesAdsList" ]
     }),
      getSalesUsersList: builder.query({
-      query: () => ({
-        url: "/get_sales_users",
+      query: ({limit, offset }) => ({
+        url: `/get_sales_users?limit=${limit}&offset=${offset}`,
         method: "GET",
       }),
       transformResponse: (res) => res?.data,
       providesTags: ["SalesUserList"],
     }),
     getSalesAdsList: builder.query({
-      query: () => ({
-        url: "/get_sales_ads",
+      query: ({limit, offset }) => ({
+        url: `/get_sales_ads?limit=${limit}&offset=${offset}`,
         method: "GET",
       }),
       transformResponse: (res) => res?.data,
