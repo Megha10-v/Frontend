@@ -50,14 +50,52 @@ export default function AccountCreateMobile() {
   const navigate = useNavigate();
   const [locationLoading, setLocationLoading] = useState(false);
   const token = localStorage.getItem('elk_authorization_token');
-
+  const [query, setQuery] = useState("");
+  const [locations, setLocations] = useState([]);
+  const [showLocationSearch, setShowLocationSearch] = useState(false);
   const initialValues = {
     name: "",
     phone: "",
-    location: { place: "" },
+    location: { place: "", latitude: "", longitude: "" },
     ads: [],
   };
+  const userEmail = localStorage.getItem("email_user");
+  const isManualLocationEnabled = userEmail === "elkmarketingteam@gmail.com";
+        console.log(userEmail);
+  const fetchAdLocations = async (query) => {
+    if (!query) return;
 
+    try {
+      const res = await axios.post(
+        `${process.env.REACT_APP_API_BASE_URL}/api/place_search`,
+        {
+          query,
+          limited: false,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+
+      setLocations(res.data);
+    } catch (err) {
+      console.error("Location fetch error", err);
+    }
+  };
+  
+  const handleLocationChange = (e) => {
+    const value = e.target.value;
+    setQuery(value);
+    fetchAdLocations(value);
+  };
+  const handleSelectLocation = (loc, setFieldValue) => {
+    setFieldValue("location", loc);   // IMPORTANT (store full object)
+    setQuery(loc.name);
+    setLocations([]);
+    setShowLocationSearch(false);
+  };
   const handleUseCurrentLocation = (setFieldValue) => {
     setLocationLoading(true);
     navigator.geolocation.getCurrentPosition(
@@ -68,7 +106,8 @@ export default function AccountCreateMobile() {
             `${process.env.REACT_APP_API_BASE_URL}/api/get_place`,
             { latitude, longitude },
           );
-          setFieldValue("location.place", res.data?.place);
+          setFieldValue("location", res.data); // instead of location.place
+          // setFieldValue("location.place", res.data?.place);
         } catch (err) {
           alert("Location fetch failed");
         } finally {
@@ -112,6 +151,7 @@ export default function AccountCreateMobile() {
           headers: token ? { Authorization: `Bearer ${token}` } : {},
         }
       );
+      
       alert(res.message??"Submitted successfully");
       navigate("/sales");
     } catch (err) {      
@@ -154,21 +194,71 @@ export default function AccountCreateMobile() {
 
                   <Field name="phone" placeholder="Phone" className="styled-input" />
                   <ErrorMessage name="phone" component="div" className="error-text" />
-                  <div className="location-row">
-                    <Field
-                      name="location.place"
-                      placeholder="Location"
-                      className="styled-input"
-                      readOnly
-                    />
-                    <Button
-                      type="button"
-                      className="location-btn"
-                      onClick={() => handleUseCurrentLocation(setFieldValue)}
-                    >
-                      {locationLoading ? "..." : "📍"}
-                    </Button>
-                  </div>
+                  {isManualLocationEnabled ? (
+                    <>
+                      {/* Manual + Current Location */}
+                      <div className="location-row">
+                        <input
+                          type="text"
+                          placeholder="Search Location"
+                          value={query || values.location.place}
+                          onFocus={() => setShowLocationSearch(true)}
+                          onChange={handleLocationChange}
+                          className="styled-input"
+                        />
+
+                        <Button
+                          type="button"
+                          className="location-btn"
+                          onClick={() => handleUseCurrentLocation(setFieldValue)}
+                        >
+                          {locationLoading ? "..." : "📍"}
+                        </Button>
+                      </div>
+
+                      {showLocationSearch && locations.length > 0 && (
+                        <ul className="location-suggestions">
+                          {locations.map((loc, i) => (
+                            <li key={i} onClick={() => handleSelectLocation(loc, setFieldValue)}>
+                              <strong>{loc.name}</strong>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </>
+                  ) : (
+                    <>
+                      {/* Only Current Location */}
+                      <div className="location-row">
+                        <Field
+                          name="location.place"
+                          placeholder="Location"
+                          className="styled-input"
+                          readOnly
+                        />
+                        <Button
+                          type="button"
+                          className="location-btn"
+                          onClick={() => handleUseCurrentLocation(setFieldValue)}
+                        >
+                          {locationLoading ? "..." : "📍"}
+                        </Button>
+                      </div>
+                    </>
+                  )}
+                  {showLocationSearch && locations.length > 0 && (
+                    <ul className="location-suggestions">
+                      {locations.map((loc, i) => (
+                        <li
+                          key={i}
+                          onClick={() => handleSelectLocation(loc, setFieldValue)}
+                        >
+                          <strong>{loc.name}</strong>
+                        </li>
+                      ))}
+                    </ul>
+                  )}
+                  
                   <ErrorMessage name="location.place" component="div" className="error-text" />
                 </div>
 
